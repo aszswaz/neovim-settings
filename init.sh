@@ -2,24 +2,23 @@
 
 cd "$(dirname $0)"
 
-source ../shell/lib/index.sh
+function log_info() {
+    echo -e "\033[92m$@\033[0m"
+}
 
-log_info "init neovim..."
+log_info "minit neovim..."
 
 config_path="$HOME/.config/nvim"
 
 if [[ -e $config_path ]]; then
     if [[ -L $config_path ]]; then
-        if [[ $(readlink "$config_path") != "$PWD" ]]; then
-            rm -rf "$config_path"
-            ln -s "$PWD" "$config_path"
-        fi
-    elif [[ $PWD != $config_path ]]
+        ln -s -f "$PWD" "$config_path"
+    elif [[ $PWD != $config_path ]]; then
         rm -rf "$config_path"
         ln -s "$PWD" "$config_path"
     fi
 else
-    ln -s "$PWD" "$config_path"
+    ln -s -f "$PWD" "$config_path"
 fi
 
 # 添加 vim 包管理器当当前用户和 root 用户
@@ -41,9 +40,11 @@ curl -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegun
 sudo /bin/sh -e -c "
 [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
 [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
-[[ ! -e '/root/.config/nvim' ]] && ln -s '$PWD' '/root/.config/nvim'
-[[ ! -e '/root/.local/share/nvim' ]] && ln -s '$nvim_share' '/root/.local/share/nvim'
+ln -s -f '$PWD' '/root/.config/nvim'
+ln -s -f '$nvim_share' '/root/.local/share/nvim'
 exit 0
 "
+
+log_info "init neovim success"
 unset nvim_share packer_path vim_plug_path
-log_info "init neovim sucess"
+unset -f log_info
