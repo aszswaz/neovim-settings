@@ -2,6 +2,8 @@
 
 cd "$(dirname $0)"
 
+alias ln="ln -svfT"
+
 function log_info() {
     echo -e "\033[92m$@\033[0m"
 }
@@ -10,15 +12,8 @@ log_info "minit neovim..."
 
 config_path="$HOME/.config/nvim"
 
-if [[ -e $config_path ]]; then
-    if [[ -L $config_path ]]; then
-        ln -s -f "$PWD" "$config_path"
-    elif [[ $PWD != $config_path ]]; then
-        rm -rf "$config_path"
-        ln -s "$PWD" "$config_path"
-    fi
-else
-    ln -s -f "$PWD" "$config_path"
+if [[ $PWD != $config_path ]]; then
+    ln "$PWD" "$config_path"
 fi
 
 # 添加 vim 包管理器当当前用户和 root 用户
@@ -38,10 +33,11 @@ curl -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegun
 
 # 将 maven 配置应用到 root 账户
 sudo /bin/sh -e -c "
+alias ln='ln -svfT'
 [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
 [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
-ln -s -f '$PWD' '/root/.config/nvim'
-ln -s -f '$nvim_share' '/root/.local/share/nvim'
+ln '$PWD' '/root/.config/nvim'
+ln '$nvim_share' '/root/.local/share/nvim'
 exit 0
 "
 
