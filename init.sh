@@ -29,13 +29,15 @@ fi
 
 # vim-plug，github：https://github.com/junegunn/vim-plug
 vim_plug_path="$nvim_share/site/autoload/plug.vim"
-curl -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl --disable -fLo "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # 将 maven 配置应用到 root 账户
 sudo /bin/sh -e -c "
 alias ln='ln -svfT'
 [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
 [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
+[[ -e /root/.config/nvim ]] && rm -rf /root/.config/nvim
+[[ -e /root/.local/share/nvim ]] && rm -rf /root/.local/share/nvim
 ln '$PWD' '/root/.config/nvim'
 ln '$nvim_share' '/root/.local/share/nvim'
 exit 0
