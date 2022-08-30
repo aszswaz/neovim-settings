@@ -14,7 +14,7 @@ if [[ -e $config_path ]]; then
             rm -rf "$config_path"
             ln -s "$PWD" "$config_path"
         fi
-    else
+    elif [[ $PWD != $config_path ]]
         rm -rf "$config_path"
         ln -s "$PWD" "$config_path"
     fi
