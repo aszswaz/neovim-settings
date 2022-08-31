@@ -1,5 +1,6 @@
 " neovim 的基本配置
-" 开启语法高亮
+"
+" 开启语法检测与高亮
 :syntax on
 
 " 根据文件类型，设置制表符的宽度
@@ -15,26 +16,23 @@
 :set shiftround
 " 重现上一行的缩进
 :set autoindent
+
 " 设置光标距离窗口最下面的最小行数，比如一个 vim 屏幕的最下方是第 66 行，那么当光标到达第 61 行时就开始向上翻滚。
 :set scrolloff=3
-
 " 显示行号
 :set number
 " 开启光标所在位置的行和列高亮
 :set cursorcolumn
 :set cursorline
 
-" vim 其他杂项设置
 " 关闭备份
 :set nobackup
 " 编码设置
 :set enc=utf-8
 :set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"语言设置
-:set langmenu=zh_CN.UTF-8
-:set helplang=cn
+" 设置正则表达式的拓展，比如启用“.”和“*”
 :set magic
-" 自动换行
+" 不自动换行
 :set nowrap
 " 文件在外部被修改，自动更新
 :set autoread
@@ -53,6 +51,10 @@
 :let g:termdebug_wide=163
 " 设置光标闪烁
 :set guicursor+=a:blinkon1
+" 开启 modeline，modeline 表示读取并执行文件中的 neovim 指令，指令格式为“// vim\: xxx”
+:set modeline
 
 " 写出文件之前，删除尾部空格
 :autocmd BufWritePre * :call Trim()
+" 设置 coc.vim 自动补全弹出窗口中的选中项的高亮颜色
+:autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#13354A

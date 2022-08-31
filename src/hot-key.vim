@@ -27,14 +27,12 @@
 :vnoremap          <C-c>      "+y
 " 剪切选中文本到系统剪切板
 :vnoremap          <C-x>      "+d
-
 " 上移一整行
 :nnoremap <silent> <C-Up>     :m -2<cr>
 :inoremap <silent> <C-Up>     <esc>:m -2<cr>A
 " 下移一整行
 :nnoremap <silent> <C-Down>   :m +1<cr>
 :inoremap <silent> <C-Down>   <esc>:m +1<cr>A
-
 " 根据文件类型格式化文件
 :nnoremap <silent> <C-f>      :call FileFormat()<cr>
 :inoremap <silent> <C-f>      <esc>:call FileFormat()<cr>a
@@ -48,6 +46,7 @@
 " 全选
 :nnoremap          <C-a>      gg^vG$
 :inoremap          <C-a>      <esc>gg^vG$
+
 " 打开/关闭终端
 :nnoremap <silent> <C-t><C-e> :ToggleTerm<cr>
 :inoremap <silent> <C-t><C-e> <esc>:ToggleTerm<cr>
@@ -88,3 +87,7 @@
 " 置项标签页
 :nnoremap <silent> <A-p>      :BufferPin<cr>
 :inoremap <silent> <A-p>      <esc>:BufferPin<cr>
+
+" coc.vim 自动补全弹出窗口。
+" 确认选择
+:inoremap <silent> <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<cr>"
