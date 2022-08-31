@@ -57,4 +57,4 @@
 " 写出文件之前，删除尾部空格
 :autocmd BufWritePre * :call Trim()
 " 设置 coc.vim 自动补全弹出窗口中的选中项的高亮颜色
-:autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#13354A
+:autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#445444
