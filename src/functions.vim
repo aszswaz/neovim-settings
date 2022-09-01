@@ -30,14 +30,14 @@
 " 复制行
 :function! CopyRow()
     let current_column = col(".")
-    execute("normal! yyp")
+    normal! yyp
     execute("normal! " . current_column . "|")
 :endfunction
 
 " 删除行
 :function! DeleteRow()
     let current_column = col(".")
-    execute("normal! dd")
+    normal! dd
     execute("normal! " . current_column . "|")
 :endfunction
 
