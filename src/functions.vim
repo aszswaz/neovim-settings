@@ -103,7 +103,7 @@
     elseif &filetype == "cpp" || &filetype == "c"
         let command = 'astyle --style=java --indent=spaces=' . &tabstop . ' --pad-oper -N -C --indent-labels -xw -xW -w --mode=c'
     elseif &filetype == "sh" || &filetype == "zsh" || &filetype == "bash"
-        let command = 'shfmt -i ' . &tabstop
+        let command = 'shfmt -ln bash -i ' . &tabstop
     elseif &filetype == "typescript" || &filetype == "javascript" || &filetype == "js"
         let command = 'prettier --parser typescript --print-width --tab-width ' . &tabstop
     elseif &filetype == "css" || &filetype == "scss" || &filetype == "less" || &filetype == "markdown" || &filetype == "vue" || &filetype == "html"
