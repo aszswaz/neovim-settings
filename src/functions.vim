@@ -129,20 +129,26 @@
 " Trim trailing whitespace.
 :function! Trim()
     let line_count = line('$')
+    " Iterate over all rows.
     for line_number in range(1, line_count)
         let line_text = getline(line_number)
-        let last_index = strlen(line_text) - 1
-        let i = last_index
+        let line_len = strlen(line_text)
+        if line_len == 0
+            continue
+        endif
+
         " Find the last non-space character.
-        while i > 0
-            if strgetchar(line_text, i) != 32
-                break
-            endif
+        let last_index = line_len - 1
+        let i = last_index
+        while i >= 0 && strgetchar(line_text, i) == 32
             let i -= 1
         endwhile
-        if i == 0
+
+        if i == -1
+            " The line does not has non-space characters.
             call setline(line_number, '')
-        elseif i < last_index
+        else
+            " Remove whitespace at the end of the line, keep non-whitespace characters.
             call setline(line_number, line_text[0:i])
         endif
     endfor
