@@ -1,8 +1,8 @@
 " 以下是快捷键配置，n开头代表普通模式下的快捷键，i开头是编辑模式下的快捷键，nore是不递归快捷键，map是快捷键映射
 " vim普通状态下的保存，<cr>表示回车，执行 :w 命令
-:nnoremap <silent> <C-s> :w<cr>
+:nnoremap <silent> <C-s> :call Trim()<cr>:w<cr>
 " vim 编辑状态下的保存：<esc>退出编辑模式，:w 保存，<cr> 回车，a 回到编辑模式
-:inoremap <silent> <C-s> <esc>:w<cr>a
+:inoremap <silent> <C-s> <esc>:call Trim()<cr>:w<cr>a
 " 一次性保存所有打开的文件，并关闭 VIM
 :nnoremap <silent> <C-q> :wa<cr>:qa!<cr>
 :inoremap <silent> <C-q> <esc>:wa<cr>:qa!<cr>
@@ -18,7 +18,7 @@
 :inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a
 " 粘贴
 :nnoremap <C-p> <esc>"+pa
-:inoremap <C-p> <C-r>*
+:inoremap <C-p> <C-r>+
 :tnoremap <C-p> <C-\><C-n>"+pa
 " 复制行，yy是复制，p是在新的一行粘贴
 :nnoremap <silent> <C-d> :call CopyRow()<cr>
@@ -58,8 +58,6 @@
 " 刷新文件管理器
 :nnoremap <silent> <C-e><C-r> :NvimTreeRefresh<cr>
 :inoremap <silent> <C-e><C-r> <esc>:NvimTreeRefresh<cr>
-" coc.vim 自动补全弹出窗口。确认选择
-:inoremap <silent> <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<cr>"
 " 输入当前时间。iabbrev 是 vim 的缩写功能，在插入模式下输入“xxx ”就能替换为指定的内容。“<C-r>=”是在插入模式下执行表达式，并获得表达式的返回值
 :iabbrev ctime <C-r>=strftime('%Y-%m-%d %H:%M:%S')<cr>
 
@@ -97,3 +95,7 @@
 :inoremap <silent> <A-8> :BufferGoto 8<CR>
 :nnoremap <silent> <A-9> :BufferLast<CR>
 :inoremap <silent> <A-9> :BufferLast<CR>
+
+" coc.vim 自动补全弹出窗口。确认选择
+:inoremap <silent> <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<cr>"
+:inoremap <silent> <expr> <esc> coc#pum#visible() ? coc#pum#cancel() : "\<esc>"

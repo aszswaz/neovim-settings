@@ -131,14 +131,19 @@
     let line_count = line('$')
     for line_number in range(1, line_count)
         let line_text = getline(line_number)
+        let last_index = strlen(line_text) - 1
+        let i = last_index
         " Find the last non-space character.
-        let i = strlen(line_text) - 1
         while i > 0
             if strgetchar(line_text, i) != 32
                 break
             endif
             let i -= 1
         endwhile
-        call setline(line_number, line_text[0:i])
+        if i == 0
+            call setline(line_number, '')
+        elseif i < last_index
+            call setline(line_number, line_text[0:i])
+        endif
     endfor
 :endfunction
