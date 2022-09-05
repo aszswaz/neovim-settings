@@ -51,6 +51,7 @@
         endif
     else
         echohl ErrorMsg
+        let v:errors = output
         for line in output
             echo line
         endfor

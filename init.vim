@@ -1,10 +1,10 @@
 :runtime src/global_constant.vim
-:runtime src/functions/index.vim
 :runtime src/settings.vim
+:runtime src/functions/index.vim
+:runtime src/autocmd.vim
 :runtime src/plugin-loader.vim
 :runtime src/plugin-config.vim
 :runtime src/theme-config.vim
-:runtime src/format.vim
 :runtime src/commands.vim
 :runtime src/hot-key.vim
 :runtime src/other.vim

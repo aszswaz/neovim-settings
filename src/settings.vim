@@ -1,57 +1,28 @@
-" neovim 的基本配置
-"
-" 开启语法检测与高亮
 :syntax on
-
-" 根据文件类型，设置制表符的宽度
 :set tabstop=4
-:autocmd FileType json,html,xml,yaml set tabstop=2
-" 缩进应该跨越的宽度，0 表示复制 tabstop 的值，-1 表示复制 shiftwidth 的值
-:set softtabstop=0
-" shiftwidth 给出用于移位命令的宽度，例如 << , >>和 == .特殊值 0 表示复制 'tabstop' 的值。
 :set shiftwidth=0
-" 设置 expandtab，缩进总是只使用空格字符。否则，按 <Tab> 插入尽可能多的制表字符，并用空格字符完成缩进宽度。
 :set expandtab
-" 移动文本时将缩进舍入为 'shiftwidth' 的倍数
 :set shiftround
-" 重现上一行的缩进
 :set autoindent
-" 关闭备份
 :set nobackup
-" 编码设置
-:set enc=utf-8
-:set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-" 设置正则表达式的拓展，比如启用“.”和“*”
+:set encoding=utf-8
+:set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 :set magic
-" 不自动换行
 :set nowrap
-" 文件在外部被修改，自动更新
 :set autoread
-" 禁止自动拆行，行的长度达到 78 个字符时，默认会自动拆行
 :set textwidth=0
 :set fo-=t
-" 设置鼠标可点击
 :set mouse=a
-" 设置新的分屏出现的位置，如果是垂直分屏，新的分屏出现在右边，如果是水平分屏，新的分屏在下边
 :set splitright
 :set splitbelow
-" gdb debug 设置
-" 关闭源码悬浮窗
 :let g:termdebug_popup=0
 :let g:termdebug_wide=163
-" 设置光标闪烁
 :set guicursor+=a:blinkon1
-" 开启 modeline，modeline 表示读取并执行文件中的 neovim 指令，指令格式为“// vim\: xxx”
 :set modeline
 
-
-" 设置光标距离窗口最下面的最小行数，比如一个 vim 屏幕的最下方是第 66 行，那么当光标到达第 61 行时就开始向上翻滚。
 :set scrolloff=3
-" 显示行号
 :set number
-" 开启光标所在位置的行和列高亮
 :set cursorcolumn
 :set cursorline
 
-" 设置 coc.vim 自动补全弹出窗口中的选中项的高亮颜色
 :autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#445444

@@ -37,8 +37,8 @@
 :nnoremap <silent> <C-Down> :move +1<cr>
 :inoremap <silent> <C-Down> <esc>:move +1<cr>A
 " 根据文件类型格式化文件
-:nnoremap <silent> <C-f> :call FileFormat()<cr>
-:inoremap <silent> <C-f> <esc>:call FileFormat()<cr>a
+:nnoremap <silent> <C-f> :FileFormat<cr>
+:inoremap <silent> <C-f> <C-o>:FileFormat<cr>
 " 翻译单词
 :inoremap <silent> <C-t><C-s> <esc>:TranslateW<cr>A
 :nnoremap <silent> <C-t><C-s> <esc>:TranslateW<cr>
