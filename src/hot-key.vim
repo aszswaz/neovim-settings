@@ -17,8 +17,8 @@
 " 编辑模式删除行，并吧光标移动到行尾
 :inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a
 " 粘贴
-:nnoremap <C-p> <esc>"+pa
-:inoremap <C-p> <C-r>+
+:nnoremap <C-p> "+p
+:inoremap <C-p> <esc>"+pa
 :tnoremap <C-p> <C-\><C-n>"+pa
 " 复制行，yy是复制，p是在新的一行粘贴
 :nnoremap <silent> <C-d> :call CopyRow()<cr>
