@@ -13,11 +13,11 @@
 :let g:termdebug_popup=0
 :let g:termdebug_wide=163
 :set guicursor+=a:blinkon1
-:set modeline
 
 :set scrolloff=3
 :set number
 :set cursorcolumn
 :set cursorline
 
+" Sets the background color of the coc.vim autocomplete pupup.
 :autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#445444
