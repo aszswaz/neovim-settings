@@ -6,36 +6,6 @@
 " 一次性保存所有打开的文件，并关闭 VIM
 :nnoremap <silent> <C-q> :wa<cr>:qa!<cr>
 :inoremap <silent> <C-q> <esc>:wa<cr>:qa!<cr>
-" 撤销
-:nnoremap <silent> <C-z> :undo<cr>
-:inoremap <silent> <C-z> <esc>:undo<cr>a
-" 重做
-:nnoremap <silent> <A-z> :redo<cr>
-:inoremap <silent> <A-z> <esc>:redo<cr>a
-" 普通模式删除行
-:nnoremap <silent> <C-y> :call DeleteRow()<cr>
-" 编辑模式删除行，并吧光标移动到行尾
-:inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a
-" 粘贴
-:nnoremap <C-p> "+p
-:inoremap <C-p> <esc>"+pa
-:tnoremap <C-p> <C-\><C-n>"+pa
-" 复制行，yy是复制，p是在新的一行粘贴
-:nnoremap <silent> <C-d> :call CopyRow()<cr>
-:inoremap <silent> <C-d> <esc>:call CopyRow()<cr>a
-" 全选
-:nnoremap <C-a> gg^vG$
-:inoremap <C-a> <esc>gg^vG$
-" 复制选中文本到系统剪切板
-:vnoremap <C-c> "+y
-" 剪切选中文本到系统剪切板
-:vnoremap <C-x> "+d
-" 上移一整行
-:nnoremap <silent> <C-Up> :move -2<cr>
-:inoremap <silent> <C-Up> <esc>:move -2<cr>A
-" 下移一整行
-:nnoremap <silent> <C-Down> :move +1<cr>
-:inoremap <silent> <C-Down> <esc>:move +1<cr>A
 " 根据文件类型格式化文件
 :nnoremap <silent> <C-f> :FileFormat<cr>
 :inoremap <silent> <C-f> <C-o>:FileFormat<cr>
@@ -46,20 +16,46 @@
 " 移动光标到第一个非空格字符
 :nnoremap <Home> ^
 :inoremap <Home> <esc>^i
+" 输入当前时间。iabbrev 是 vim 的缩写功能，在插入模式下输入“xxx ”就能替换为指定的内容。“<C-r>=”是在插入模式下执行表达式，并获得表达式的返回值
+:iabbrev ctime <C-r>=strftime('%Y-%m-%d %H:%M:%S')<cr>
+
+:call SetClipboardKey()
+" 删除行
+:nnoremap <silent> <C-y> :call DeleteRow()<cr>
+:inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a
+" 复制行
+:nnoremap <silent> <C-d> :call CopyRow()<cr>
+:inoremap <silent> <C-d> <esc>:call CopyRow()<cr>a
+" 全选
+:nnoremap <C-a> gg^vG$
+:inoremap <C-a> <esc>gg^vG$
+" 上移一整行
+:nnoremap <silent> <C-Up> :move -2<cr>
+:inoremap <silent> <C-Up> <esc>:move -2<cr>A
+" 下移一整行
+:nnoremap <silent> <C-Down> :move +1<cr>
+:inoremap <silent> <C-Down> <esc>:move +1<cr>A
+
 " 保存文件、关闭缓冲区并关闭标签页
 :nnoremap <silent> <A-c> :call CloseTab()<cr>
 :inoremap <silent> <A-c> <esc>:call CloseTab()<cr>
 " 置项标签页
 :nnoremap <silent> <A-p> :BufferPin<cr>
 :inoremap <silent> <A-p> <esc>:BufferPin<cr>
+
 " 打开文件管理器，此功能依赖于文件管理器插件
 :nnoremap <silent> <C-e> :NvimTreeToggle<cr>
 :inoremap <silent> <C-e> <esc>:NvimTreeToggle<cr>
 " 刷新文件管理器
 :nnoremap <silent> <C-e><C-r> :NvimTreeRefresh<cr>
 :inoremap <silent> <C-e><C-r> <esc>:NvimTreeRefresh<cr>
-" 输入当前时间。iabbrev 是 vim 的缩写功能，在插入模式下输入“xxx ”就能替换为指定的内容。“<C-r>=”是在插入模式下执行表达式，并获得表达式的返回值
-:iabbrev ctime <C-r>=strftime('%Y-%m-%d %H:%M:%S')<cr>
+
+" 撤销
+:nnoremap <silent> <C-z> :undo<cr>
+:inoremap <silent> <C-z> <esc>:undo<cr>a
+" 重做
+:nnoremap <silent> <A-z> :redo<cr>
+:inoremap <silent> <A-z> <esc>:redo<cr>a
 
 " 打开/关闭终端
 :nnoremap <silent> <C-t><C-e> :ToggleTerm<cr>

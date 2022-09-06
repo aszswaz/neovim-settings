@@ -5,3 +5,4 @@
 :runtime src/functions/job.vim
 :runtime src/functions/plugin.vim
 :runtime src/functions/row.vim
+:runtime src/functions/hot-key.vim

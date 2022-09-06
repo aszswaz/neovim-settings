@@ -1,15 +1,10 @@
-:syntax on
 :set tabstop=4
 :set shiftwidth=0
 :set expandtab
 :set shiftround
-:set autoindent
 :set nobackup
-:set encoding=utf-8
-:set fileencodings=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 :set magic
 :set nowrap
-:set autoread
 :set textwidth=0
 :set fo-=t
 :set mouse=a
