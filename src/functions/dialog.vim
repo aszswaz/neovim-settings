@@ -3,7 +3,7 @@ let s:win_buf = 0
 let s:time = 5000
 
 " Define the dialog style.
-:autocmd ColorScheme * :highlight DialogError ctermfg=204 guifg='#E06C75' guibg=NONE
+:autocmd ColorScheme * :highlight DialogError guifg='#E06C75' guibg=NONE
 
 :function! ErrorDialog(messages)
     if s:win_buf != 0 | return | endif

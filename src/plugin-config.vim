@@ -11,10 +11,10 @@
     \ }
 
 " vim-bookmarks
-:autocmd ColorScheme * :highlight BookmarkSign ctermbg=NONE ctermfg=160 guibg=NONE ctermfg='#D70000'
-:autocmd ColorScheme * :highlight BookmarkLine ctermbg=194 ctermfg=NONE guibg='#D7FFD7' guifg=NONE
+:autocmd ColorScheme * :highlight BookmarkSign guibg=NONE guifg='#D70000'
+:autocmd ColorScheme * :highlight BookmarkLine guibg='#D7FFD7' guifg=NONE
 :let g:bookmark_sign = '⚑'
 :let g:bookmark_highlight_lines = 1
 
 " Sets the background color of the coc.vim autocomplete pupup.
-:autocmd ColorScheme * :highlight CocMenuSel ctermbg=237 guibg='#445444'
+:autocmd ColorScheme * :highlight CocMenuSel guibg='#445444'
