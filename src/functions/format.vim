@@ -50,11 +50,6 @@
             call deletebufline(bufnr('.'), del_start, del_end)
         endif
     else
-        echohl ErrorMsg
-        let v:errors = output
-        for line in output
-            echo line
-        endfor
-        echohl None
+        call ErrorDialog(output)
     endif
 :endfunction

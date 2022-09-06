@@ -1,5 +1,6 @@
 " custom function
 
+:runtime src/functions/dialog.vim
 :runtime src/functions/ctags.vim
 :runtime src/functions/format.vim
 :runtime src/functions/job.vim
