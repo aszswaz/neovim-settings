@@ -1,4 +1,5 @@
 :set tabstop=4
+:autocmd FileType json,html,xml,yaml set tabstop=2
 :set shiftwidth=0
 :set expandtab
 :set shiftround
@@ -18,6 +19,3 @@
 :set number
 :set cursorcolumn
 :set cursorline
-
-" Sets the background color of the coc.vim autocomplete pupup.
-:autocmd ColorScheme * hi CocMenuSel ctermbg=237 guibg=#445444

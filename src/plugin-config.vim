@@ -1,6 +1,4 @@
-" 插件的配置
-
-" 状态栏主题配置
+" Status bar theme configuration.
 :let g:lightline = {
         \ 'colorscheme': 'onedark',
         \ 'active': {
@@ -12,8 +10,11 @@
         \ }
     \ }
 
-" vim-bookmarks 插件配置
-:highlight BookmarkSign ctermbg=NONE ctermfg=160
-:highlight BookmarkLine ctermbg=194 ctermfg=NONE
+" vim-bookmarks
+:autocmd ColorScheme * :highlight BookmarkSign ctermbg=NONE ctermfg=160
+:autocmd ColorScheme * :highlight BookmarkLine ctermbg=194 ctermfg=NONE
 :let g:bookmark_sign = '⚑'
 :let g:bookmark_highlight_lines = 1
+
+" Sets the background color of the coc.vim autocomplete pupup.
+:autocmd ColorScheme * :highlight CocMenuSel ctermbg=237 guibg='#445444'

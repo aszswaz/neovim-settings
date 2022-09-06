@@ -2,6 +2,9 @@ let s:win_id = 0
 let s:win_buf = 0
 let s:time = 5000
 
+" Define the dialog style.
+:autocmd ColorScheme * :highlight DialogError ctermfg=204 guifg='#E06C75' guibg=NONE
+
 :function! ErrorDialog(messages)
     if s:win_buf != 0 | return | endif
 
@@ -29,6 +32,7 @@ let s:time = 5000
                 \})
 
     call nvim_win_set_option(s:win_id, 'wrap', v:true)
+    call nvim_win_set_option(s:win_id, 'winhighlight', 'NormalFloat:DialogError,FloatBorder:DialogError')
     call timer_start(s:time, 'DialogClose')
 :endfunction
 
