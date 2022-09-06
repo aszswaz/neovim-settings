@@ -11,8 +11,8 @@
     \ }
 
 " vim-bookmarks
-:autocmd ColorScheme * :highlight BookmarkSign ctermbg=NONE ctermfg=160
-:autocmd ColorScheme * :highlight BookmarkLine ctermbg=194 ctermfg=NONE
+:autocmd ColorScheme * :highlight BookmarkSign ctermbg=NONE ctermfg=160 guibg=NONE ctermfg='#D70000'
+:autocmd ColorScheme * :highlight BookmarkLine ctermbg=194 ctermfg=NONE guibg='#D7FFD7' guifg=NONE
 :let g:bookmark_sign = '⚑'
 :let g:bookmark_highlight_lines = 1
 
