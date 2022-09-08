@@ -8,8 +8,7 @@ let s:time = 5000
 :function! ErrorDialog(messages)
     if s:win_buf != 0 | return | endif
 
-    let s:win_buf = bufadd('error-dialog')
-    call bufload(s:win_buf)
+    let s:win_buf = nvim_create_buf(v:false, v:true)
     call setbufline(s:win_buf, 1, a:messages)
 
     let width = 40
