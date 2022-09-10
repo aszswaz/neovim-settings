@@ -1,8 +1,8 @@
--- 有些插件是使用 lua 编写的，通过 vim-plug 安装之后，需要通过 lua 的 require 加载
+local CONFIG_DIR = vim.fn.stdpath "config"
 
--- 文件管理器插件
+-- File manager plugin
 require("nvim-tree").setup {
-    -- 启用 git
+    -- Enable git
     git = {
         enable = true,
         ignore = false,
@@ -10,29 +10,28 @@ require("nvim-tree").setup {
     },
 }
 
--- 文本缩进层级显示设置
+-- Text indentation level display settings.
 require("indent_blankline").setup {
     show_end_of_line = true,
-    -- 有一些页面展示缩进层级会扰乱页面展示效果，比如用于展示起动页面的 startify，因此需要排除这些页面
-    filetype_exclude = { "startify", "help", "qf" },
+    filetype_exclude = { "startify", "help", "qf", "vim-plug", "dashboard" },
 }
 
--- 终端插件，仓库：https://github.com/akinsho/toggleterm.nvim
+-- Terminal plugin.
 require("toggleterm").setup {
     hide_numbers = true,
     shade_terminals = true,
-    -- 终端的深色程度
+    -- The color depth of the terminal
     shading_factor = "1",
     start_in_insert = true,
     insert_mappings = true,
     terminal_mappings = true,
     persist_szie = true,
-    -- 终端窗口出现的位置
+    -- Terminal window type
     direction = "float",
     close_on_exit = true,
-    -- 设置默认 SHELL
+    -- Set the default shell.
     shell = vim.o.shell,
-    -- 气泡终端设置选项，主要是设置边框
+    -- Terminal's popup settings.
     float_opts = {
         border = "single",
         width = 300,
@@ -46,7 +45,7 @@ require("toggleterm").setup {
     },
 }
 
--- 将 buffer 作为 tab 的插件
+-- Plugins that use buffer as tab.
 require("bufferline").setup {
     animation = true,
     auto_hide = false,

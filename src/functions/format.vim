@@ -11,7 +11,8 @@
     elseif &filetype == "python"
         let command = 'autopep8 --max-line-length ' . max_line_length . ' -'
     elseif &filetype == "lua"
-        let command = 'stylua - --indent-type Spaces --indent-width ' . &tabstop . ' --call-parentheses None --quote-style AutoPreferDouble'
+        let command = 'stylua - --indent-type Spaces --indent-width ' . &tabstop .
+                    \' --call-parentheses None --quote-style AutoPreferDouble --column-width ' . max_line_length
     elseif &filetype == "tex" || &filetype == "latex"
         let command = 'latexindent'
     elseif &filetype == "xml"
@@ -19,7 +20,7 @@
     elseif &filetype == "cpp" || &filetype == "c"
         let command = 'astyle --style=java --indent=spaces=' . &tabstop . ' --pad-oper -N -C --indent-labels -xw -xW -w --mode=c'
     elseif &filetype == "sh" || &filetype == "zsh" || &filetype == "bash"
-        let command = 'shfmt -ln sh -i ' . &tabstop
+        let command = 'shfmt -ln bash -i ' . &tabstop
     elseif &filetype == "typescript" || &filetype == "javascript" || &filetype == "js"
         let command = 'prettier --parser typescript --print-width ' . max_line_length . ' --tab-width ' . &tabstop .
                     \' --no-semi --single-attribute-per-line'

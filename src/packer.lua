@@ -2,11 +2,11 @@
 
 vim.cmd [[packadd packer.nvim]]
 
--- 使用 packer 管理插件，界面的展示效果比 vim-plug 好一些，虽然生态环境还很小，暂时先保留着
+-- packer, like vim-plug, is also a package manager.
 return require("packer").startup(function()
-    -- 让 packer 自己管理自己
+    -- Let packer manager self.
     use "wbthomason/packer.nvim"
-    -- 标签页插件
+    -- Tab page plugin.
     use {
         "romgrk/barbar.nvim",
         requires = { "kyazdani42/nvim-web-devicons" },
