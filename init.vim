@@ -9,4 +9,3 @@
 :runtime src/theme-config.vim
 :runtime src/commands.vim
 :runtime src/hot-key.vim
-:runtime src/other.vim

@@ -12,9 +12,6 @@
 :set mouse=a
 :set splitright
 :set splitbelow
-" Set up the gdb window.
-:let g:termdebug_popup=0
-:let g:termdebug_wide=163
 " Automatic insertion of comments is disabled.
 :autocmd FileType * set formatoptions-=c formatoptions-=t formatoptions-=r
 " Minimal number of screen lines to keep above and below the cursor.

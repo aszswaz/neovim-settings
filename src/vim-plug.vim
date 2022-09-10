@@ -25,6 +25,8 @@
 :Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 " Start screen plugin.
 :Plug 'mhinz/vim-startify'
+" gdb debugging plugin.
+:Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
 
 " theme
 " :Plug 'dracula/vim'
