@@ -1,4 +1,4 @@
-:function! UpdateCtags()
+function! UpdateCtags()
     if !has('linux')
         echohl ErrorMsg | echo 'This function only supports running under the linux operating system.' | echohl None
         return
@@ -14,9 +14,9 @@
     call jobstart('ctags -f ' . g:tags_file .
                 \' -I __THROW --extras=+F --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --fields=+S -R /usr/include',
                 \ extend({'command': 'ctags'}, callbacks))
-:endfunction
+endfunction
 
-:function! LoadCtags()
+function! LoadCtags()
     if !has('linux')
         echohl ErrorMsg | echo 'This function only supports running under the linux operating system.' | echohl None
         return
@@ -27,4 +27,4 @@
     else
         call UpdateCtags()
     endif
-:endfunction
+endfunction

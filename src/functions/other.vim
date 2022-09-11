@@ -1,21 +1,21 @@
 " The gitbranch#name function in the plugin only returns the branch name, here a unicode circuit icon is added to represent the git icon.
-:function! Gitbranchicon()
+function! Gitbranchicon()
     let branchname=gitbranch#name()
     if empty(branchname)
         return ""
     else
         return " " . branchname
     endif
-:endfunction
+endfunction
 
 " show username
-:function! Username()
+function! Username()
     return $USER
-:endfunction
+endfunction
 
 " Closing the current tab is actually closing the vim buffer, but the romgrk/barbar.nvim plugin will use the buffer as a tab,
 " so closing the buffer is equivalent to closing the tab.
-:function! CloseTab()
+function! CloseTab()
     " Get the sequence number of the current buffer
     let current_buffer = bufnr('%')
     " If the current buffer has been modified by the user, save it to a file first.
@@ -24,4 +24,15 @@
     endif
     " Close buffer
     BufferClose
-:endfunction
+endfunction
+
+" The callback function for jobstart.
+function! JobHandler(job_id, data, event) dict
+    if a:event == 'stdout'
+        echo join(a:data, nr2char(10))
+    elseif a:event == 'stderr'
+        echohl ErrorMsg | echo join(a:data, nr2char(10)) | echohl None
+    elseif a:event == "exit"
+        echo self.command . " exit code: " . a:data
+    endif
+endfunction

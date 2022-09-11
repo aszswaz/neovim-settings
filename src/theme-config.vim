@@ -1,4 +1,6 @@
 " Enable installed themes.
-:colorschem onedark
+colorschem onedark
 " Enable True Color.
-:set termguicolors
+set termguicolors
+" Define the dialog style.
+highlight CocMenuSel guibg='#445444'

@@ -1,17 +1,17 @@
-:function! CopyRow()
+function! CopyRow()
     let current_column = col(".")
     normal! yyp
     execute("normal! " . current_column . "|")
-:endfunction
+endfunction
 
-:function! DeleteRow()
+function! DeleteRow()
     let current_column = col(".")
     normal! dd
     execute("normal! " . current_column . "|")
-:endfunction
+endfunction
 
 " Trim trailing whitespace.
-:function! Trim()
+function! Trim()
     let line_count = line('$')
     " Iterate over all rows.
     for line_number in range(1, line_count)
@@ -36,4 +36,4 @@
             call setline(line_number, line_text[0:i])
         endif
     endfor
-:endfunction
+endfunction
