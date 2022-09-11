@@ -37,7 +37,7 @@
     elseif &filetype == 'yaml'
         let command = 'prettier --parser yaml --print-width ' . max_line_length . ' --tab-width ' . &tabstop
     else
-        echo "Unknown file type: " . &filetype
+        call ErrorDialog('Unknown file type: ' . &filetype)
         return
     endif
 

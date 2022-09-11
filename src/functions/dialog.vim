@@ -27,7 +27,7 @@ let s:time = 5000
                 \'style': 'minimal',
                 \'noautocmd': v:false,
                 \'bufpos': [0, 0],
-                \'border': ['╔', '═','╗', '║', '╝', '═', '╚', '║']
+                \'border': 'rounded'
                 \})
 
     call nvim_win_set_option(s:win_id, 'wrap', v:true)
