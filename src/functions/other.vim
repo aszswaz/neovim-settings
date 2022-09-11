@@ -36,3 +36,18 @@ function! JobHandler(job_id, data, event) dict
         echo self.command . " exit code: " . a:data
     endif
 endfunction
+
+function! SetClipboardKey()
+    if has('clipboard')
+        vnoremap <C-c> "+y
+        vnoremap <C-x> "+d
+        nnoremap <C-p> "+p
+        tnoremap <C-p> <C-\><C-n>"+p
+    else
+        vnoremap <C-c> y
+        vnoremap <C-x> d
+        nnoremap <C-p> p
+        tnoremap <C-p> <C-\><C-n>pa
+    endif
+    inoremap <C-p> <C-r>+
+endfunction

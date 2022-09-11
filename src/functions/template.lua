@@ -60,3 +60,7 @@ function TemplateDelete(template_name)
     end
     vim.fn.delete(template_file)
 end
+
+function TemplateCommit()
+
+end
