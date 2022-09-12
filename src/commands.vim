@@ -1,6 +1,5 @@
-command! LoadCtags call LoadCtags()
-command! UpdateCtags call UpdateCtags()
-command! FileFormat call FileFormat()
+command! CtagsUpdate lua Ctags:update()
+command! FileFormat lua FileFormat()
 command! -nargs=1 TemplateNew lua Template:new(<args>)
 command! TemplateList lua Template:list()
 command! -nargs=1 TemplateUse lua Template:use(<args>)

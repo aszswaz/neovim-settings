@@ -1,9 +1,8 @@
-local templatePath = vim.g.config_dir .. "/templates"
-
 Template = {}
 
 -- Create a template
 function Template:new(templateName)
+    local templatePath = vim.g.template_path
     if vim.fn.isdirectory(templatePath) == 0 then
         if vim.fn.mkdir(templatePath) == 0 then
             dialog.error(templatePath .. ": Create failed!")
@@ -20,6 +19,7 @@ end
 
 -- Print all templates.
 function Template:list()
+    local templatePath = vim.g.template_path
     if vim.fn.isdirectory(templatePath) == 0 then
         dialog.warn "No template yet."
         return
@@ -37,6 +37,7 @@ end
 
 -- Cretae files from templates.
 function Template:use(templateName)
+    local templatePath = vim.g.template_path
     local template_file = templatePath .. "/" .. templateName
     if vim.fn.filereadable(template_file) == 0 then
         dialog.error("Template that does not exist: " .. templateName)
@@ -55,6 +56,7 @@ function Template:use(templateName)
 end
 
 function Template:delete(templateName)
+    local templatePath = vim.g.template_path
     local template_file = templatePath .. "/" .. templateName
     if vim.fn.filereadable(template_file) == 0 then
         dialog.error("Template that does not exist: " .. templateName)
@@ -65,6 +67,7 @@ end
 
 -- Submit a template.
 function Template:commit()
+    local templatePath = vim.g.template_path
     local command = "git -C " .. templatePath
     local result = vim.fn.systemlist(command .. " rev-parse --is-inside-work-tree")[1]
     if result ~= "true" then

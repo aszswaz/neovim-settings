@@ -8,4 +8,3 @@ runtime src/plugin-config.vim
 runtime src/plugin-config.lua
 runtime src/commands.vim
 runtime src/hot-key.vim
-runtime src/hook.vim
