@@ -8,7 +8,7 @@ function FileFormat()
     if filetype == "json" then
         command = "jq"
     elseif filetype == "java" then
-        command = "astyle --style=java --indent=spaces=" .. tabstop .. " --mode=java"
+        command = "astyle --style=java -s" .. tabstop .. " --mode=java -U"
     elseif filetype == "python" then
         command = "autopep8 --max-line-length " .. textwidth .. " -"
     elseif filetype == "lua" then
@@ -21,7 +21,11 @@ function FileFormat()
     elseif filetype == "xml" then
         command = "xmllint --encode UTF-8 --format -"
     elseif filetype == "cpp" or filetype == "c" then
-        command = "astyle --style=java --indent=spaces=" .. tabstop .. " --pad-oper -N -C --indent-labels -xw -xW -w --mode=c"
+        command = "astyle -s"
+            .. tabstop
+            .. " -A2 -xn -xc -xl -xk -xV -C -xG -S -K -N -L -xw -w -Y -f -p -xg -H -U -k3 -W3"
+            .. " -xL -xC"
+            .. textwidth
     elseif filetype == "sh" or filetype == "zsh" or filetype == "bash" then
         command = "shfmt -ln bash -i " .. tabstop
     elseif filetype == "typescript" or filetype == "javascript" or filetype == "js" then
