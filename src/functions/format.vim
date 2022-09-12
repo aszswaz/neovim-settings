@@ -33,7 +33,7 @@ function! FileFormat()
     elseif &filetype == 'yaml'
         let command = 'prettier --parser yaml --print-width ' . &textwidth . ' --tab-width ' . &tabstop
     else
-        lua DialogError('Unknown file type: ' .. vim.o.filetype)
+        call v:lua.DialogError('Unknown file type: ' . vim.o.filetype)
         return
     endif
 
@@ -47,6 +47,6 @@ function! FileFormat()
             call deletebufline(bufnr(), del_start, del_end)
         endif
     else
-        lua DialogError(output)
+        call v:lua.DialogError(output)
     endif
 endfunction

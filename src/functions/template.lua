@@ -61,6 +61,11 @@ function TemplateDelete(template_name)
     vim.fn.delete(template_file)
 end
 
+-- Submit a template.
 function TemplateCommit()
-
+    local result = vim.fn.system("git rev-parse --is-inside-work-tree -C " .. template_path)
+    if result ~= "true" then
+        DialogError(template_path .. ": " .. result)
+        return
+    end
 end
