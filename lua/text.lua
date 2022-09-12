@@ -89,9 +89,13 @@ text.row.delete = function()
     vim.cmd("normal! " .. cursorX .. "|")
 end
 
-text.row.trim = function()
-    local lineCount = vim.api.nvim_buf_line_count(0)
-    local lines = vim.api.nvim_buf_get_lines(0, 0, lineCount, true)
+text.row.trim = function(buffer)
+    if buffer == nil then
+        buffer = 0
+    end
+
+    local lineCount = vim.api.nvim_buf_line_count(buffer)
+    local lines = vim.api.nvim_buf_get_lines(buffer, 0, lineCount, true)
     for lineNumber = 1, #lines do
         local lineText = lines[lineNumber]
         local lineLen = vim.fn.strlen(lineText)
@@ -110,7 +114,7 @@ text.row.trim = function()
         else
             lines[lineNumber] = string.sub(lineText, 1, i + 1)
         end
-        vim.api.nvim_buf_set_lines(0, 0, #lines, true, lines)
+        vim.api.nvim_buf_set_lines(buffer, 0, #lines, true, lines)
 
         ::continue::
     end
