@@ -89,6 +89,6 @@ function Template:commit()
     local repositories = vim.fn.systemlist(command .. " remote")
 
     for i, item in ipairs(repositories) do
-        Job:start(command .. " push " .. item .. " " .. branch .. ":master")
+        job.start(command .. " push " .. item .. " " .. branch .. ":master")
     end
 end
