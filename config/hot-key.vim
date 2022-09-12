@@ -23,14 +23,15 @@ if has('clipboard')
     vnoremap <C-c> "+y
     vnoremap <C-x> "+d
     nnoremap <C-p> "+p
+    inoremap <C-p> <esc>"+pa
     tnoremap <C-p> <C-\><C-n>"+p
 else
     vnoremap <C-c> y
     vnoremap <C-x> d
     nnoremap <C-p> p
+    inoremap <C-p> <esc>pa
     tnoremap <C-p> <C-\><C-n>pa
 endif
-inoremap <C-p> <C-r>+
 " 删除行
 nnoremap <silent> <C-y> :lua text.row.delete()<cr>
 inoremap <silent> <C-y> <esc>:lua text.row.delete()<cr>a
