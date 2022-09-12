@@ -6,3 +6,4 @@ runtime src/functions/hot-key.vim
 runtime src/functions/template.lua
 runtime src/functions/other.vim
 runtime src/functions/util.lua
+runtime src/functions/cmake.lua
