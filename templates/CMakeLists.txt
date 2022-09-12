@@ -22,12 +22,12 @@ set (
 )
 
 add_executable(
-        ${PROJECT_NAME}
-        src/main.cpp
-        ${SRC_FILES}
+    ${PROJECT_NAME}
+    src/main.cpp
+    ${SRC_FILES}
 )
 add_executable(
-        ${UNIT_TEST}
-        unit/main.cpp
-        ${UNIT_SRC}
+    ${UNIT_TEST}
+    unit/main.cpp
+    ${UNIT_SRC}
 )
