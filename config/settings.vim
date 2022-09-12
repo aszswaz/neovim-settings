@@ -1,3 +1,9 @@
+let s:config = stdpath('config')
+" C++, C label files.
+let g:tags_file = s:config . '/tags'
+" Template save path
+let g:template_path = s:config . '/templates'
+
 set tabstop=4
 autocmd FileType json,html,xml,yaml set tabstop=2
 set shiftwidth=0

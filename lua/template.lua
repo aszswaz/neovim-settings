@@ -1,3 +1,5 @@
+require "utils/dialog"
+
 Template = {}
 
 -- Create a template

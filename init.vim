@@ -1,10 +1,3 @@
-runtime src/vim-plug.vim
-runtime src/packer.lua
-runtime src/theme-config.vim
-runtime src/global-constant.vim
-runtime src/functions/index.vim
-runtime src/settings.vim
-runtime src/plugin-config.vim
-runtime src/plugin-config.lua
-runtime src/commands.vim
-runtime src/hot-key.vim
+runtime config/index.vim
+runtime vim/index.vim
+runtime lua/index.lua

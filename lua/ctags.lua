@@ -1,3 +1,5 @@
+require "utils/job"
+
 Ctags = {}
 function Ctags:update()
     local ctags = "ctags -f "

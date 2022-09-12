@@ -1,3 +1,5 @@
+require "utils/dialog"
+
 cmake = {}
 
 -- Initialize the cmake project

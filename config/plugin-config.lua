@@ -30,7 +30,7 @@ require("toggleterm").setup {
     direction = "float",
     close_on_exit = true,
     -- Set the default shell.
-    shell = vim.o.shell,
+    shell = "/bin/fish",
     -- Terminal's popup settings.
     float_opts = {
         border = "single",

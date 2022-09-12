@@ -19,7 +19,18 @@ inoremap <Home> <esc>^i
 " 输入当前时间。iabbrev 是 vim 的缩写功能，在插入模式下输入“xxx ”就能替换为指定的内容。“<C-r>=”是在插入模式下执行表达式，并获得表达式的返回值
 iabbrev ctime <C-r>=strftime('%Y-%m-%d %H:%M:%S')<cr>
 
-call SetClipboardKey()
+if has('clipboard')
+    vnoremap <C-c> "+y
+    vnoremap <C-x> "+d
+    nnoremap <C-p> "+p
+    tnoremap <C-p> <C-\><C-n>"+p
+else
+    vnoremap <C-c> y
+    vnoremap <C-x> d
+    nnoremap <C-p> p
+    tnoremap <C-p> <C-\><C-n>pa
+endif
+inoremap <C-p> <C-r>+
 " 删除行
 nnoremap <silent> <C-y> :call DeleteRow()<cr>
 inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a

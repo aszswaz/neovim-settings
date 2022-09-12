@@ -1,3 +1,5 @@
+require "utils/dialog"
+
 -- Format files via external tools.
 function FileFormat()
     local filetype = vim.o.filetype
