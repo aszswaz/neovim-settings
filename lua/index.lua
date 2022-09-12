@@ -1,4 +1,5 @@
 require "cmake"
 require "ctags"
-require "format"
+require "text"
 require "template"
+require "other"

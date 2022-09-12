@@ -82,6 +82,21 @@ local lightline = {
     },
 }
 vim.api.nvim_set_var("lightline", lightline)
+vim.cmd [[
+function! Gitbranchicon()
+    let branchname=gitbranch#name()
+    if empty(branchname)
+        return ""
+    else
+        return " " . branchname
+    endif
+endfunction
+]]
+vim.cmd [[
+function! Username()
+    return $USER
+endfunction
+]]
 
 -- vim-bookmarks
 vim.cmd [[autocmd ColorScheme * :highlight BookmarkSign guibg=NONE guifg='#D70000']]

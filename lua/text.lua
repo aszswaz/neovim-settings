@@ -1,7 +1,9 @@
 require "utils/dialog"
 
+text = {}
+
 -- Format files via external tools.
-function FileFormat()
+text.format = function()
     local filetype = vim.o.filetype
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
@@ -76,5 +78,43 @@ function FileFormat()
         end
     else
         dialog.error(output)
+    end
+end
+
+text.row = {}
+text.row.copy = function()
+    local cursorX = vim.fn.col "."
+    vim.cmd "normal! yyp"
+    vim.cmd("normal! " .. cursorX .. "|")
+end
+
+text.row.delete = function()
+    local cursorX = vim.fn.col "."
+    vim.api.nvim_del_current_line()
+    vim.cmd("normal! " .. cursorX .. "|")
+end
+
+text.row.trim = function()
+    local lineCount = vim.api.nvim_buf_line_count(0)
+    for item = 1, lineCount do
+        local lineText = vim.fn.getline(item)
+        local lineLen = vim.fn.strlen(lineText)
+        if lineLen == 0 then
+            goto continue
+        end
+
+        local lastIndex = lineLen - 1
+        local i = lastIndex
+        while i >= 0 and vim.fn.strgetchar(lineText, i) == 32 do
+            i = i - 1
+        end
+
+        if i == -1 then
+            vim.fn.setline(item, "")
+        else
+            vim.fn.setline(item, string.sub(lineText, 1, i + 1))
+        end
+
+        ::continue::
     end
 end

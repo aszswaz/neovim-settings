@@ -1,5 +1,5 @@
 command CtagsUpdate lua Ctags:update()
-command FileFormat lua FileFormat()
+command FileFormat lua text.format()
 
 command -nargs=1 TemplateNew lua Template:new(<args>)
 command -nargs=1 TemplateEdit lua Template:new(<args>)

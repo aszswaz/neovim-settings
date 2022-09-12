@@ -1,8 +1,8 @@
 " 以下是快捷键配置，n开头代表普通模式下的快捷键，i开头是编辑模式下的快捷键，nore是不递归快捷键，map是快捷键映射
 " vim普通状态下的保存，<cr>表示回车，执行 :w 命令
-nnoremap <silent> <C-s> :call Trim()<cr>:w<cr>
+nnoremap <silent> <C-s> :lua text.row.trim()<cr>:w<cr>
 " vim 编辑状态下的保存：<esc>退出编辑模式，:w 保存，<cr> 回车，a 回到编辑模式
-inoremap <silent> <C-s> <esc>:call Trim()<cr>:w<cr>a
+inoremap <silent> <C-s> <esc>:lua text.row.trim()<cr>:w<cr>a
 " 一次性保存所有打开的文件，并关闭 VIM
 nnoremap <silent> <C-q> :wa<cr>:qa!<cr>
 inoremap <silent> <C-q> <esc>:wa<cr>:qa!<cr>
@@ -32,11 +32,11 @@ else
 endif
 inoremap <C-p> <C-r>+
 " 删除行
-nnoremap <silent> <C-y> :call DeleteRow()<cr>
-inoremap <silent> <C-y> <esc>:call DeleteRow()<cr>a
+nnoremap <silent> <C-y> :lua text.row.delete()<cr>
+inoremap <silent> <C-y> <esc>:lua text.row.delete()<cr>a
 " 复制行
-nnoremap <silent> <C-d> :call CopyRow()<cr>
-inoremap <silent> <C-d> <esc>:call CopyRow()<cr>a
+nnoremap <silent> <C-d> :lua text.row.copy()<cr>
+inoremap <silent> <C-d> <esc>:lua text.row.copy()<cr>a
 " 全选
 nnoremap <C-a> gg0vG$
 inoremap <C-a> <esc>gg0vG$
@@ -49,8 +49,8 @@ nnoremap <silent> <C-Down> :move +1<cr>
 inoremap <silent> <C-Down> <esc>:move +1<cr>A
 
 " 保存文件、关闭缓冲区并关闭标签页
-nnoremap <silent> <A-c> :call CloseTab()<cr>
-inoremap <silent> <A-c> <esc>:call CloseTab()<cr>
+nnoremap <silent> <A-c> :lua closeTab()<cr>
+inoremap <silent> <A-c> <esc>:lua closeTab()<cr>
 " 置项标签页
 nnoremap <silent> <A-p> :BufferPin<cr>
 inoremap <silent> <A-p> <esc>:BufferPin<cr>
