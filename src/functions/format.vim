@@ -41,10 +41,10 @@ function! FileFormat()
     if v:shell_error == 0
         call setline(1, output)
         " Delete extra lines.
-        let del_start = len(output) + 1
+        let del_start = len(output)
         let del_end = line('$')
         if del_end > del_start
-            call deletebufline(bufnr(), del_start, del_end)
+            call deletebufline(bufnr(), del_start + 1, del_end)
         endif
     else
         call v:lua.DialogError(output)
