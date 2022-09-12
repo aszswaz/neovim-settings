@@ -1,14 +1,16 @@
-local template_path = vim.g.config_dir .. "/templates"
+local templatePath = vim.g.config_dir .. "/templates"
+
+Template = {}
 
 -- Create a template
-function TemplateNew(template_name)
-    if vim.fn.isdirectory(template_path) == 0 then
-        if vim.fn.mkdir(template_path) == 0 then
-            DialogError(template_path .. ": Create failed!")
+function Template:new(templateName)
+    if vim.fn.isdirectory(templatePath) == 0 then
+        if vim.fn.mkdir(templatePath) == 0 then
+            dialog.error(templatePath .. ": Create failed!")
         end
     end
 
-    local buf_id = vim.fn.bufadd(template_path .. "/" .. template_name)
+    local buf_id = vim.fn.bufadd(templatePath .. "/" .. templateName)
     if vim.fn.buflisted(buf_id) == 0 then
         vim.fn.bufload(buf_id)
         vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
@@ -17,15 +19,15 @@ function TemplateNew(template_name)
 end
 
 -- Print all templates.
-function TemplateList()
-    if vim.fn.isdirectory(template_path) == 0 then
-        DialogWarn "No template yet."
+function Template:list()
+    if vim.fn.isdirectory(templatePath) == 0 then
+        dialog.warn "No template yet."
         return
     end
 
-    local templates = vim.fn.readdir(template_path)
+    local templates = vim.fn.readdir(templatePath)
     if #templates == 0 then
-        DialogWarn "No template yet."
+        ialog.warn "No template yet."
         return
     end
     for i, template in ipairs(templates) do
@@ -34,14 +36,14 @@ function TemplateList()
 end
 
 -- Cretae files from templates.
-function TemplateUse(template_name)
-    local template_file = template_path .. "/" .. template_name
+function Template:use(templateName)
+    local template_file = templatePath .. "/" .. templateName
     if vim.fn.filereadable(template_file) == 0 then
-        DialogError("Template that does not exist: " .. template_name)
+        dialog.error("Template that does not exist: " .. templateName)
         return
     end
 
-    local buf_id = vim.fn.bufadd(template_name)
+    local buf_id = vim.fn.bufadd(templateName)
     if buf_id == vim.fn.bufnr() then
         return
     end
@@ -52,20 +54,38 @@ function TemplateUse(template_name)
     vim.cmd("bufdo " .. buf_id)
 end
 
-function TemplateDelete(template_name)
-    local template_file = template_path .. "/" .. template_name
+function Template:delete(templateName)
+    local template_file = templatePath .. "/" .. templateName
     if vim.fn.filereadable(template_file) == 0 then
-        DialogError("Template that does not exist: " .. template_name)
+        dialog.error("Template that does not exist: " .. templateName)
         return
     end
     vim.fn.delete(template_file)
 end
 
 -- Submit a template.
-function TemplateCommit()
-    local result = vim.fn.system("git rev-parse --is-inside-work-tree -C " .. template_path)
+function Template:commit()
+    local command = "git -C " .. templatePath
+    local result = vim.fn.systemlist(command .. " rev-parse --is-inside-work-tree")[1]
     if result ~= "true" then
-        DialogError(template_path .. ": " .. result)
+        dialog.error(templatePath .. ": " .. result)
         return
+    end
+    result = vim.fn.systemlist(command .. " add " .. templatePath)
+    if vim.api.nvim_get_vvar "shell_error" ~= 0 then
+        dialog.error(result)
+        return
+    end
+    result = vim.fn.systemlist(command .. " commit -m 'Submit templates.'")
+    if vim.api.nvim_get_vvar "shell_error" ~= 0 then
+        dialog.error(result)
+        return
+    end
+
+    local branch = vim.fn.systemlist(command .. " branch --show-current")[1]
+    local repositories = vim.fn.systemlist(command .. " remote")
+
+    for i, item in ipairs(repositories) do
+        Job:start(command .. " push " .. item .. " " .. branch .. ":master")
     end
 end

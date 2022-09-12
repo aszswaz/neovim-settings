@@ -13,7 +13,7 @@
 :set splitright
 :set splitbelow
 " Automatic insertion of comments is disabled.
-:autocmd FileType * set formatoptions-=t formatoptions-=c
+:autocmd FileType * set formatoptions-=t formatoptions-=c formatoptions-=r
 " Minimal number of screen lines to keep above and below the cursor.
 :set scrolloff=3
 :set number
