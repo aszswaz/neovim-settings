@@ -11,4 +11,6 @@ return require("packer").startup(function()
         "romgrk/barbar.nvim",
         requires = { "kyazdani42/nvim-web-devicons" },
     }
+    -- git plugin
+    use "tpope/vim-fugitive"
 end)

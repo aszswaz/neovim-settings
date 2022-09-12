@@ -69,3 +69,22 @@ require("bufferline").setup {
     letters = "asdfjkl;ghnmxcvbziowerutyqpASDFJKLGHNMXCVBZIOWERUTYQP",
     no_name_title = nil,
 }
+
+-- Status bar theme configuration.
+local lightline = {
+    colorscheme = "onedark",
+    active = {
+        left = { { "mode", "paste" }, { "user", "gitbranch", "readonly", "filename", "modified" } },
+    },
+    component_function = {
+        user = "Username",
+        gitbranch = "Gitbranchicon",
+    },
+}
+vim.api.nvim_set_var("lightline", lightline)
+
+-- vim-bookmarks
+vim.cmd [[autocmd ColorScheme * :highlight BookmarkSign guibg=NONE guifg='#D70000']]
+vim.cmd [[autocmd ColorScheme * :highlight BookmarkLine guibg='#D7FFD7' guifg=NONE]]
+vim.api.nvim_set_var("bookmark_sign", "⚑")
+vim.api.nvim_set_var("bookmark_highlight_lines", 1)
