@@ -4,7 +4,6 @@ local time = 5000
 dialog = {}
 
 dialog.close = function(timer)
-    print(timer)
     if winId ~= nil then
         vim.api.nvim_win_close(winId, true)
         winId = nil

@@ -4,8 +4,8 @@ function table:inserts(dest, src)
         return
     end
     if type(src) == "table" then
-        for i, item in ipairs(src) do
-            table.insert(dest, item)
+        for i = 1, #src do
+            table.insert(dest, src[i])
         end
     else
         table.insert(dest, src)
@@ -18,8 +18,8 @@ function string:strlens(text)
     if mType == "string" then
         textLen = vim.fn.strchars(text)
     elseif mType == "table" then
-        for i, item in ipairs(text) do
-            textLen = textLen + vim.fn.strchars(item)
+        for i = 1, #text do
+            textLen = textLen + vim.fn.strchars(text[i])
         end
     end
     return textLen
