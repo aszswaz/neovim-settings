@@ -96,8 +96,9 @@ end
 
 text.row.trim = function()
     local lineCount = vim.api.nvim_buf_line_count(0)
-    for item = 1, lineCount do
-        local lineText = vim.fn.getline(item)
+    local lines = vim.api.nvim_buf_get_lines(0, 0, lineCount, true)
+    for lineNumber = 1, #lines do
+        local lineText = lines[lineNumber]
         local lineLen = vim.fn.strlen(lineText)
         if lineLen == 0 then
             goto continue
@@ -110,10 +111,11 @@ text.row.trim = function()
         end
 
         if i == -1 then
-            vim.fn.setline(item, "")
+            lines[lineNumber] = ""
         else
-            vim.fn.setline(item, string.sub(lineText, 1, i + 1))
+            lines[lineNumber] = string.sub(lineText, 1, i + 1)
         end
+        vim.api.nvim_buf_set_lines(0, 0, #lines, true, lines)
 
         ::continue::
     end
