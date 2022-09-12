@@ -67,16 +67,11 @@ text.format = function()
         return
     end
 
-    local output = vim.fn.systemlist(command, vim.fn.getline(1, "$"))
+    local lineCount = vim.api.nvim_buf_line_count(0)
+    local output = vim.fn.systemlist(command, vim.api.nvim_buf_get_lines(0, 0, lineCount, true))
     if vim.api.nvim_get_vvar "shell_error" == 0 then
-        vim.fn.setline(1, output)
-        -- Delete extra lines.
-        local del_start = vim.fn.len(output)
-        local del_end = vim.fn.line "$"
-        if del_end > del_start then
-            vim.fn.deletebufline(vim.fn.bufnr(), del_start + 1, del_end)
-        end
-    else
+        vim.api.nvim_buf_set_lines(0, 0, lineCount, true, output)
+    elseif #output > 0 then
         dialog.error(output)
     end
 end
