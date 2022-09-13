@@ -1,9 +1,3 @@
-let s:config = stdpath('config')
-" C++, C label files.
-let g:tags_file = s:config . '/tags'
-" Template save path
-let g:template_path = s:config . '/templates'
-
 set tabstop=4
 autocmd FileType json,html,xml,yaml set tabstop=2
 set shiftwidth=0
@@ -26,6 +20,6 @@ set number
 " The row and column where the cursor is located are highligted.
 set cursorcolumn
 set cursorline
-execute 'set tags+=' . g:tags_file
+execute 'set tags+=' . stdpath('config') . '/tags'
 " Enable True Color.
 set termguicolors

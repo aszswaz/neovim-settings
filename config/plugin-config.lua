@@ -1,5 +1,3 @@
-local CONFIG_DIR = vim.fn.stdpath "config"
-
 -- File manager plugin
 require("nvim-tree").setup {
     -- Enable git
@@ -52,7 +50,7 @@ require("bufferline").setup {
     tabpages = true,
     closable = true,
     clickable = true,
-    exclude_ft = { "qf" },
+    exclude_ft = { "qf", "fugitive" },
     exclude_name = {},
     icons = true,
     icon_custom_colors = false,
