@@ -70,36 +70,25 @@ require("bufferline").setup {
     no_name_title = nil,
 }
 
--- Status bar theme configuration.
-local lightline = {
-    colorscheme = "onedark",
-    active = {
-        left = { { "mode", "paste" }, { "user", "gitbranch", "readonly", "filename", "modified" } },
-    },
-    component_function = {
-        user = "Username",
-        gitbranch = "Gitbranchicon",
-    },
-}
-vim.api.nvim_set_var("lightline", lightline)
-vim.cmd [[
-function! Gitbranchicon()
-    let branchname=gitbranch#name()
-    if empty(branchname)
-        return ""
-    else
-        return " " . branchname
-    endif
-endfunction
-]]
-vim.cmd [[
-function! Username()
-    return $USER
-endfunction
-]]
-
 -- vim-bookmarks
 vim.cmd [[autocmd ColorScheme * :highlight BookmarkSign guibg=NONE guifg='#D70000']]
 vim.cmd [[autocmd ColorScheme * :highlight BookmarkLine guibg='#D7FFD7' guifg=NONE]]
 vim.api.nvim_set_var("bookmark_sign", "⚑")
 vim.api.nvim_set_var("bookmark_highlight_lines", 1)
+
+-- Configure and enable the vscode theme
+vim.o.background = "light"
+local vscodeColors = require "vscode.colors"
+require("vscode").setup {
+    transparent = false,
+    italic_comments = false,
+    disable_nvimtree_bg = true,
+}
+
+-- Configure the status bar.
+require("lualine").setup {
+    options = {
+        icons_enable = true,
+        theme = "vscode",
+    },
+}

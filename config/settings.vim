@@ -27,3 +27,5 @@ set number
 set cursorcolumn
 set cursorline
 execute 'set tags+=' . g:tags_file
+" Enable True Color.
+set termguicolors

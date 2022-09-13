@@ -15,9 +15,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'equalsraf/neovim-gui-shim'
 " Indent level display plugin
 Plug 'lukas-reineke/indent-blankline.nvim'
-" vim status bar plugin, there are some supporting plugins below.
-Plug 'itchyny/lightline.vim'
-Plug 'itchyny/vim-gitbranch'
 " Bookmark plugin.
 Plug 'MattesGroeger/vim-bookmarks'
 " Fuzzy lookup plugin.
@@ -27,11 +24,5 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
 Plug 'mhinz/vim-startify'
 " gdb debugging plugin.
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh' }
-
-" theme
-" :Plug 'dracula/vim'
-" :Plug 'morhetz/gruvbox'
-" :Plug 'junegunn/seoul256.vim'
-Plug 'joshdick/onedark.vim'
 
 call plug#end()

@@ -13,4 +13,8 @@ return require("packer").startup(function()
     }
     -- git plugin
     use "tpope/vim-fugitive"
+    -- vscode theme
+    use "Mofiqul/vscode.nvim"
+    -- Bottom status bar plugin
+    use "nvim-lualine/lualine.nvim"
 end)

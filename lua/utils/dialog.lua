@@ -1,18 +1,31 @@
 require "utils/util"
 
-local dialogs = {}
-local time = 5000
 dialog = {}
+local time = 10000
+local winId = nil
+local winBuf = nil
+local timerId = nil
 
 dialog.close = function(timer)
-    vim.api.nvim_win_close(dialogs[1].winId, true)
-    vim.api.nvim_buf_delete(dialogs[1].winBuf, { force = true })
-    table.remove(dialogs, 1)
+    if timer == timerId then
+        vim.fn.timer_stop(timer)
+        timerId = nil
+    end
+    if winId ~= nil then
+        vim.api.nvim_win_close(winId, true)
+        winId = nil
+    end
+    if winBuf ~= nil then
+        vim.api.nvim_buf_delete(winBuf, { force = true })
+        winBuf = nil
+    end
 end
 
 -- Create a dialog.
 dialog.create = function(messages, style)
-    local winBuf = vim.api.nvim_create_buf(false, true)
+    dialog.close(timerId)
+
+    winBuf = vim.api.nvim_create_buf(false, true)
     vim.fn.setbufline(winBuf, 1, messages)
 
     local mLen = string:strlens(messages)
@@ -21,7 +34,7 @@ dialog.create = function(messages, style)
     local winX = vim.o.columns - 1
     local winY = vim.o.lines - 3
 
-    local winId = vim.api.nvim_open_win(winBuf, false, {
+    winId = vim.api.nvim_open_win(winBuf, false, {
         relative = "editor",
         anchor = "SE",
         row = winY,
@@ -40,8 +53,7 @@ dialog.create = function(messages, style)
         vim.api.nvim_win_set_option(winId, "winhighlight", "NormalFloat:" .. style .. ",FloatBorder:" .. style)
     end
 
-    table.insert(dialogs, { winId = winId, winBuf = winBuf })
-    vim.fn.timer_start(time, dialog.close)
+    timerId = vim.fn.timer_start(time, dialog.close)
 end
 
 dialog.error = function(messages)
