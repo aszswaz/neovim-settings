@@ -7,7 +7,7 @@ local winBuf = nil
 local timerId = nil
 
 dialog.close = function(timer)
-    if timer == timerId then
+    if timer ~= nil and timer == timerId then
         vim.fn.timer_stop(timer)
         timerId = nil
     end
