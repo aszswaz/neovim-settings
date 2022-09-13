@@ -11,6 +11,10 @@ function closeTab()
         text.row.trim()
         vim.cmd "w"
     end
-    -- Close buffer
-    vim.cmd "BufferClose"
+
+    if vim.o.filetype == "NvimTree" then
+        vim.cmd "NvimTreeClose"
+    else
+        vim.cmd "BufferClose"
+    end
 end
