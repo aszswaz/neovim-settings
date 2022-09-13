@@ -58,8 +58,8 @@ nnoremap <silent> <A-p> :BufferPin<cr>
 inoremap <silent> <A-p> <esc>:BufferPin<cr>
 
 " Open or close the file manager.
-nnoremap <silent> <C-e> :NvimTreeToggle<cr>
-inoremap <silent> <C-e> <esc>:NvimTreeToggle<cr>
+nnoremap <silent> <C-e> :NvimTreeFocus<cr>
+inoremap <silent> <C-e> <esc>:NvimTreeFocus<cr>
 " Refresh the file manager.
 nnoremap <silent> <C-e><C-r> :NvimTreeRefresh<cr>
 inoremap <silent> <C-e><C-r> <esc>:NvimTreeRefresh<cr>

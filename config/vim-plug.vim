@@ -1,10 +1,6 @@
 " vim-plug
 call plug#begin('~/.config/nvim/vim-plugins')
 
-" File manager.
-Plug 'kyazdani42/nvim-tree.lua'
-" File icon.
-Plug 'kyazdani42/nvim-web-devicons'
 " Translation plugin.
 Plug 'voldikss/vim-translator'
 " Terminal plugin.
