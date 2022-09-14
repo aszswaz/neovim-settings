@@ -90,31 +90,35 @@ text.row.delete = function()
 end
 
 text.row.trim = function(buffer)
-    if buffer == nil then
-        buffer = 0
+    if buffer == nil or buffer == 0 then
+        buffer = vim.api.nvim_get_current_buf()
     end
 
+    -- Remove all trailing whitespace.
+    -- If all lines are fetched from the buffer first, and then all trailing spaces are removed,
+    -- it will lead to high performance consumption when processing large amounts of text,
+    -- and neovim is at risk of being killed by the operating system.
+    -- This way of reading one line, and processing one line, the performance consumption is the smallest.
     local lineCount = vim.api.nvim_buf_line_count(buffer)
-    local lines = vim.api.nvim_buf_get_lines(buffer, 0, lineCount, true)
-    for lineNumber = 1, #lines do
-        local lineText = lines[lineNumber]
+    for lineNumber = 1, lineCount do
+        local lineText = vim.fn.getbufline(buffer, lineNumber)[1]
         local lineLen = vim.fn.strlen(lineText)
         if lineLen == 0 then
             goto continue
         end
 
-        local lastIndex = lineLen - 1
-        local i = lastIndex
-        while i >= 0 and vim.fn.strgetchar(lineText, i) == 32 do
-            i = i - 1
+        local lastCharIndex = lineLen - 1
+        local charIndex = lastCharIndex
+        while charIndex >= 0 and vim.fn.strgetchar(lineText, charIndex) == 32 do
+            charIndex = charIndex - 1
         end
 
-        if i == -1 then
-            lines[lineNumber] = ""
-        else
-            lines[lineNumber] = string.sub(lineText, 1, i + 1)
+        if charIndex == -1 then
+            -- There are no lines with non-space characters.
+            vim.fn.setbufline(buffer, lineNumber, "")
+        elseif charIndex ~= lastCharIndex then
+            vim.fn.setbufline(buffer, lineNumber, string.sub(lineText, 1, charIndex + 1))
         end
-        vim.api.nvim_buf_set_lines(buffer, 0, #lines, true, lines)
 
         ::continue::
     end
