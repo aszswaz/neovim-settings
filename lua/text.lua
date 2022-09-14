@@ -27,7 +27,7 @@ text.format = function()
     elseif filetype == "cpp" or filetype == "c" then
         command = "astyle -s"
             .. tabstop
-            .. " -A2 -xn -xc -xl -xk -xV -C -xG -S -K -N -L -xw -w -Y -f -p -xg -H -U -k3 -W3"
+            .. " -A2 -C -xG -S -K -N -L -xw -w -p -xg -H -U -k3 -W3"
             .. " -xL -xC"
             .. textwidth
     elseif filetype == "sh" or filetype == "zsh" or filetype == "bash" then
