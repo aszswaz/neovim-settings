@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-set -o nounset    # error when referencing undefined variable
-set -o errexit    # exit when command fails
+# error when referencing undefined variable
+set -o nounset
+# exit when command fails
+set -o errexit
 
 cd "$(dirname $0)"
 
 alias ln="ln -svfT"
 alias curl="curl --disable -fL"
 
-function log_info() {
+log_info() {
     echo -e "\033[92m$@\033[0m"
 }
 
@@ -64,10 +66,9 @@ cd "$coc_extensions"
 if [ ! -f package.json ]; then
     echo '{"dependencies":{}}'> package.json
 fi
-npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=pro \
+npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
     coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
-
+cd "node_modules/coc-ccls"
+ln "node_modules/ws/lib" lib
 
 log_info "init neovim success"
-unset nvim_share packer_path vim_plug_path
-unset -f log_info
