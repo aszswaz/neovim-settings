@@ -7,9 +7,6 @@ set -o errexit
 
 cd "$(dirname $0)"
 
-alias ln="ln -svfT"
-alias curl="curl --disable -fL"
-
 log_info() {
     echo -e "\033[92m$@\033[0m"
 }
@@ -23,7 +20,7 @@ coc_start="$nvim_share/site/pack/coc/start"
 coc_extensions="$HOME/.config/coc/extensions"
 
 if [[ $PWD != $config_path ]]; then
-    ln "$PWD" "$config_path"
+    ln -svfT "$PWD" "$config_path"
 fi
 
 
@@ -37,23 +34,22 @@ fi
 
 # vim-plug，github：https://github.com/junegunn/vim-plug
 vim_plug_path="$nvim_share/site/autoload/plug.vim"
-curl -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl --disable -fL -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # 将 maven 配置应用到 root 账户
-sudo /bin/sh -e -c "
-alias ln='ln -svfT'
+sudo /bin/bash -e -c "
 [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
 [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
 [[ -e /root/.config/nvim ]] && rm -rf /root/.config/nvim
 [[ -e /root/.local/share/nvim ]] && rm -rf /root/.local/share/nvim
-ln '$PWD' '/root/.config/nvim'
-ln '$nvim_share' '/root/.local/share/nvim'
+ln -svfT '$PWD' '/root/.config/nvim'
+ln -svfT '$nvim_share' '/root/.local/share/nvim'
 exit 0
 "
 
 # Install nodejs lts version.
 if [ ! -x "$(command -v node)" ]; then
-    curl -Ss https://install-node.vercel.app/lts | sh
+    curl --disable -fL -Ss https://install-node.vercel.app/lts | sh
 fi
 
 # Install coc
@@ -69,6 +65,6 @@ fi
 npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
     coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
 cd "node_modules/coc-ccls"
-ln "node_modules/ws/lib" lib
+ln -svfT "node_modules/ws/lib" lib
 
 log_info "init neovim success"
