@@ -1,5 +1,5 @@
 set tabstop=4
-autocmd FileType json,html,xml,yaml set tabstop=2
+autocmd FileType json,html,xml,yaml,svg set tabstop=2
 set shiftwidth=0
 set expandtab
 set shiftround

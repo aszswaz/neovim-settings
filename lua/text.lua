@@ -22,7 +22,7 @@ text.format = function()
             .. textwidth
     elseif filetype == "tex" or filetype == "latex" then
         command = "latexindent"
-    elseif filetype == "xml" then
+    elseif filetype == "xml" or filetype == "svg" then
         command = "xmllint --encode UTF-8 --format -"
     elseif filetype == "cpp" or filetype == "c" then
         command = "astyle -s"
