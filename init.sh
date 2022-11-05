@@ -55,7 +55,7 @@ fi
 # Install coc
 mkdir -p "$coc_start"
 cd "$coc_start"
-curl https://github.com/neoclide/coc.nvim/archive/release.tar.gz | tar xzfv -
+curl --disable -fL -Ss https://github.com/neoclide/coc.nvim/archive/release.tar.gz | tar xzfv -
 # Install the coc extension.
 mkdir -p "$coc_extensions"
 cd "$coc_extensions"
