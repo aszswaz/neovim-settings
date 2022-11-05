@@ -49,7 +49,7 @@ exit 0
 
 # Install nodejs lts version.
 if [ ! -x "$(command -v node)" ]; then
-    curl --disable -fL -Ss https://install-node.vercel.app/lts | sh
+    curl --disable -fL -Ss https://install-node.vercel.app/lts | sudo sh
 fi
 
 # Install coc
