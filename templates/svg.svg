@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="100" height="100">
-  <!--插入文本-->
-  <g font-family="Arial">
-    <g font-size="15px">
-      <text x="5" y="20">Hello World</text>
-    </g>
-  </g>
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="500" height="500">
+  <rect width="500" height="500" fill="none" stroke="black" stroke-width="1"/>
 </svg>
