@@ -1,5 +1,5 @@
 " Set font
-:GuiFont JetBrains Mono:h12
+:GuiFont JetBrainsMono Nerd Font Mono:h12
 " popup
 :GuiPopupmenu v:false
 " Siamese
