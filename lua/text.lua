@@ -30,7 +30,7 @@ text.format = function()
             .. " -A2 -C -xG -S -K -N -L -xw -w -p -xg -H -U -k3 -W3"
             .. " -xL -xC"
             .. textwidth
-    elseif filetype == "sh" or filetype == "zsh" or filetype == "bash" or PKGBUILD == "PKGBUILD" then
+    elseif filetype == "sh" or filetype == "zsh" or filetype == "bash" or filetype == "PKGBUILD" then
         command = "shfmt -ln bash -i " .. tabstop
     elseif filetype == "typescript" or filetype == "javascript" or filetype == "js" then
         command = "prettier --parser typescript --print-width "
