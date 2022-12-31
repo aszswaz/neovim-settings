@@ -25,11 +25,7 @@ text.format = function()
     elseif filetype == "xml" or filetype == "svg" then
         command = "xmllint --encode UTF-8 --format -"
     elseif filetype == "cpp" or filetype == "c" then
-        command = "astyle -s"
-            .. tabstop
-            .. " -A2 -C -xG -S -K -N -L -xw -w -p -xg -H -U -k3 -W3"
-            .. " -xL -xC"
-            .. textwidth
+        command = "astyle -s" .. tabstop .. " -A2 -C -xG -S -K -N -L -xw -w -p -xg -H -U -k3 -W3" .. " -xL -xC" .. textwidth
     elseif filetype == "sh" or filetype == "zsh" or filetype == "bash" or filetype == "PKGBUILD" then
         command = "shfmt -ln bash -i " .. tabstop
     elseif filetype == "typescript" or filetype == "javascript" or filetype == "js" then
