@@ -8,7 +8,7 @@ return require("packer").startup(function()
     use "wbthomason/packer.nvim"
     -- File manager.
     use {
-        "kyazdani42/nvim-tree.lua",
+        "aszswaz/nvim-tree.lua",
         requires = {
             "kyazdani42/nvim-web-devicons",
         },
