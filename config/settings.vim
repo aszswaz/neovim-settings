@@ -8,7 +8,7 @@ set nobackup
 set magic
 " Set automatic line wrapping.
 set nowrap
-autocmd FileType text set wrap
+autocmd FileType text,desktop set wrap
 execute 'set textwidth=' . (&columns / 4 * 3)
 " Enable mouse is all modes.
 set mouse=a
