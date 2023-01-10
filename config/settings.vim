@@ -1,27 +1,27 @@
+" 设置 TAB 缩进
 set tabstop=4
 autocmd FileType json,html,xml,yaml,svg,sql set tabstop=2
 set shiftwidth=0
 set expandtab
 set shiftround
 set nobackup
-" Enable regular expression expansion.
 set magic
-" Set automatic line wrapping.
+" 设置自动换行
 set nowrap
 autocmd FileType text,desktop set wrap
 execute 'set textwidth=' . (&columns / 4 * 3)
-" Enable mouse is all modes.
+" 启用鼠标
 set mouse=a
 set splitright
 set splitbelow
-" Automatic insertion of comments is disabled.
+" 禁用自动插入注释
 autocmd FileType * set formatoptions-=t
-" Minimal number of screen lines to keep above and below the cursor.
 set scrolloff=3
 set number
-" The row and column where the cursor is located are highligted.
+" 设置光标所在行和列高亮
 set cursorcolumn
 set cursorline
+" 使用 C 和 C++ 的标签文件
 execute 'set tags+=' . stdpath('config') . '/tags'
-" Enable True Color.
+" 启用真彩色
 set termguicolors

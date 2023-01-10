@@ -1,3 +1,4 @@
 /vim-plugins
 /tags
 /coc-schema.jsonc
+*.log
