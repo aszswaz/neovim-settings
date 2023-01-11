@@ -1,4 +1,6 @@
-function table:inserts(dest, src)
+local M = {}
+
+function M.inserts(dest, src)
     if type(dest) ~= "table" then
         dialog.error 'The parameter "dest" type must be a table.'
         return
@@ -12,7 +14,7 @@ function table:inserts(dest, src)
     end
 end
 
-function string:strlens(text)
+function M.strlens(text)
     local textLen = 0
     local mType = type(text)
     if mType == "string" then
@@ -24,3 +26,5 @@ function string:strlens(text)
     end
     return textLen
 end
+
+return M

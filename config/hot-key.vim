@@ -2,8 +2,8 @@
 " starting with n represents the shortcut key in normal mode,
 " starting with i is the shortcut key in editing mode,
 " nore is the non-recursive shortcut key, and map is the shortcut key mapping.
-nnoremap <silent> <C-s> :lua text.row.trim()<cr>:w<cr>
-inoremap <silent> <C-s> <esc>:lua text.row.trim()<cr>:w<cr>a
+nnoremap <silent> <C-s> :lua text.trim()<cr>:w<cr>
+inoremap <silent> <C-s> <esc>:lua text.trim()<cr>:w<cr>a
 nnoremap <silent> <C-q> :wa<cr>:qa!<cr>
 inoremap <silent> <C-q> <esc>:wa<cr>:qa!<cr>
 nnoremap <silent> <C-f> :FileFormat<cr>

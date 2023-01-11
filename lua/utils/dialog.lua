@@ -1,40 +1,50 @@
-require "utils/util"
+local util = require "utils/util"
 
-dialog = {}
+local timer_start = vim.fn.timer_start
+local timer_stop = vim.fn.timer_stop
+local setbufline = vim.fn.setbufline
+
+local nvim_win_close = vim.api.nvim_win_close
+local nvim_buf_delete = vim.api.nvim_buf_delete
+local nvim_create_buf = vim.api.nvim_create_buf
+local nvim_open_win = vim.api.nvim_open_win
+local nvim_win_set_option = vim.api.nvim_win_set_option
+
+local M = {}
 local time = 10000
 local winId = nil
 local winBuf = nil
 local timerId = nil
 
-dialog.close = function(timer)
+function M.close(timer)
     if timer ~= nil and timer == timerId then
-        vim.fn.timer_stop(timer)
+        timer_stop(timer)
         timerId = nil
     end
     if winId ~= nil then
-        vim.api.nvim_win_close(winId, true)
+        nvim_win_close(winId, true)
         winId = nil
     end
     if winBuf ~= nil then
-        vim.api.nvim_buf_delete(winBuf, { force = true })
+        nvim_buf_delete(winBuf, { force = true })
         winBuf = nil
     end
 end
 
--- Create a dialog.
-dialog.create = function(messages, style)
-    dialog.close(timerId)
+-- 创建一个只读对话框
+function M.create_readonly_dialog(messages, style)
+    M.close(timerId)
 
-    winBuf = vim.api.nvim_create_buf(false, true)
-    vim.fn.setbufline(winBuf, 1, messages)
+    winBuf = nvim_create_buf(false, true)
+    setbufline(winBuf, 1, messages)
 
-    local mLen = string:strlens(messages)
+    local mLen = util.strlens(messages)
     local width = math.max(math.min(60, mLen), 40)
     local height = math.max(5, math.min(30, math.ceil(mLen / width)))
     local winX = vim.o.columns - 1
     local winY = vim.o.lines - 3
 
-    winId = vim.api.nvim_open_win(winBuf, false, {
+    winId = nvim_open_win(winBuf, false, {
         relative = "editor",
         anchor = "SE",
         row = winY,
@@ -48,22 +58,24 @@ dialog.create = function(messages, style)
         border = "rounded",
     })
 
-    vim.api.nvim_win_set_option(winId, "wrap", true)
+    nvim_win_set_option(winId, "wrap", true)
     if style ~= nil then
-        vim.api.nvim_win_set_option(winId, "winhighlight", "NormalFloat:" .. style .. ",FloatBorder:" .. style)
+        nvim_win_set_option(winId, "winhighlight", "NormalFloat:" .. style .. ",FloatBorder:" .. style)
     end
 
-    timerId = vim.fn.timer_start(time, dialog.close)
+    timerId = timer_start(time, M.close)
 end
 
-dialog.error = function(messages)
-    dialog.create(messages, "ErrorMsg")
+function M.error(messages)
+    M.create_readonly_dialog(messages, "ErrorMsg")
 end
 
-dialog.warn = function(messages)
-    dialog.create(messages, "WarningMsg")
+function M.warn(messages)
+    M.create_readonly_dialog(messages, "WarningMsg")
 end
 
-dialog.info = function(messages)
-    dialog.create(messages, "String")
+function M.info(messages)
+    M.create_readonly_dialog(messages, "String")
 end
+
+return M

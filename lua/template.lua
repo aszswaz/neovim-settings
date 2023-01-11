@@ -1,32 +1,50 @@
-require "utils/dialog"
+local dialog = require "utils/dialog"
 
-Template = {}
+local isdirectory = vim.fn.isdirectory
+local mkdir = vim.fn.mkdir
+local buflisted = vim.fn.buflisted
+local bufload = vim.fn.bufload
+local readdir = vim.fn.readdir
+local filereadable = vim.fn.filereadable
+local bufadd = vim.fn.bufadd
+local bufnr = vim.fn.bufnr
+local setbufline = vim.fn.setbufline
+local readfile = vim.fn.readfile
+local delete = vim.fn.delete
+local systemlist = vim.fn.systemlist
+
+local cmd = vim.cmd
+
+local nvim_buf_set_option = vim.api.nvim_buf_set_option
+local nvim_get_vvar = vim.api.nvim_get_vvar
+
+local M = {}
 local templatePath = vim.fn.stdpath "config" .. "/templates"
 
 -- Create a template
-function Template:new(templateName)
-    if vim.fn.isdirectory(templatePath) == 0 then
-        if vim.fn.mkdir(templatePath) == 0 then
+function M.new(templateName)
+    if isdirectory(templatePath) == 0 then
+        if mkdir(templatePath) == 0 then
             dialog.error(templatePath .. ": Create failed!")
         end
     end
 
     local buf_id = vim.fn.bufadd(templatePath .. "/" .. templateName)
-    if vim.fn.buflisted(buf_id) == 0 then
-        vim.fn.bufload(buf_id)
-        vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
-        vim.cmd("bufdo " .. buf_id)
+    if buflisted(buf_id) == 0 then
+        bufload(buf_id)
+        nvim_buf_set_option(buf_id, "buflisted", true)
+        cmd("bufdo " .. buf_id)
     end
 end
 
 -- Print all templates.
-function Template:list()
-    if vim.fn.isdirectory(templatePath) == 0 then
+function M.list()
+    if isdirectory(templatePath) == 0 then
         dialog.warn "No template yet."
         return
     end
 
-    local templates = vim.fn.readdir(templatePath)
+    local templates = readdir(templatePath)
     if #templates == 0 then
         ialog.warn "No template yet."
         return
@@ -37,56 +55,58 @@ function Template:list()
 end
 
 -- Cretae files from templates.
-function Template:use(templateName)
+function M.use(templateName)
     local template_file = templatePath .. "/" .. templateName
-    if vim.fn.filereadable(template_file) == 0 then
+    if filereadable(template_file) == 0 then
         dialog.error("Template that does not exist: " .. templateName)
         return
     end
 
-    local buf_id = vim.fn.bufadd(templateName)
-    if buf_id == vim.fn.bufnr() then
+    local buf_id = bufadd(templateName)
+    if buf_id == bufnr() then
         return
     end
 
-    vim.fn.bufload(buf_id)
-    vim.api.nvim_buf_set_option(buf_id, "buflisted", true)
-    vim.fn.setbufline(buf_id, 1, vim.fn.readfile(template_file))
-    vim.cmd("bufdo " .. buf_id)
+    bufload(buf_id)
+    nvim_buf_set_option(buf_id, "buflisted", true)
+    setbufline(buf_id, 1, readfile(template_file))
+    cmd("bufdo " .. buf_id)
 end
 
-function Template:delete(templateName)
+function M.delete(templateName)
     local template_file = templatePath .. "/" .. templateName
-    if vim.fn.filereadable(template_file) == 0 then
+    if filereadable(template_file) == 0 then
         dialog.error("Template that does not exist: " .. templateName)
         return
     end
-    vim.fn.delete(template_file)
+    delete(template_file)
 end
 
 -- Submit a template.
-function Template:commit()
+function M.commit()
     local command = "git -C " .. templatePath
-    local result = vim.fn.systemlist(command .. " rev-parse --is-inside-work-tree")[1]
+    local result = systemlist(command .. " rev-parse --is-inside-work-tree")[1]
     if result ~= "true" then
         dialog.error(templatePath .. ": " .. result)
         return
     end
-    result = vim.fn.systemlist(command .. " add " .. templatePath)
-    if vim.api.nvim_get_vvar "shell_error" ~= 0 then
+    result = systemlist(command .. " add " .. templatePath)
+    if nvim_get_vvar "shell_error" ~= 0 then
         dialog.error(result)
         return
     end
-    result = vim.fn.systemlist(command .. " commit -m 'Submit templates.'")
-    if vim.api.nvim_get_vvar "shell_error" ~= 0 then
+    result = systemlist(command .. " commit -m 'Submit templates.'")
+    if nvim_get_vvar "shell_error" ~= 0 then
         dialog.error(result)
         return
     end
 
-    local branch = vim.fn.systemlist(command .. " branch --show-current")[1]
-    local repositories = vim.fn.systemlist(command .. " remote")
+    local branch = systemlist(command .. " branch --show-current")[1]
+    local repositories = systemlist(command .. " remote")
 
     for i, item in ipairs(repositories) do
         job.start(command .. " push " .. item .. " " .. branch .. ":master")
     end
 end
+
+return M

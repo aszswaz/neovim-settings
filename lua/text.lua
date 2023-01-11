@@ -1,4 +1,4 @@
-require "utils/dialog"
+local dialog = require "utils/dialog"
 
 local strchars = vim.fn.strchars
 local strlen = vim.fn.strlen
@@ -21,10 +21,10 @@ local nvim_buf_set_text = vim.api.nvim_buf_set_text
 local nvim_win_get_cursor = vim.api.nvim_win_get_cursor
 local nvim_win_set_cursor = vim.api.nvim_win_set_cursor
 
-text = {}
+local M = {}
 
 -- Format files via external tools.
-text.format = function()
+function M.format()
     local filetype = vim.o.filetype
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
@@ -101,22 +101,15 @@ text.format = function()
     end
 end
 
-text.row = {}
-text.row.copy = function()
+M.row = {}
+function M.row.copy()
     local cursorX = vim.fn.col "."
     cmd "normal! yyp"
     cmd("normal! " .. cursorX .. "|")
 end
 
--- 删除一行文本的同时，不移动光标
-text.row.delete = function()
-    local cursor = nvim_win_get_cursor(0)
-    nvim_del_current_line()
-    nvim_win_set_cursor(0, cursor)
-end
-
 -- 删除行尾空格
-text.row.trim = function()
+function M.trim()
     local current_buf = nvim_get_current_buf()
 
     -- Remove all trailing whitespace.
@@ -148,3 +141,12 @@ text.row.trim = function()
         ::continue::
     end
 end
+
+-- 删除一行文本的同时，不移动光标
+function M.row.delete()
+    local cursor = nvim_win_get_cursor(0)
+    nvim_del_current_line()
+    nvim_win_set_cursor(0, cursor)
+end
+
+return M

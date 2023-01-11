@@ -1,7 +1,9 @@
-require "utils/dialog"
+local dialog = require "utils/dialog"
 
-job = {}
-job.start = function(command)
+local jobstart = vim.fn.jobstart
+
+local M = {}
+function M.start(command)
     local messages = {}
     local callback = function(job, data, event)
         if (event == "stdout" or event == "stderr") and data ~= nil then
@@ -15,5 +17,7 @@ job.start = function(command)
             end
         end
     end
-    vim.fn.jobstart(command, { on_stdout = callback, on_stderr = callback, on_exit = callback })
+    jobstart(command, { on_stdout = callback, on_stderr = callback, on_exit = callback })
 end
+
+return M
