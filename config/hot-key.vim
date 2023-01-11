@@ -30,10 +30,10 @@ else
     inoremap <C-p> <esc>pa
     tnoremap <C-p> <C-\><C-n>pa
 endif
-nnoremap <silent> <C-y> :lua text.row.delete()<cr>
-inoremap <silent> <C-y> <esc>:lua text.row.delete()<cr>a
-nnoremap <silent> <C-d> :lua text.row.copy()<cr>
-inoremap <silent> <C-d> <esc>:lua text.row.copy()<cr>a
+nnoremap <silent> <C-y> :lua vim.api.nvim_del_current_line()<cr>
+inoremap <silent> <C-y> <esc>:lua vim.api.nvim_del_current_line()<cr>a
+nnoremap <silent> <C-d> :lua text.copy_line()<cr>
+inoremap <silent> <C-d> <esc>:lua text.copy_line()<cr>a
 " select all
 nnoremap <C-a> gg0vG$
 inoremap <C-a> <esc>gg0vG$

@@ -8,6 +8,7 @@ local systemlist = vim.fn.systemlist
 local getbufline = vim.fn.getbufline
 local strgetchar = vim.fn.strgetchar
 local strcharpart = vim.fn.strcharpart
+local append = vim.fn.append
 
 local inspect = vim.inspect
 local cmd = vim.cmd
@@ -16,10 +17,11 @@ local nvim_get_current_buf = vim.api.nvim_get_current_buf
 local nvim_buf_line_count = vim.api.nvim_buf_line_count
 local nvim_get_vvar = vim.api.nvim_get_vvar
 local nvim_buf_get_lines = vim.api.nvim_buf_get_lines
-local nvim_del_current_line = vim.api.nvim_del_current_line
 local nvim_buf_set_text = vim.api.nvim_buf_set_text
 local nvim_win_get_cursor = vim.api.nvim_win_get_cursor
 local nvim_win_set_cursor = vim.api.nvim_win_set_cursor
+local nvim_get_current_line = vim.api.nvim_get_current_line
+local nvim_get_current_win = vim.api.nvim_get_current_win
 
 local M = {}
 
@@ -101,11 +103,13 @@ function M.format()
     end
 end
 
-M.row = {}
-function M.row.copy()
-    local cursorX = vim.fn.col "."
-    cmd "normal! yyp"
-    cmd("normal! " .. cursorX .. "|")
+-- 复制一行文本
+function M.copy_line()
+    local current_win = nvim_get_current_win()
+    local cursor = nvim_win_get_cursor(current_win)
+    append(cursor[1], nvim_get_current_line())
+    cursor[1] = cursor[1] + 1
+    nvim_win_set_cursor(current_win, cursor)
 end
 
 -- 删除行尾空格
@@ -140,13 +144,6 @@ function M.trim()
 
         ::continue::
     end
-end
-
--- 删除一行文本的同时，不移动光标
-function M.row.delete()
-    local cursor = nvim_win_get_cursor(0)
-    nvim_del_current_line()
-    nvim_win_set_cursor(0, cursor)
 end
 
 return M

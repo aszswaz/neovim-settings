@@ -75,8 +75,7 @@ vim.api.nvim_set_var("bookmark_sign", "⚑")
 vim.api.nvim_set_var("bookmark_highlight_lines", 1)
 
 -- Configure and enable the vscode theme
--- vim.o.background = "light"
-vim.o.background = "dark"
+vim.o.background = "light"
 -- local vscodeColors = require "vscode.colors"
 require("vscode").setup {
     transparent = false,
