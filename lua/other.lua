@@ -15,7 +15,7 @@ function M.closeTab()
     local buf_info = getbufinfo(buf_id)
     buf_info = buf_info[1]
     if buf_info.changed == 1 then
-        text.row.trim()
+        text.trim()
         vim.cmd "w"
     end
 

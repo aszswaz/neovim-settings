@@ -1,3 +1,5 @@
+local nvim_set_var = vim.api.nvim_set_var
+
 -- File manager plugin
 require("nvim-tree").setup {
     -- Enable git
@@ -69,10 +71,8 @@ require("bufferline").setup {
 }
 
 -- vim-bookmarks
-vim.cmd [[autocmd ColorScheme * :highlight BookmarkSign guibg=NONE guifg='#D70000']]
-vim.cmd [[autocmd ColorScheme * :highlight BookmarkLine guibg='#D7FFD7' guifg=NONE]]
-vim.api.nvim_set_var("bookmark_sign", "⚑")
-vim.api.nvim_set_var("bookmark_highlight_lines", 1)
+nvim_set_var("bookmark_sign", "⚑")
+nvim_set_var("bookmark_highlight_lines", 0)
 
 -- Configure and enable the vscode theme
 vim.o.background = "light"

@@ -83,7 +83,7 @@ function M.format()
     elseif filetype == "yaml" then
         command = "prettier --parser yaml --print-width " .. textwidth .. " --tab-width " .. tabstop
     else
-        dialog.error("Unknown file type: " .. filetype)
+        dialog.error("Unsupported file tyle: " .. filetype)
         return
     end
 

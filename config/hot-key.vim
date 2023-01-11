@@ -45,8 +45,8 @@ inoremap <silent> <C-Up> <esc>:move -2<cr>A
 nnoremap <silent> <C-Down> :move +1<cr>
 inoremap <silent> <C-Down> <esc>:move +1<cr>A
 
-nnoremap <silent> <A-c> :lua closeTab()<cr>
-inoremap <silent> <A-c> <esc>:lua closeTab()<cr>
+nnoremap <silent> <A-c> :lua other.closeTab()<cr>
+inoremap <silent> <A-c> <esc>:lua other.closeTab()<cr>
 " Settings tab.
 nnoremap <silent> <A-p> :BufferPin<cr>
 inoremap <silent> <A-p> <esc>:BufferPin<cr>
