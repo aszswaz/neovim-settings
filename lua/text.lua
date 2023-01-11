@@ -1,5 +1,26 @@
 require "utils/dialog"
 
+local strchars = vim.fn.strchars
+local strlen = vim.fn.strlen
+local setbufline = vim.fn.setbufline
+local deletebufline = vim.fn.deletebufline
+local systemlist = vim.fn.systemlist
+local getbufline = vim.fn.getbufline
+local strgetchar = vim.fn.strgetchar
+local strcharpart = vim.fn.strcharpart
+
+local inspect = vim.inspect
+local cmd = vim.cmd
+
+local nvim_get_current_buf = vim.api.nvim_get_current_buf
+local nvim_buf_line_count = vim.api.nvim_buf_line_count
+local nvim_get_vvar = vim.api.nvim_get_vvar
+local nvim_buf_get_lines = vim.api.nvim_buf_get_lines
+local nvim_del_current_line = vim.api.nvim_del_current_line
+local nvim_buf_set_text = vim.api.nvim_buf_set_text
+local nvim_win_get_cursor = vim.api.nvim_win_get_cursor
+local nvim_win_set_cursor = vim.api.nvim_win_set_cursor
+
 text = {}
 
 -- Format files via external tools.
@@ -8,6 +29,7 @@ text.format = function()
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
     local command = nil
+    local current_buf = nvim_get_current_buf()
 
     if filetype == "json" then
         command = "jq"
@@ -63,10 +85,17 @@ text.format = function()
         return
     end
 
-    local lineCount = vim.api.nvim_buf_line_count(0)
-    local output = vim.fn.systemlist(command, vim.api.nvim_buf_get_lines(0, 0, lineCount, true))
-    if vim.api.nvim_get_vvar "shell_error" == 0 then
-        vim.api.nvim_buf_set_lines(0, 0, lineCount, true, output)
+    local lineCount = nvim_buf_line_count(current_buf)
+    local output = systemlist(command, nvim_buf_get_lines(current_buf, 0, lineCount, true))
+    if nvim_get_vvar "shell_error" == 0 then
+        -- 将格式化后的文本更新到缓冲区
+        for index, newLine in pairs(output) do
+            setbufline(current_buf, index, newLine)
+        end
+        -- 删除多余的文本
+        if lineCount > #output then
+            deletebufline(current_buf, #output + 1, lineCount)
+        end
     elseif #output > 0 then
         dialog.error(output)
     end
@@ -75,45 +104,45 @@ end
 text.row = {}
 text.row.copy = function()
     local cursorX = vim.fn.col "."
-    vim.cmd "normal! yyp"
-    vim.cmd("normal! " .. cursorX .. "|")
+    cmd "normal! yyp"
+    cmd("normal! " .. cursorX .. "|")
 end
 
+-- 删除一行文本的同时，不移动光标
 text.row.delete = function()
-    local cursorX = vim.fn.col "."
-    vim.api.nvim_del_current_line()
-    vim.cmd("normal! " .. cursorX .. "|")
+    local cursor = nvim_win_get_cursor(0)
+    nvim_del_current_line()
+    nvim_win_set_cursor(0, cursor)
 end
 
-text.row.trim = function(buffer)
-    if buffer == nil or buffer == 0 then
-        buffer = vim.api.nvim_get_current_buf()
-    end
+-- 删除行尾空格
+text.row.trim = function()
+    local current_buf = nvim_get_current_buf()
 
     -- Remove all trailing whitespace.
     -- If all lines are fetched from the buffer first, and then all trailing spaces are removed,
     -- it will lead to high performance consumption when processing large amounts of text,
     -- and neovim is at risk of being killed by the operating system.
     -- This way of reading one line, and processing one line, the performance consumption is the smallest.
-    local lineCount = vim.api.nvim_buf_line_count(buffer)
+    local lineCount = nvim_buf_line_count(current_buf)
     for lineNumber = 1, lineCount do
-        local lineText = vim.fn.getbufline(buffer, lineNumber)[1]
-        local lineLen = vim.fn.strlen(lineText)
+        local lineText = getbufline(current_buf, lineNumber)[1]
+        local lineLen = strchars(lineText)
         if lineLen == 0 then
             goto continue
         end
 
         local lastCharIndex = lineLen - 1
         local charIndex = lastCharIndex
-        while charIndex >= 0 and vim.fn.strgetchar(lineText, charIndex) == 32 do
+        while charIndex >= 0 and strgetchar(lineText, charIndex) == 32 do
             charIndex = charIndex - 1
         end
 
         if charIndex == -1 then
-            -- There are no lines with non-space characters.
-            vim.fn.setbufline(buffer, lineNumber, "")
+            -- 整行都是空格，没有非空格字符
+            setbufline(current_buf, lineNumber, "")
         elseif charIndex ~= lastCharIndex then
-            vim.fn.setbufline(buffer, lineNumber, string.sub(lineText, 1, charIndex + 1))
+            setbufline(current_buf, lineNumber, strcharpart(lineText, 0, charIndex + 1))
         end
 
         ::continue::
