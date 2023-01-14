@@ -1,0 +1,69 @@
+local dialog = require "dialog"
+
+local strftime = vim.fn.strftime
+
+local levels = vim.log.levels
+
+local M = {}
+
+local MESSAGES = {}
+
+function M.debug(messages)
+    M.putMessage(levels.DEBUG, M.format("DEBUG", messages))
+    dialog.debug(messages)
+end
+
+function M.info(messages)
+    M.putMessage(levels.INFO, M.format("INFO", messages))
+    dialog.info(messages)
+end
+
+function M.warn(messages)
+    M.putMessage(levels.WARN, M.format("WARN", messages))
+    dialog.warn(messages)
+end
+
+function M.error(messages)
+    M.putMessage(levels.ERROR, M.format("ERROR", messages))
+    dialog.error(messages)
+end
+
+function M.format(level, messages)
+    local time = strftime "%Y-%m-%d %H:%M:%S"
+    local logs = {}
+
+    if type(messages) == "table" then
+        for _, iterm in pairs(messages) do
+            table.insert(logs, level .. " " .. time .. " " .. iterm)
+        end
+    else
+        table.insert(messages)
+    end
+
+    return logs
+end
+
+function M.showMessages()
+    local logs = {}
+    for _, iterm in pairs(MESSAGES) do
+        for _, message in pairs(iterm.messages) do
+            table.insert(logs, message)
+        end
+    end
+    dialog.central(logs)
+end
+
+function M.putMessage(level, messages)
+    if #MESSAGES > 200 then
+        table.remove(MESSAGES, 1)
+    end
+    table.insert(MESSAGES, { level = level, messages = messages })
+end
+
+return {
+    debug = M.debug,
+    info = M.info,
+    warn = M.warn,
+    error = M.error,
+    showMessages = M.showMessages,
+}

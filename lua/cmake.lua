@@ -1,4 +1,4 @@
-local dialog = require "utils/dialog"
+local log = require "Logger"
 
 local systemlist = vim.fn.systemlist
 local filereadable = vim.fn.filereadable
@@ -6,20 +6,20 @@ local system = vim.fn.system
 local isdirectory = vim.fn.isdirectory
 local delete = vim.fn.delete
 
-local nvim_get_vvar = vim.api.nvim_get_vvar
+local getVvar = vim.api.nvim_get_vvar
 
 local M = {}
 
 -- Initialize the cmake project
 function M.init()
     local message = systemlist "cmake -S . -B build"
-    if nvim_get_vvar "shell_error" == 0 then
+    if getVvar "shell_error" == 0 then
         if filereadable "build/compile_commands.json" == 1 then
             system "ln -sf build/compile_commands.json compile_commands.json"
         end
-        dialog.info "Initialize the cmake project successded."
+        log.info "Initialize the cmake project successded."
     else
-        dialog.error(message)
+        log.error(message)
     end
 end
 
@@ -29,10 +29,10 @@ function M.build()
     end
 
     local message = systemlist "cmake --build build"
-    if nvim_get_vvar "shell_error" == 0 then
-        dialog.info "cmake compiles successfully."
+    if getVvar "shell_error" == 0 then
+        log.info "cmake compiles successfully."
     else
-        dialog.error(message)
+        log.error(message)
     end
 end
 
@@ -42,4 +42,8 @@ function M.clean()
     end
 end
 
-return M
+return {
+    init = M.init,
+    build = M.build,
+    clean = M.clean,
+}

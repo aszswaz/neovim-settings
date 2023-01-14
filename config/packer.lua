@@ -29,4 +29,6 @@ return require("packer").startup(function()
     }
     -- debug plugin
     use "puremourning/vimspector"
+    -- tokyonight theme
+    use "folke/tokyonight.nvim"
 end)

@@ -1,5 +1,0 @@
-cmake = require "cmake"
-ctags = require "ctags"
-text = require "text"
-template = require "template"
-other = require "other"

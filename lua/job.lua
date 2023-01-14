@@ -1,4 +1,4 @@
-local dialog = require "utils/dialog"
+local dialog = require "dialog"
 
 local jobstart = vim.fn.jobstart
 
@@ -20,4 +20,6 @@ function M.start(command)
     jobstart(command, { on_stdout = callback, on_stderr = callback, on_exit = callback })
 end
 
-return M
+return {
+    start = M.start,
+}

@@ -1,4 +1,5 @@
-local dialog = require "utils/dialog"
+local log = require "Logger"
+local util = require "util"
 
 local strchars = vim.fn.strchars
 local strlen = vim.fn.strlen
@@ -9,19 +10,21 @@ local getbufline = vim.fn.getbufline
 local strgetchar = vim.fn.strgetchar
 local strcharpart = vim.fn.strcharpart
 local append = vim.fn.append
+local getbufinfo = vim.fn.getbufinfo
+local getreg = vim.fn.getreg
 
 local inspect = vim.inspect
 local cmd = vim.cmd
 
-local nvim_get_current_buf = vim.api.nvim_get_current_buf
-local nvim_buf_line_count = vim.api.nvim_buf_line_count
-local nvim_get_vvar = vim.api.nvim_get_vvar
-local nvim_buf_get_lines = vim.api.nvim_buf_get_lines
-local nvim_buf_set_text = vim.api.nvim_buf_set_text
-local nvim_win_get_cursor = vim.api.nvim_win_get_cursor
-local nvim_win_set_cursor = vim.api.nvim_win_set_cursor
-local nvim_get_current_line = vim.api.nvim_get_current_line
-local nvim_get_current_win = vim.api.nvim_get_current_win
+local getCurrentBuf = vim.api.nvim_get_current_buf
+local bufLineCount = vim.api.nvim_buf_line_count
+local getVvar = vim.api.nvim_get_vvar
+local bufGetLines = vim.api.nvim_buf_get_lines
+local bufSetText = vim.api.nvim_buf_set_text
+local winGetCursor = vim.api.nvim_win_get_cursor
+local winSetCursor = vim.api.nvim_win_set_cursor
+local getCurrentLine = vim.api.nvim_get_current_line
+local getCurrentWin = vim.api.nvim_get_current_win
 
 local M = {}
 
@@ -31,7 +34,7 @@ function M.format()
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
     local command = nil
-    local current_buf = nvim_get_current_buf()
+    local currentBuf = getCurrentBuf()
 
     if filetype == "json" then
         command = "jq"
@@ -83,47 +86,49 @@ function M.format()
     elseif filetype == "yaml" then
         command = "prettier --parser yaml --print-width " .. textwidth .. " --tab-width " .. tabstop
     else
-        dialog.error("Unsupported file tyle: " .. filetype)
+        log.error("Unsupported file tyle: " .. filetype)
         return
     end
 
-    local lineCount = nvim_buf_line_count(current_buf)
-    local output = systemlist(command, nvim_buf_get_lines(current_buf, 0, lineCount, true))
-    if nvim_get_vvar "shell_error" == 0 then
+    local lineCount = bufLineCount(currentBuf)
+    local output = systemlist(command, bufGetLines(currentBuf, 0, lineCount, true))
+    if getVvar "shell_error" == 0 then
         -- 将格式化后的文本更新到缓冲区
         for index, newLine in pairs(output) do
-            setbufline(current_buf, index, newLine)
+            setbufline(currentBuf, index, newLine)
         end
         -- 删除多余的文本
         if lineCount > #output then
-            deletebufline(current_buf, #output + 1, lineCount)
+            deletebufline(currentBuf, #output + 1, lineCount)
         end
     elseif #output > 0 then
-        dialog.error(output)
+        log.error(output)
     end
 end
 
--- 复制一行文本
-function M.copy_line()
-    local current_win = nvim_get_current_win()
-    local cursor = nvim_win_get_cursor(current_win)
-    append(cursor[1], nvim_get_current_line())
+-- Copy a line of text.
+function M.copyLine()
+    local currentWin = getCurrentWin()
+    local cursor = winGetCursor(currentWin)
+    append(cursor[1], getCurrentLine())
     cursor[1] = cursor[1] + 1
-    nvim_win_set_cursor(current_win, cursor)
+    winSetCursor(currentWin, cursor)
 end
 
--- 删除行尾空格
-function M.trim()
-    local current_buf = nvim_get_current_buf()
+-- Remove trailing spaces.
+function M.trim(buffer)
+    if buffer == nil then
+        buffer = getCurrentBuf()
+    end
 
     -- Remove all trailing whitespace.
     -- If all lines are fetched from the buffer first, and then all trailing spaces are removed,
     -- it will lead to high performance consumption when processing large amounts of text,
     -- and neovim is at risk of being killed by the operating system.
     -- This way of reading one line, and processing one line, the performance consumption is the smallest.
-    local lineCount = nvim_buf_line_count(current_buf)
+    local lineCount = bufLineCount(buffer)
     for lineNumber = 1, lineCount do
-        local lineText = getbufline(current_buf, lineNumber)[1]
+        local lineText = getbufline(buffer, lineNumber)[1]
         local lineLen = strchars(lineText)
         if lineLen == 0 then
             goto continue
@@ -137,13 +142,28 @@ function M.trim()
 
         if charIndex == -1 then
             -- 整行都是空格，没有非空格字符
-            setbufline(current_buf, lineNumber, "")
+            setbufline(buffer, lineNumber, "")
         elseif charIndex ~= lastCharIndex then
-            setbufline(current_buf, lineNumber, strcharpart(lineText, 0, charIndex + 1))
+            setbufline(buffer, lineNumber, strcharpart(lineText, 0, charIndex + 1))
         end
 
         ::continue::
     end
 end
 
-return M
+-- Remove trailing whitespace in all buffers.
+function M.trimAll()
+    local bufferInfos = getbufinfo { buflisted = true, bufloaded = true }
+    for index, iterm in pairs(bufferInfos) do
+        if iterm.changed then
+            M.trim(iterm.bufnr)
+        end
+    end
+end
+
+return {
+    format = M.format,
+    copyLine = M.copyLine,
+    trim = M.trim,
+    trimAll = M.trimAll,
+}

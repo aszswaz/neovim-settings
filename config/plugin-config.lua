@@ -1,4 +1,4 @@
-local nvim_set_var = vim.api.nvim_set_var
+local setVar = vim.api.nvim_set_var
 
 -- File manager plugin
 require("nvim-tree").setup {
@@ -71,22 +71,13 @@ require("bufferline").setup {
 }
 
 -- vim-bookmarks
-nvim_set_var("bookmark_sign", "⚑")
-nvim_set_var("bookmark_highlight_lines", 0)
-
--- Configure and enable the vscode theme
-vim.o.background = "light"
--- local vscodeColors = require "vscode.colors"
-require("vscode").setup {
-    transparent = false,
-    italic_comments = false,
-    disable_nvimtree_bg = true,
-}
+setVar("bookmark_sign", "⚑")
+setVar("bookmark_highlight_lines", 0)
 
 -- Configure the status bar.
 require("lualine").setup {
     options = {
         icons_enable = true,
-        theme = "vscode",
+        theme = "tokyonight",
     },
 }

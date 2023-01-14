@@ -1,4 +1,4 @@
-local job = require "utils/job"
+local job = require "job"
 
 local M = {}
 local tagsFile = vim.fn.stdpath "config" .. "/tags"
@@ -9,3 +9,7 @@ function M.update()
         .. " -I __THROW --extras=+F --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --fields=+S -R /usr/include"
     job.start(ctags)
 end
+
+return {
+    update = M.update,
+}
