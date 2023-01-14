@@ -39,14 +39,20 @@ require("toggleterm").setup {
     shell = vim.o.shell,
     -- Terminal's popup settings.
     float_opts = {
-        border = "single",
-        width = 300,
-        height = 60,
-        -- 透明度
+        border = "rounded",
+        width = math.floor(vim.o.columns / 5 * 4),
+        height = math.floor(vim.o.lines / 5 * 4),
+        -- transparency
         winblend = 0,
-        highlights = {
-            border = "Normal",
-            background = "Normal",
+    },
+    highlights = {
+        NormalFloat = {
+            guifg = "#CCCCCC",
+            guibg = "#2C2C2C",
+        },
+        FloatBorder = {
+            guifg = "#CCCCCC",
+            guibg = "#2C2C2C",
         },
     },
 }
