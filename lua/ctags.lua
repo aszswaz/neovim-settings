@@ -1,4 +1,4 @@
-local job = require "job"
+local job = require "util.job"
 
 local M = {}
 local tagsFile = vim.fn.stdpath "config" .. "/tags"

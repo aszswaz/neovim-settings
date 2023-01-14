@@ -1,4 +1,5 @@
-local dialog = require "dialog"
+local log = require "logger"
+local tableUtil = require "util.table"
 
 local jobstart = vim.fn.jobstart
 
@@ -7,13 +8,13 @@ function M.start(command)
     local messages = {}
     local callback = function(job, data, event)
         if (event == "stdout" or event == "stderr") and data ~= nil then
-            table:inserts(messages, data)
+            tableUtil.inserts(messages, data)
         else
             -- git has exited
             if data == 0 then
-                dialog.info "Operation performed successfully!"
+                log.info "Operation performed successfully!"
             else
-                dialog.error(messages)
+                log.error(messages)
             end
         end
     end

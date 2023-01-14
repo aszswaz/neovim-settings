@@ -1,3 +1,4 @@
+local notify = require "dialog.notify"
 local dialog = require "dialog"
 
 local strftime = vim.fn.strftime
@@ -10,22 +11,22 @@ local MESSAGES = {}
 
 function M.debug(messages)
     M.putMessage(levels.DEBUG, M.format("DEBUG", messages))
-    dialog.debug(messages)
+    notify.debug(messages)
 end
 
 function M.info(messages)
     M.putMessage(levels.INFO, M.format("INFO", messages))
-    dialog.info(messages)
+    notify.info(messages)
 end
 
 function M.warn(messages)
     M.putMessage(levels.WARN, M.format("WARN", messages))
-    dialog.warn(messages)
+    notify.warn(messages)
 end
 
 function M.error(messages)
     M.putMessage(levels.ERROR, M.format("ERROR", messages))
-    dialog.error(messages)
+    notify.error(messages)
 end
 
 function M.format(level, messages)
@@ -37,7 +38,7 @@ function M.format(level, messages)
             table.insert(logs, level .. " " .. time .. " " .. iterm)
         end
     else
-        table.insert(messages)
+        table.insert(logs, messages)
     end
 
     return logs

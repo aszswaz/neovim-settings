@@ -5,50 +5,29 @@ local createCommand = vim.api.nvim_create_user_command
 
 local M = {}
 
-function M.inserts(dest, src)
-    if type(dest) ~= "table" then
-        dialog.error 'The parameter "dest" type must be a table.'
-        return
-    end
-    if type(src) == "table" then
-        for i = 1, #src do
-            table.insert(dest, src[i])
-        end
-    else
-        table.insert(dest, src)
-    end
-end
-
-function M.strlens(text)
-    local textLen = 0
-    local mType = type(text)
-    if mType == "string" then
-        textLen = strchars(text)
-    elseif mType == "table" then
-        for i = 1, #text do
-            textLen = textLen + strchars(text[i])
-        end
-    end
-    return textLen
-end
-
 -- Register hotkeys in batches.
 function M.regHotkeys(hotkeys, defaultMode)
-    for index, iterm in pairs(hotkeys) do
+    for _, iterm in pairs(hotkeys) do
         local opts = {
             silent = true,
             unique = true,
             desc = iterm.desc,
             noremap = true,
         }
-        local targetMode = nil
-        if iterm.mode == nil then
-            targetMode = defaultMode
-        else
-            targetMode = iterm.mode
-        end
-        for index, mode in pairs(targetMode) do
-            setKeymap(mode, iterm.key, iterm.action, opts)
+
+        if iterm.mode then
+            for _, mode in pairs(iterm.mode) do
+                setKeymap(mode, iterm.key, iterm.action, opts)
+            end
+            break
+        elseif type(iterm.action) == "table" then
+            for mode, action in pairs(iterm.action) do
+                setKeymap(mode, iterm.key, action, opts)
+            end
+        elseif defaultMode then
+            for _, mode in pairs(defaultMode) do
+                setKeymap(mode, iterm.key, iterm.action, opts)
+            end
         end
     end
 end

@@ -1,4 +1,5 @@
-local log = require "Logger"
+local log = require "logger"
+local job = require "util.job"
 
 local isdirectory = vim.fn.isdirectory
 local mkdir = vim.fn.mkdir
@@ -69,7 +70,7 @@ function M.use(templateName)
 
     bufload(bufId)
     bufSetOption(bufId, "buflisted", true)
-    setbufline(bufId, 1, readfile(template_file))
+    setbufline(bufId, 1, readfile(templateFile))
     cmd("bufdo " .. bufId)
 end
 

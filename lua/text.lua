@@ -1,5 +1,4 @@
-local log = require "Logger"
-local util = require "util"
+local log = require "logger"
 
 local strchars = vim.fn.strchars
 local strlen = vim.fn.strlen

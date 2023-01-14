@@ -1,4 +1,4 @@
-local log = require "Logger"
+local log = require "logger"
 
 local systemlist = vim.fn.systemlist
 local filereadable = vim.fn.filereadable

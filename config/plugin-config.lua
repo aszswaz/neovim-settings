@@ -73,11 +73,3 @@ require("bufferline").setup {
 -- vim-bookmarks
 setVar("bookmark_sign", "⚑")
 setVar("bookmark_highlight_lines", 0)
-
--- Configure the status bar.
-require("lualine").setup {
-    options = {
-        icons_enable = true,
-        theme = "tokyonight",
-    },
-}

@@ -71,7 +71,7 @@ local clipboardHotkeys = {
     {
         mode = { "v" },
         key = "<C-x>",
-        action = '"' .. reg .. 'y',
+        action = '"' .. reg .. 'd',
         desc = "Cut selected text.",
     },
     {
