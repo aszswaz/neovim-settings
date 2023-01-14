@@ -1,4 +1,5 @@
 local stringUtil = require "util.string"
+local define = require "dialog.define"
 
 local timerStart = vim.fn.timer_start
 local timerStop = vim.fn.timer_stop
@@ -12,6 +13,7 @@ local winSetOption = vim.api.nvim_win_set_option
 local winSetConfig = vim.api.nvim_win_set_config
 local winGetConfig = vim.api.nvim_win_get_config
 
+-- Norification dialog. A read-only dialog located in the lower right corner.
 local M = {}
 -- The currently active window.
 local QUEUE = {}
@@ -21,7 +23,7 @@ local DISPLAY_TIME = 10000
 local SPACING = 2
 
 function M.create(text, style)
-    style = style or "DialogNormal"
+    style = style or define.normal
     local content = stringUtil.toLines(text)
     local width, height, x, y = M.coordinate(content)
 
@@ -86,19 +88,19 @@ function M.coordinate(content)
 end
 
 function M.debug(message)
-    M.create(message, "NotifyDebug")
+    M.create(message, define.debug)
 end
 
 function M.info(message)
-    M.create(message, "NotifyInfo")
+    M.create(message, define.info)
 end
 
 function M.warn(message)
-    M.create(message, "NotifyWarn")
+    M.create(message, define.warn)
 end
 
 function M.error(message)
-    M.create(message, "NotifyError")
+    M.create(message, define.error)
 end
 
 return {

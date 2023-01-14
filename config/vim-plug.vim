@@ -3,8 +3,6 @@ call plug#begin()
 
 " Translation plugin.
 Plug 'voldikss/vim-translator'
-" Terminal plugin.
-Plug 'akinsho/toggleterm.nvim'
 " Programming language helper plugins.
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " A gui function for nvim-qt.

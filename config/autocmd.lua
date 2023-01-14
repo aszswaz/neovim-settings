@@ -1,8 +1,7 @@
 local lualine = require "lualine"
+local dialog = require "dialog"
 
 local createAutocmd = vim.api.nvim_create_autocmd
-local setHighlight = vim.api.nvim_set_hl
-local getHighlight = vim.api.nvim_get_hl_by_name
 local getGlobalVar = vim.api.nvim_get_var
 
 createAutocmd("FileType", {
@@ -32,15 +31,7 @@ createAutocmd("FileType", {
 createAutocmd("ColorScheme", {
     desc = "After the theme is set, set some highlights.",
     pattern = "*",
-    callback = function()
-        -- Get the background color set by the current theme.
-        local normal = getHighlight("Normal", true)
-        setHighlight(0, "DialogNormal", { fg = normal.foreground, bg = normal.background })
-        setHighlight(0, "NotifyDebug", { fg = "#66CCFF", bg = bg })
-        setHighlight(0, "NotifyInfo", { fg = "#008000", bg = bg })
-        setHighlight(0, "NotifyWarn", { fg = "#FF7F00", bg = bg })
-        setHighlight(0, "NotifyError", { fg = "#FF0000", bg = bg })
-    end,
+    callback = dialog.regStyle,
 })
 
 createAutocmd("ColorScheme", {

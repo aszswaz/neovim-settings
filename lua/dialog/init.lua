@@ -1,29 +1,22 @@
-local setbufline = vim.fn.setbufline
+local define = require "dialog.define"
 
-local createBuf = vim.api.nvim_create_buf
+local setHighlight = vim.api.nvim_set_hl
+local getHighlight = vim.api.nvim_get_hl_by_name
 
 local M = {}
 
--- Create a dialog centered on the screen.
-function M.central(message)
-    local buf = createBuf(false, true)
-    setbufline(buf, 1, message)
-
-    local width = 80
-    local height = 20
-    local x = vim.o.columns / 2 - width / 2
-    local y = vim.o.lines / 2 - height / 2
-
-    local win = openWin(buf, true, {
-        relative = "editor",
-        col = x,
-        row = y,
-        width = width,
-        height = height,
-        border = "double",
-    })
+function M.regStyle()
+    -- Get the background color set by the current theme.
+    local normal = getHighlight("Normal", true)
+    setHighlight(0, define.normal, { fg = (normal.foreground or "#FFFFFF") })
+    setHighlight(0, define.debug, { fg = "#66CCFF" })
+    setHighlight(0, define.info, { fg = "#008000" })
+    setHighlight(0, define.warn, { fg = "#FF9F00" })
+    setHighlight(0, define.error, { fg = "#FF0000" })
 end
 
 return {
-    central = M.central,
+    notify = require "dialog.notify",
+    center = require "dialog.center",
+    regStyle = M.regStyle,
 }

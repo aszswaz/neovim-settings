@@ -31,4 +31,6 @@ return require("packer").startup(function()
     use "puremourning/vimspector"
     -- tokyonight theme
     use "folke/tokyonight.nvim"
+    -- Terminal plugin.
+    use "akinsho/toggleterm.nvim"
 end)
