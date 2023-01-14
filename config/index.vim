@@ -6,7 +6,6 @@ if &loadplugins
 endif
 
 runtime config/settings.lua
-runtime config/hot-key.vim
 runtime config/hot-key.lua
 runtime config/commands.lua
 runtime config/autocmd.lua

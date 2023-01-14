@@ -25,7 +25,7 @@ return require("packer").startup(function()
     -- Bottom status bar plugin
     use {
         "nvim-lualine/lualine.nvim",
-        requires = { "kyazdani42/nvim-web-devicons", opt = true },
+        requires = { "kyazdani42/nvim-web-devicons" },
     }
     -- debug plugin
     use "puremourning/vimspector"

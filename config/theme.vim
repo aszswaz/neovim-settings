@@ -5,6 +5,6 @@ if &loadplugins
     " colorscheme tokyonight-day
     " colorscheme tokyonight-moon
     " colorscheme tokyonight-storm
+else
+    colorscheme Tomorrow-Night-Eighties
 end
-
-" colorscheme Tomorrow-Night-Eighties

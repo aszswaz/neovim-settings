@@ -9,24 +9,32 @@ local M = {}
 function M.regHotkeys(hotkeys, defaultMode)
     for _, iterm in pairs(hotkeys) do
         local opts = {
-            silent = true,
-            unique = true,
-            desc = iterm.desc,
-            noremap = true,
+            silent = (iterm.silent or true),
+            unique = (iterm.unique or true),
+            desc = (iterm.desc or vim.inspect(iterm)),
+            noremap = (iterm.noremap or true),
+            expr = iterm.expr,
+            script = iterm.script,
+            nowait = iterm.nowait,
         }
 
-        if iterm.mode then
-            for _, mode in pairs(iterm.mode) do
-                setKeymap(mode, iterm.key, iterm.action, opts)
-            end
-        elseif type(iterm.action) == "table" then
+        assert(iterm.key, "Please set the keys to be monitored. Hotkey configuration: \n" .. vim.inspect(iterm))
+        assert(iterm.action, "Please set the action to be performed by the Hotkey, Hotkey configuration: \n" .. vim.inspect(iterm))
+
+        if type(iterm.action) == "table" then
             for mode, action in pairs(iterm.action) do
                 setKeymap(mode, iterm.key, action, opts)
+            end
+        elseif iterm.mode then
+            for _, mode in pairs(iterm.mode) do
+                setKeymap(mode, iterm.key, iterm.action, opts)
             end
         elseif defaultMode then
             for _, mode in pairs(defaultMode) do
                 setKeymap(mode, iterm.key, iterm.action, opts)
             end
+        else
+            error("Please specify ar least one mode. Hotkey configuration: " .. vim.inspect(iterm))
         end
     end
 end
