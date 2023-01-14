@@ -5,7 +5,6 @@ local setHighlight = vim.api.nvim_set_hl
 local getHighlight = vim.api.nvim_get_hl_by_name
 local getGlobalVar = vim.api.nvim_get_var
 
-
 createAutocmd("FileType", {
     desc = "Sets the indentation width for some file types.",
     pattern = { "json", "html", "xml", "yaml", "svg", "sql" },
@@ -41,7 +40,17 @@ createAutocmd("ColorScheme", {
         setHighlight(0, "NotifyInfo", { fg = "#008000", bg = bg })
         setHighlight(0, "NotifyWarn", { fg = "#FF7F00", bg = bg })
         setHighlight(0, "NotifyError", { fg = "#FF0000", bg = bg })
+    end,
+})
 
-        lualine.setup { options = { icons_enable = true, theme = getGlobalVar "colors_name" } }
+createAutocmd("ColorScheme", {
+    pattern = { "vscode", "tokyonight*" },
+    callback = function()
+        lualine.setup {
+            options = {
+                icons_enable = true,
+                theme = getGlobalVar "colors_name",
+            },
+        }
     end,
 })
