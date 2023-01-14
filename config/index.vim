@@ -1,4 +1,4 @@
-" 如果用户在 neovim 的启动参数中设置了 --noplugin，那么禁用插件和插件的有关配置
+" If the user has set --noplugin in the startup parameters of neovim, then disable the plugin and the related configuration of the plugin.
 if &loadplugins
     runtime config/vim-plug.vim
     runtime config/packer.lua

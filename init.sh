@@ -24,7 +24,7 @@ if [[ $PWD != $config_path ]]; then
 fi
 
 
-# 添加 vim 包管理器
+# Add neovim package manager.
 # packer，github：https://github.com/wbthomason/packer.nvim
 if [[ -e "$packer_path" ]]; then
     env -C "$packer_path" git pull
@@ -36,7 +36,7 @@ fi
 vim_plug_path="$nvim_share/site/autoload/plug.vim"
 curl --disable -fL -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# 将 maven 配置应用到 root 账户
+# Apply neovim's configuration to the root user.
 sudo /bin/bash -e -c "
 [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
 [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'

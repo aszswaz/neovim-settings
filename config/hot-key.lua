@@ -65,20 +65,21 @@ local clipboardHotkeys = {
     {
         mode = { "v" },
         key = "<C-c>",
-        action = '"' .. reg .. 'y',
+        action = '"' .. reg .. "d",
         desc = "Copy selected text.",
     },
     {
         mode = { "v" },
         key = "<C-x>",
-        action = '"' .. reg .. 'd',
+        action = '"' .. reg .. "d",
         desc = "Cut selected text.",
     },
     {
-        -- TODO
-        mode = { "n", "i" },
         key = "<C-p>",
-        action = util.wrapCmd('normal! "' .. reg .. 'p'),
+        action = {
+            n = '"' .. reg .. "p",
+            i = '<esc>"' .. reg .. "pa",
+        },
         desc = "Paste text.",
     },
 }

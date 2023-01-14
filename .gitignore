@@ -1,4 +1,4 @@
-/vim-plugins
 /tags
-/coc-schema.jsonc
 *.log
+/plug/packer_compiled.lua
+/test/*

@@ -1,5 +1,5 @@
 " vim-plug
-call plug#begin('~/.config/nvim/vim-plugins')
+call plug#begin()
 
 " Translation plugin.
 Plug 'voldikss/vim-translator'

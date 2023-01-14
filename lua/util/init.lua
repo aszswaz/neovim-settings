@@ -19,7 +19,6 @@ function M.regHotkeys(hotkeys, defaultMode)
             for _, mode in pairs(iterm.mode) do
                 setKeymap(mode, iterm.key, iterm.action, opts)
             end
-            break
         elseif type(iterm.action) == "table" then
             for mode, action in pairs(iterm.action) do
                 setKeymap(mode, iterm.key, action, opts)

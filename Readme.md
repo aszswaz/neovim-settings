@@ -1,9 +1,27 @@
-# neovim 配置文件
+# Introduction
 
-使用前需要把本文件夹连接到 `${HOME}/.config/nvim`，比如：
+The configuration of neovim.
+
+# How to use?
 
 ```bash
-$ ln -s ${HOME}/document/notebook/scripts/config/neovim ${HOME}/.config/nvim
+$ ./init.sh
+# Install the plugin.
+$ nvim -c PlugInstall -c PackerInstall
 ```
 
-在创建软连接时，一定要使用绝对路径，否则会出现“递归层级太多”错误。
+# How to develop?
+
+First, create a repository for development:
+
+```bash
+$ git clone ${HOME}/.config/nvim ${HOME}/neovim-settings
+```
+
+If you need to debug a script under development, you can execute the following command:
+
+```bash
+# Sepcifies the init script for neovim.
+$ alias nvim="nvim -u $PWD/init.lua"
+$ nvim
+```
