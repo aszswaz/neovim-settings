@@ -1,4 +1,4 @@
 /tags
 *.log
-/plug/packer_compiled.lua
+/plugin/packer_compiled.lua
 /test/*
