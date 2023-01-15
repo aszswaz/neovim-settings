@@ -19,6 +19,7 @@ local options = {
     cursorline = true,
     termguicolors = true,
     background = "light",
+    viminfo = "'100,n" .. stdpath "data" .. "/viminfo",
 }
 for opt, value in pairs(options) do
     vim.o[opt] = value
