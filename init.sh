@@ -37,7 +37,7 @@ function install_plugin_manager() {
 }
 
 # Apply neovim's configuration to the root user.
-function configRoot() {
+function config_root() {
     if [ $USER == "root" ]; then
         [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
         [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
@@ -46,7 +46,7 @@ function configRoot() {
         ln -svfT "$PWD" '/root/.config/nvim'
         ln -svfT "$NVIM_SHARE" '/root/.local/share/nvim'
     else
-        sudo -E /bin/bash -o errexit -o nounset -c "$(declare -f configRoot);configRoot"
+        sudo -E /bin/bash -o errexit -o nounset -c "$(declare -f config_root);config_root"
     fi
 }
 
@@ -77,5 +77,10 @@ function install_plugin() {
 
     nvim -c 'PlugInstall' -c 'PackerInstall'
 }
+
+install_plugin_manager
+config_root
+install_depend
+install_plugin
 
 log_info "init neovim success"
