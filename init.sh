@@ -20,7 +20,7 @@ export COC_START="$NVIM_SHARE/site/pack/coc/start"
 export COC_EXTENSIONS="$HOME/.config/coc/extensions"
 export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
 
-if [[ $PWD != $config_path ]]; then
+if [[ $PWD != $CONFIG_PATH ]]; then
     ln -svfT "$PWD" "$config_path"
 fi
 
