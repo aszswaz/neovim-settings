@@ -49,7 +49,7 @@ exit 0
 
 # Install nodejs lts version.
 if [ ! -x "$(command -v node)" ]; then
-    curl --disable -fL -Ss https://install-node.vercel.app/lts | sudo sh
+    curl --disable -fL -Ss https://install-node.vercel.app/lts | sudo bash
 fi
 
 # Install coc
@@ -66,5 +66,11 @@ npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --o
     coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
 cd "node_modules/coc-ccls"
 ln -svfT "node_modules/ws/lib" lib
+
+if [ -x "$(command -v pacman)" ]; then
+    sudo pacman -S python-pynvim
+else [ -x "$(command -v dnf)" ]
+    sudo dnf install python-neovim
+fi
 
 log_info "init neovim success"
