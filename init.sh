@@ -51,11 +51,12 @@ function config_root() {
 }
 
 function install_depend() {
+    local packages = ('neovim' 'nodejs' 'npm' 'git')
     if [ -x "$(command -v pacman)" ]; then
-        sudo pacman -S --noconfirm --needed neovim python-pynvim nodejs npm
+        sudo pacman -S --noconfirm --needed ${packages[*]} python-pynvim
     else
         [ -x "$(command -v dnf)" ]
-        sudo dnf install -y neovim python-neovim nodejs npm
+        sudo dnf install -y ${packages[*]} python-neovim
     fi
 }
 
