@@ -13,64 +13,69 @@ log_info() {
 
 log_info "minit neovim..."
 
-nvim_share="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
-config_path="$HOME/.config/nvim"
-packer_path="$nvim_share/site/pack/packer/start/packer.nvim"
-coc_start="$nvim_share/site/pack/coc/start"
-coc_extensions="$HOME/.config/coc/extensions"
+export NVIM_SHARE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+export CONFIG_PATH="$HOME/.config/nvim"
+export PACKER_PATH="$NVIM_SHARE/site/pack/packer/start/packer.nvim"
+export COC_START="$NVIM_SHARE/site/pack/coc/start"
+export COC_EXTENSIONS="$HOME/.config/coc/extensions"
+export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
 
 if [[ $PWD != $config_path ]]; then
     ln -svfT "$PWD" "$config_path"
 fi
 
-
-# Add neovim package manager.
-# packer，github：https://github.com/wbthomason/packer.nvim
-if [[ -e "$packer_path" ]]; then
-    env -C "$packer_path" git pull
-else
-    git clone https://github.com/wbthomason/packer.nvim "$packer_path"
-fi
-
-# vim-plug，github：https://github.com/junegunn/vim-plug
-vim_plug_path="$nvim_share/site/autoload/plug.vim"
-curl --disable -fL -o "$vim_plug_path" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+function install_plugin_manager() {
+    # Add neovim package manager.
+    # packer，github：https://github.com/wbthomason/packer.nvim
+    if [[ -e "$PACKER_PATH" ]]; then
+        git -C "$PACKER_PATH" pull
+    else
+        git clone https://github.com/wbthomason/packer.nvim "$PACKER_PATH"
+    fi
+    # vim-plug，github：https://github.com/junegunn/vim-plug
+    curl --disable -fL -o "$VIM_PLUG_PATH" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+}
 
 # Apply neovim's configuration to the root user.
-sudo /bin/bash -e -c "
-[[ ! -e '/root/.config' ]] && mkdir '/root/.config'
-[[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
-[[ -e /root/.config/nvim ]] && rm -rf /root/.config/nvim
-[[ -e /root/.local/share/nvim ]] && rm -rf /root/.local/share/nvim
-ln -svfT '$PWD' '/root/.config/nvim'
-ln -svfT '$nvim_share' '/root/.local/share/nvim'
-exit 0
-"
+function configRoot() {
+    if [ $USER == "root" ]; then
+        [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
+        [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
+        [[ -e '/root/.config/nvim' ]] && rm -rf '/root/.config/nvim'
+        [[ -e '/root/.local/share/nvim' ]] && rm -rf '/root/.local/share/nvim'
+        ln -svfT "$PWD" '/root/.config/nvim'
+        ln -svfT "$NVIM_SHARE" '/root/.local/share/nvim'
+    else
+        sudo -E /bin/bash -o errexit -o nounset -c "$(declare -f configRoot);configRoot"
+    fi
+}
 
-# Install nodejs lts version.
-if [ ! -x "$(command -v node)" ]; then
-    curl --disable -fL -Ss https://install-node.vercel.app/lts | sudo bash
-fi
+function install_depend() {
+    if [ -x "$(command -v pacman)" ]; then
+        sudo pacman -S --noconfirm --needed neovim python-pynvim nodejs npm
+    else
+        [ -x "$(command -v dnf)" ]
+        sudo dnf install -y neovim python-neovim nodejs npm
+    fi
+}
 
-# Install coc
-mkdir -p "$coc_start"
-cd "$coc_start"
-curl --disable -fL -Ss https://github.com/neoclide/coc.nvim/archive/release.tar.gz | tar xzfv -
-# Install the coc extension.
-mkdir -p "$coc_extensions"
-cd "$coc_extensions"
-if [ ! -f package.json ]; then
-    echo '{"dependencies":{}}'> package.json
-fi
-npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
-    coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
-cd "node_modules/coc-ccls"
-ln -svfT "node_modules/ws/lib" lib
+function install_plugin() {
+    # Install coc
+    mkdir -p "$COC_START"
+    cd "$COC_START"
+    curl --disable -fL -Ss https://github.com/neoclide/coc.nvim/archive/release.tar.gz | tar xzfv -
+    # Install the coc extension.
+    mkdir -p "$COC_EXTENSIONS"
+    cd "$COC_EXTENSIONS"
+    if [ ! -f package.json ]; then
+        echo '{"dependencies":{}}' >package.json
+    fi
+    npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
+        coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
+    cd "node_modules/coc-ccls"
+    ln -svfT "node_modules/ws/lib" lib
 
-if [ -x "$(command -v pacman)" ]; then
-    sudo pacman -S python-pynvim
-else [ -x "$(command -v dnf)" ]
-    sudo dnf install python-neovim
-fi
+    nvim -c 'PlugInstall' -c 'PackerInstall'
+}
 
 log_info "init neovim success"
