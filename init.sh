@@ -7,22 +7,35 @@ set -o errexit
 
 cd "$(dirname $0)"
 
+# Install into the user environment, Available only for current user and root user.
+function main() {
+    log_info "minit neovim..."
+
+    export NVIM_SHARE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+    export CONFIG_PATH="$HOME/.config/nvim"
+    export PACKER_PATH="$NVIM_SHARE/site/pack/packer/start/packer.nvim"
+    export COC_START="$NVIM_SHARE/site/pack/coc/start"
+    export COC_EXTENSIONS="$HOME/.config/coc/extensions"
+    export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
+
+    if [[ $PWD != $CONFIG_PATH ]]; then
+        ln -svfT "$PWD" "$config_path"
+    fi
+
+    install_plugin_manager
+    sudo -E /bin/bash -o errexit -o nounset -c "
+        $(declare -f config_root)
+        $(declare -f install_depend)
+        config_root
+        install_depend
+    "
+    install_plugin
+    log_info "init neovim success"
+}
+
 log_info() {
     echo -e "\033[92m$@\033[0m"
 }
-
-log_info "minit neovim..."
-
-export NVIM_SHARE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
-export CONFIG_PATH="$HOME/.config/nvim"
-export PACKER_PATH="$NVIM_SHARE/site/pack/packer/start/packer.nvim"
-export COC_START="$NVIM_SHARE/site/pack/coc/start"
-export COC_EXTENSIONS="$HOME/.config/coc/extensions"
-export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
-
-if [[ $PWD != $CONFIG_PATH ]]; then
-    ln -svfT "$PWD" "$config_path"
-fi
 
 function install_plugin_manager() {
     # Add neovim package manager.
@@ -38,25 +51,21 @@ function install_plugin_manager() {
 
 # Apply neovim's configuration to the root user.
 function config_root() {
-    if [ $USER == "root" ]; then
-        [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
-        [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
-        [[ -e '/root/.config/nvim' ]] && rm -rf '/root/.config/nvim'
-        [[ -e '/root/.local/share/nvim' ]] && rm -rf '/root/.local/share/nvim'
-        ln -svfT "$PWD" '/root/.config/nvim'
-        ln -svfT "$NVIM_SHARE" '/root/.local/share/nvim'
-    else
-        sudo -E /bin/bash -o errexit -o nounset -c "$(declare -f config_root);config_root"
-    fi
+    [[ ! -e '/root/.config' ]] && mkdir '/root/.config'
+    [[ ! -e '/root/.local/share' ]] && mkdir -p '/root/.local/share'
+    [[ -e '/root/.config/nvim' ]] && rm -rf '/root/.config/nvim'
+    [[ -e '/root/.local/share/nvim' ]] && rm -rf '/root/.local/share/nvim'
+    ln -svfT "$PWD" '/root/.config/nvim'
+    ln -svfT "$NVIM_SHARE" '/root/.local/share/nvim'
 }
 
 function install_depend() {
     local packages=('neovim' 'nodejs' 'npm' 'git')
     if [ -x "$(command -v pacman)" ]; then
-        sudo pacman -S --noconfirm --needed ${packages[*]} python-pynvim
+        pacman -S --noconfirm --needed ${packages[*]} python-pynvim
     else
         [ -x "$(command -v dnf)" ]
-        sudo dnf install -y ${packages[*]} python-neovim
+        dnf install -y ${packages[*]} python-neovim
     fi
 }
 
@@ -79,9 +88,4 @@ function install_plugin() {
     nvim -c 'PlugInstall' -c 'PackerInstall'
 }
 
-install_plugin_manager
-config_root
-install_depend
-install_plugin
-
-log_info "init neovim success"
+main
