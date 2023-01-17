@@ -2,7 +2,6 @@ local cmake = require "cmake"
 local ctags = require "ctags"
 local template = require "template"
 local util = require "util"
-local other = require "other"
 
 util.rc("CmakeInit", cmake.init, "Initialize cmake project.")
 util.rc("CmakeBuild", cmake.build, "Build the cmake project.")

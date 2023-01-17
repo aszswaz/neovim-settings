@@ -1,3 +1,5 @@
+local event = require "event"
+
 local setVar = vim.api.nvim_set_var
 
 -- File manager plugin
@@ -55,6 +57,7 @@ require("toggleterm").setup {
             guibg = "#2C2C2C",
         },
     },
+    on_create = event.toggleterm_open,
 }
 
 -- Plugins that use buffer as tab.

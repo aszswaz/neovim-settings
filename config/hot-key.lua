@@ -1,6 +1,6 @@
 local util = require "util"
 local text = require "text"
-local other = require "other"
+local event = require "event"
 local nvimTree = require "nvim-tree.api"
 
 local has = vim.fn.has
@@ -28,18 +28,12 @@ local niHotkeys = {
     },
     {
         key = "<C-s>",
-        action = function()
-            text.trim()
-            cmd "w"
-        end,
+        action = event.save,
         desc = "Remove all trailing spaces and save the text.",
     },
     {
         key = "<C-q>",
-        action = function()
-            text.trimAll()
-            cmd "wqall"
-        end,
+        action = event.quit,
         desc = "Remove all trailing spaces, save the text, and exit neovim.",
     },
     {
@@ -49,7 +43,7 @@ local niHotkeys = {
     },
     {
         key = "<A-c>",
-        action = other.closeTab,
+        action = event.closeBuffer,
         desc = "Save and close the buffer.",
     },
     {
