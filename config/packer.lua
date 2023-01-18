@@ -33,4 +33,6 @@ return require("packer").startup(function()
     use "folke/tokyonight.nvim"
     -- Terminal plugin.
     use "akinsho/toggleterm.nvim"
+    -- fish plugin
+    use "nickeb96/fish.vim"
 end)
