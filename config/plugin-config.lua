@@ -1,7 +1,5 @@
 local event = require "event"
 
-local setVar = vim.api.nvim_set_var
-
 -- File manager plugin
 require("nvim-tree").setup {
     -- Enable git
@@ -86,5 +84,5 @@ require("bufferline").setup {
 }
 
 -- vim-bookmarks
-setVar("bookmark_sign", "⚑")
-setVar("bookmark_highlight_lines", 0)
+vim.api.nvim_set_var("bookmark_sign", "⚑")
+vim.api.nvim_set_var("bookmark_highlight_lines", 0)

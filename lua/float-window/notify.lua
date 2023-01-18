@@ -1,17 +1,5 @@
 local stringUtil = require "util.string"
-local define = require "dialog.define"
-
-local timerStart = vim.fn.timer_start
-local timerStop = vim.fn.timer_stop
-local setbufline = vim.fn.setbufline
-
-local winClose = vim.api.nvim_win_close
-local bufDelete = vim.api.nvim_buf_delete
-local createBuf = vim.api.nvim_create_buf
-local openWin = vim.api.nvim_open_win
-local winSetOption = vim.api.nvim_win_set_option
-local winSetConfig = vim.api.nvim_win_set_config
-local winGetConfig = vim.api.nvim_win_get_config
+local define = require "float-window.define"
 
 -- Norification dialog. A read-only dialog located in the lower right corner.
 local M = {}
@@ -27,9 +15,10 @@ function M.create(text, style)
     local content = stringUtil.toLines(text)
     local width, height, x, y = M.coordinate(content)
 
-    local winBuf = createBuf(false, true)
-    setbufline(winBuf, 1, content)
-    local winId = openWin(winBuf, false, {
+    local winBuf = vim.api.nvim_create_buf(false, true)
+    vim.fn.setbufline(winBuf, 1, content)
+    vim.api.nvim_buf_set_option(winBuf, "modifiable", false)
+    local winId = vim.api.nvim_open_win(winBuf, false, {
         relative = "editor",
         anchor = "SE",
         row = y,
@@ -44,32 +33,36 @@ function M.create(text, style)
     })
     table.insert(QUEUE, winId)
 
+    local winSetOption = vim.api.nvim_win_set_option
     winSetOption(winId, "wrap", true)
     winSetOption(winId, "winhl", "NormalFloat:" .. style .. ",FloatBorder:" .. style)
 
-    timerStart(DISPLAY_TIME, function()
+    vim.fn.timer_start(DISPLAY_TIME, function()
         M.close(winId, winBuf)
     end)
 end
 
 -- Closes the specified window and moves other windows down.
 function M.close(winId, winBuf)
+    local winGetConfig = vim.api.nvim_win_get_config
     local winConfig = winGetConfig(winId)
 
-    winClose(winId, false)
-    bufDelete(winBuf, {})
+    vim.api.nvim_win_close(winId, false)
+    vim.api.nvim_buf_delete(winBuf, {})
     table.remove(QUEUE, 1)
 
     -- Other dialogs move down.
     for _, otherWin in pairs(QUEUE) do
         local otherConfig = winGetConfig(otherWin)
         otherConfig.row[false] = otherConfig.row[false] + winConfig.height + SPACING
-        winSetConfig(otherWin, otherConfig)
+        vim.api.nvim_win_set_config(otherWin, otherConfig)
     end
 end
 
 -- Calculate the coordinates of the window.
 function M.coordinate(content)
+    local winGetConfig = vim.api.nvim_win_get_config
+
     local mLen = stringUtil.strlens(content)
     local width = math.max(math.min(60, mLen), 40)
     local height = math.max(5, math.min(30, math.ceil(mLen / width)))

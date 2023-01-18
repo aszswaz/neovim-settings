@@ -1,9 +1,8 @@
 local log = require "logger"
 local tableUtil = require "util.table"
 
-local jobstart = vim.fn.jobstart
-
 local M = {}
+
 function M.start(command)
     local messages = {}
     local callback = function(job, data, event)
@@ -18,7 +17,7 @@ function M.start(command)
             end
         end
     end
-    jobstart(command, { on_stdout = callback, on_stderr = callback, on_exit = callback })
+    vim.fn.jobstart(command, { on_stdout = callback, on_stderr = callback, on_exit = callback })
 end
 
 return {

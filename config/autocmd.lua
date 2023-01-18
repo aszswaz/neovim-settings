@@ -1,8 +1,7 @@
 local lualine = require "lualine"
-local dialog = require "dialog"
+local floatWindow = require "float-window"
 
 local createAutocmd = vim.api.nvim_create_autocmd
-local getGlobalVar = vim.api.nvim_get_var
 
 createAutocmd("FileType", {
     desc = "Sets the indentation width for some file types.",
@@ -31,7 +30,7 @@ createAutocmd("FileType", {
 createAutocmd("ColorScheme", {
     desc = "After the theme is set, set some highlights.",
     pattern = "*",
-    callback = dialog.regStyle,
+    callback = floatWindow.regStyle,
 })
 
 createAutocmd("ColorScheme", {
@@ -40,7 +39,7 @@ createAutocmd("ColorScheme", {
         lualine.setup {
             options = {
                 icons_enable = true,
-                theme = getGlobalVar "colors_name",
+                theme = vim.api.nvim_get_var "colors_name",
             },
         }
     end,

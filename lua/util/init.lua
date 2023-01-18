@@ -1,8 +1,5 @@
 local strchars = vim.fn.strchars
 
-local setKeymap = vim.keymap.set
-local createCommand = vim.api.nvim_create_user_command
-
 local M = {}
 
 -- Register hotkeys in batches.
@@ -23,15 +20,15 @@ function M.regHotkeys(hotkeys, defaultMode)
 
         if type(iterm.action) == "table" then
             for mode, action in pairs(iterm.action) do
-                setKeymap(mode, iterm.key, action, opts)
+                vim.keymap.set(mode, iterm.key, action, opts)
             end
         elseif iterm.mode then
             for _, mode in pairs(iterm.mode) do
-                setKeymap(mode, iterm.key, iterm.action, opts)
+                vim.keymap.set(mode, iterm.key, iterm.action, opts)
             end
         elseif defaultMode then
             for _, mode in pairs(defaultMode) do
-                setKeymap(mode, iterm.key, iterm.action, opts)
+                vim.keymap.set(mode, iterm.key, iterm.action, opts)
             end
         else
             error("Please specify ar least one mode. Hotkey configuration: " .. vim.inspect(iterm))
@@ -45,7 +42,7 @@ function M.rc(command, targetCallback, desc)
     local callback = function(args)
         targetCallback()
     end
-    createCommand(command, callback, opts)
+    vim.api.nvim_create_user_command(command, callback, opts)
 end
 
 -- Register a directive with only one parameter.
@@ -54,7 +51,7 @@ function M.rcParameter(command, targetCallback, desc)
     local callback = function(args)
         targetCallback(args.args)
     end
-    createCommand(command, callback, opts)
+    vim.api.nvim_create_user_command(command, callback, opts)
 end
 
 -- Wrap vim commands as callback functions.

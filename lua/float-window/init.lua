@@ -1,4 +1,4 @@
-local define = require "dialog.define"
+local define = require "float-window.define"
 
 local setHighlight = vim.api.nvim_set_hl
 local getHighlight = vim.api.nvim_get_hl_by_name
@@ -16,7 +16,7 @@ function M.regStyle()
 end
 
 return {
-    notify = require "dialog.notify",
-    center = require "dialog.center",
+    notify = require "float-window.notify",
+    dialog = require "float-window.dialog",
     regStyle = M.regStyle,
 }

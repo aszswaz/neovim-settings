@@ -3,12 +3,6 @@ local text = require "text"
 local event = require "event"
 local nvimTree = require "nvim-tree.api"
 
-local has = vim.fn.has
-
-local cmd = vim.cmd
-
-local delCurrentLine = vim.api.nvim_del_current_line
-
 -- Shortcut keys in normal mode and insert mode.
 local niHotkeys = {
     {
@@ -23,7 +17,7 @@ local niHotkeys = {
     },
     {
         key = "<C-y>",
-        action = delCurrentLine,
+        action = vim.api.nvim_del_current_line,
         desc = "Delete the current row.",
     },
     {
@@ -92,7 +86,7 @@ local niHotkeys = {
 util.regHotkeys(niHotkeys, { "n", "i" })
 
 local reg = nil
-if has "clipboard" then
+if vim.fn.has "clipboard" then
     reg = "+"
 else
     reg = "0"
