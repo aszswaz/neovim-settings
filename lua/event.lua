@@ -29,7 +29,7 @@ end
 
 -- After saving the text, exit neovim.
 function M.quit()
-    if toggleterm and vim.fn.bufexists(toggleterm.bufnr) == 1 then
+    if toggleterm and vim.api.nvim_buf_is_valid(toggleterm.bufnr) then
         vim.api.nvim_buf_delete(toggleterm.bufnr, { force = true })
     end
     M.save()
