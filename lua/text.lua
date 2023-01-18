@@ -4,11 +4,17 @@ local M = {}
 
 -- Format files via external tools.
 function M.format()
+
     local filetype = vim.o.filetype
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
     local command = nil
     local currentBuf = vim.api.nvim_get_current_buf()
+
+    if not vim.api.nvim_buf_get_option(currentBuf, "modifiable") then
+        log.error("The current buffer is read-only.")
+        return
+    end
 
     if filetype == "json" then
         command = "jq"
