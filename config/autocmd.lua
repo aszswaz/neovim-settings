@@ -1,5 +1,4 @@
 local lualine = require "lualine"
-local floatWindow = require "float-window"
 
 local createAutocmd = vim.api.nvim_create_autocmd
 
@@ -25,12 +24,6 @@ createAutocmd("FileType", {
     callback = function()
         vim.o.formatoptions = "jcroql"
     end,
-})
-
-createAutocmd("ColorScheme", {
-    desc = "After the theme is set, set some highlights.",
-    pattern = "*",
-    callback = floatWindow.regStyle,
 })
 
 createAutocmd("ColorScheme", {

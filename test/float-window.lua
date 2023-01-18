@@ -29,5 +29,18 @@ function testNotify02()
 end
 
 function testDialog01()
-    dialog.create()
+    dialog.create "Hello World\nHello World"
+end
+
+function testDialog02()
+    dialog.create { "1: Hello World", "2: Hello World\nHello World", "3: Hello World" }
+end
+
+function testDialog03()
+    vim.api.nvim_set_hl(0, "Demo01", { fg = "#00FF00" })
+    vim.api.nvim_set_hl(0, "Demo02", { fg = "#FF0000" })
+    dialog.create {
+        { highlight = "Demo01", text = "Hello World" },
+        { highlight = "Demo02", text = "Hello World\nHello World" },
+    }
 end

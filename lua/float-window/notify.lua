@@ -1,5 +1,4 @@
 local stringUtil = require "util.string"
-local define = require "float-window.define"
 
 -- Norification dialog. A read-only dialog located in the lower right corner.
 local M = {}
@@ -10,14 +9,59 @@ local DISPLAY_TIME = 10000
 -- Window spacing.
 local SPACING = 2
 
+local highs = {
+    normal = "NotifyNormal",
+    debug = "NotifyDebug",
+    info = "NotifyInfo",
+    warn = "NotifyWarn",
+    error = "NotifyError",
+}
+
+function M.regHighlight()
+    local hlNotExists = function(name)
+        return vim.fn.exists(name) == 0
+    end
+    local setHighlight = function(name, value)
+        vim.api.nvim_set_hl(0, name, value)
+    end
+
+    if hlNotExists(highs.normal) then
+        local normal = vim.api.nvim_get_hl_by_name("Normal", true)
+        local fg = normal.foreground
+        if not fg then
+            if vim.o.background == "light" then
+                fg = "#000000"
+            elseif vim.o.background == "dark" then
+                fg = "#FFFFFF"
+            end
+        end
+        setHighlight(highs.normal, { fg = fg })
+    end
+    if hlNotExists(highs.debug) then
+        setHighlight(highs.debug, { fg = "#66CCFF" })
+    end
+    if hlNotExists(highs.info) then
+        setHighlight(highs.info, { fg = "#008000" })
+    end
+    if hlNotExists(highs.warn) then
+        setHighlight(highs.warn, { fg = "#FF9F00" })
+    end
+    if hlNotExists(highs.error) then
+        setHighlight(highs.error, { fg = "#FF0000" })
+    end
+end
+
 function M.create(text, style)
-    style = style or define.normal
+    style = style or highs.normal
     local content = stringUtil.toLines(text)
     local width, height, x, y = M.coordinate(content)
+
+    M.regHighlight()
 
     local winBuf = vim.api.nvim_create_buf(false, true)
     vim.fn.setbufline(winBuf, 1, content)
     vim.api.nvim_buf_set_option(winBuf, "modifiable", false)
+
     local winId = vim.api.nvim_open_win(winBuf, false, {
         relative = "editor",
         anchor = "SE",
@@ -81,19 +125,19 @@ function M.coordinate(content)
 end
 
 function M.debug(message)
-    M.create(message, define.debug)
+    M.create(message, highs.debug)
 end
 
 function M.info(message)
-    M.create(message, define.info)
+    M.create(message, highs.info)
 end
 
 function M.warn(message)
-    M.create(message, define.warn)
+    M.create(message, highs.warn)
 end
 
 function M.error(message)
-    M.create(message, define.error)
+    M.create(message, highs.error)
 end
 
 return {
