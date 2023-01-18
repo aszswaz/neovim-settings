@@ -1,13 +1,10 @@
-local notify = require "dialog.notify"
-local dialog = require "dialog"
-
-local strftime = vim.fn.strftime
-
-local levels = vim.log.levels
+local notify = require "float-window.notify"
 
 local M = {}
 
 local MESSAGES = {}
+
+local levels = vim.log.levels
 
 function M.debug(messages)
     M.putMessage(levels.DEBUG, M.format("DEBUG", messages))
@@ -30,7 +27,7 @@ function M.error(messages)
 end
 
 function M.format(level, messages)
-    local time = strftime "%Y-%m-%d %H:%M:%S"
+    local time = vim.fn.strftime "%Y-%m-%d %H:%M:%S"
     local logs = {}
 
     if type(messages) == "table" then
@@ -51,7 +48,6 @@ function M.showMessages()
             table.insert(logs, message)
         end
     end
-    dialog.central(logs)
 end
 
 function M.putMessage(level, messages)
