@@ -57,7 +57,7 @@ packer.startup(function()
     -- Translation plugin
     use "voldikss/vim-translator"
     -- Programming language helper plugins.
-    use { "neoclide/coc.nvim", branch = "release" }
+    use {"neoclide/coc.nvim",branch = "release", run = vim.cmd.CocUpdate}
     -- A gui function for nvim-qt.
     use "equalsraf/neovim-gui-shim"
     -- Indent level display plugin
