@@ -41,6 +41,7 @@ function M.createBuffer(messages)
     else
         error "parameter messages must be a string or an array."
     end
+    return buf
 end
 
 function M.create(messages)
