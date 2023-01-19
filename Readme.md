@@ -12,16 +12,18 @@ $ nvim -c PlugInstall -c PackerInstall
 
 # How to develop?
 
-First, create a repository for development:
+First, you need to install fish as your terminal shell.
+
+In the second step, clone the repository.
 
 ```bash
 $ git clone ${HOME}/.config/nvim ${HOME}/neovim-settings
 ```
 
-If you need to debug a script under development, you can execute the following command:
+Third step is to initialize the test environment.
 
 ```bash
-# Sepcifies the init script for neovim.
-$ alias nvim="nvim -u $PWD/init.lua"
-$ nvim
+$ ./test/init.sh
 ```
+
+The script will build a test environment under the /test/test-environment directory, and create a "nvim_test" command in fish for testing.

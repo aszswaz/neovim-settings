@@ -130,7 +130,7 @@ if vim.o.loadplugins then
             mode = { "i" },
             key = "<cr>",
             expr = true,
-            action = 'coc#pum#visible() ? coc#pum#confirm() : "\\<cr>"',
+            action = 'coc#pum#visible() ? coc#pum#confirm() : "\\<C-g>u\\<CR>\\<c-r>=coc#on_enter()\\<CR>"',
             desc = "The text selected in the candidate box of coc.vim is written to the buffer.",
         },
         {
