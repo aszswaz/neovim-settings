@@ -75,7 +75,7 @@ function install_plugin() {
     cd "node_modules/coc-ccls"
     ln -svfT "node_modules/ws/lib" lib
 
-    nvim -c 'PlugInstall' -c 'PackerInstall'
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 }
 
 log_info "minit neovim..."
