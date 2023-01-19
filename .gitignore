@@ -1,3 +1,4 @@
 /tags
 *.log
 /plugin/packer_compiled.lua
+/test/test-environment

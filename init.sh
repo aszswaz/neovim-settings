@@ -7,34 +7,22 @@ set -o errexit
 
 cd "$(dirname $0)"
 
-# Install into the user environment, Available only for current user and root user.
-function main() {
-    log_info "minit neovim..."
+export NVIM_SHARE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+export CONFIG_PATH="$HOME/.config/nvim"
+export PACKER_PATH="$NVIM_SHARE/site/pack/packer/start/packer.nvim"
+export COC_START="$NVIM_SHARE/site/pack/coc/start"
+export COC_EXTENSIONS="$HOME/.config/coc/extensions"
+export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
 
-    export NVIM_SHARE="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
-    export CONFIG_PATH="$HOME/.config/nvim"
-    export PACKER_PATH="$NVIM_SHARE/site/pack/packer/start/packer.nvim"
-    export COC_START="$NVIM_SHARE/site/pack/coc/start"
-    export COC_EXTENSIONS="$HOME/.config/coc/extensions"
-    export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
+export OPT_CONFIG_ROOT=1
 
-    if [[ $PWD != $CONFIG_PATH ]]; then
-        ln -svfT "$PWD" "$config_path"
-    fi
-
-    install_plugin_manager
-    sudo -E /bin/bash -o errexit -o nounset -c "
-        $(declare -f config_root)
-        $(declare -f install_depend)
-        config_root
-        install_depend
-    "
-    install_plugin
-    log_info "init neovim success"
+function log_info() {
+    echo -e "\033[92m$@\033[0m"
 }
 
-log_info() {
-    echo -e "\033[92m$@\033[0m"
+function help() {
+    local spaces=20
+    printf "%-${spaces}s %s\n" "--no-config-root" "不将 neovim 的配置应用到 root 用户"
 }
 
 function install_plugin_manager() {
@@ -88,4 +76,30 @@ function install_plugin() {
     nvim -c 'PlugInstall' -c 'PackerInstall'
 }
 
-main
+log_info "minit neovim..."
+
+while [ $# -gt 1 ]; do
+    case "$1" in
+    --no-config-root)
+        OPT_CONFIG_ROOT=0
+        ;;
+    esac
+    shift
+done
+
+[ -d "$HOME/.config" ] || mkdir -p "$HOME/.config"
+
+if [[ $PWD != $CONFIG_PATH ]]; then
+    ln -svfT "$PWD" "$CONFIG_PATH"
+fi
+
+
+install_plugin_manager
+sudo -E /bin/bash -o errexit -o nounset -c "
+        $(declare -f config_root)
+        $(declare -f install_depend)
+        [ OPT_CONFIG_ROOT == 1 ] && config_root
+        install_depend
+    "
+install_plugin
+log_info "init neovim success"
