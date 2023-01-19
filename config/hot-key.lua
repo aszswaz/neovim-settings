@@ -130,14 +130,14 @@ if vim.o.loadplugins then
             mode = { "i" },
             key = "<cr>",
             expr = true,
-            action = 'coc#pum#visible() ? coc#pum#confirm() : "\\<C-g>u\\<CR>\\<c-r>=coc#on_enter()\\<CR>"',
+            action = [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],
             desc = "The text selected in the candidate box of coc.vim is written to the buffer.",
         },
         {
             mode = { "i" },
             key = "<esc>",
             expr = true,
-            action = 'coc#pum#visible() ? coc#pum#cancel() : "\\<esc>"',
+            action = [[coc#pum#visible() ? coc#pum#cancel() : "\<esc>"]],
             desc = "Uncheck the checkbox for coc.vim.",
         },
         {
