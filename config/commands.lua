@@ -2,12 +2,14 @@ local cmake = require "cmake"
 local ctags = require "ctags"
 local template = require "template"
 local util = require "util"
+local log = require "logger"
 
 util.rc("CmakeInit", cmake.init, "Initialize cmake project.")
 util.rc("CmakeBuild", cmake.build, "Build the cmake project.")
 util.rc("CmakeClean", cmake.clean, "Clean the cmake project.")
 
 util.rc("CtagsUpdate", ctags.update, "Updated tag files for C and C++.")
+util.rc("LoggerMesssages", log.showMessages, "View all logs.")
 
 util.rcParameter("TemplateNew", template.new, "Create template.")
 util.rc("TemplateList", template.list, "View all templates.")

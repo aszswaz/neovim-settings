@@ -1,4 +1,5 @@
 local stringUtil = require "util.string"
+local util = require "util"
 
 -- Norification dialog. A read-only dialog located in the lower right corner.
 local M = {}
@@ -18,14 +19,11 @@ local highs = {
 }
 
 function M.regHighlight()
-    local hlNotExists = function(name)
-        return vim.fn.exists(name) == 0
-    end
     local setHighlight = function(name, value)
         vim.api.nvim_set_hl(0, name, value)
     end
 
-    if hlNotExists(highs.normal) then
+    if util.hlNotExists(highs.normal) then
         local normal = vim.api.nvim_get_hl_by_name("Normal", true)
         local fg = normal.foreground
         if not fg then
@@ -35,19 +33,19 @@ function M.regHighlight()
                 fg = "#FFFFFF"
             end
         end
-        setHighlight(highs.normal, { fg = fg })
+        util.setHighlight(highs.normal, { fg = fg })
     end
-    if hlNotExists(highs.debug) then
-        setHighlight(highs.debug, { fg = "#66CCFF" })
+    if util.hlNotExists(highs.debug) then
+        util.setHighlight(highs.debug, { fg = "#66CCFF" })
     end
-    if hlNotExists(highs.info) then
-        setHighlight(highs.info, { fg = "#008000" })
+    if util.hlNotExists(highs.info) then
+        util.setHighlight(highs.info, { fg = "#008000" })
     end
-    if hlNotExists(highs.warn) then
-        setHighlight(highs.warn, { fg = "#FF9F00" })
+    if util.hlNotExists(highs.warn) then
+        util.setHighlight(highs.warn, { fg = "#FF9F00" })
     end
-    if hlNotExists(highs.error) then
-        setHighlight(highs.error, { fg = "#FF0000" })
+    if util.hlNotExists(highs.error) then
+        util.setHighlight(highs.error, { fg = "#FF0000" })
     end
 end
 

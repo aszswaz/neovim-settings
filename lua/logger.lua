@@ -1,60 +1,107 @@
 local notify = require "float-window.notify"
-
-local M = {}
-
-local MESSAGES = {}
+local dialog = require "float-window.dialog"
+local util = require "util"
 
 local levels = vim.log.levels
 
+local M = {}
+
+local LOG_QUEUE = {}
+local LOG_LEVEL = {
+    [levels.DEBUG] = {
+        name = "DEBUG",
+        highlight = "LoggerDebug",
+    },
+    [levels.INFO] = {
+        name = "INFO",
+        highlight = "LoggerInfo",
+    },
+    [levels.WARN] = {
+        name = "WARN",
+        highlight = "LoggerWarn",
+    },
+    [levels.ERROR] = {
+        name = "ERROR",
+        highlight = "LoggerError",
+    },
+}
+local HIGHLIGHTS = {
+    [LOG_LEVEL[levels.DEBUG].highlight] = {
+        fg = "#66CCFF",
+    },
+    [LOG_LEVEL[levels.INFO].highlight] = {
+        fg = "#008000",
+    },
+    [LOG_LEVEL[levels.WARN].highlight] = {
+        fg = "#FF9F00",
+    },
+    [LOG_LEVEL[levels.ERROR].highlight] = {
+        fg = "#FF0000",
+    },
+}
+
 function M.debug(messages)
-    M.putMessage(levels.DEBUG, M.format("DEBUG", messages))
+    messages = M.messageHandler(messages)
+    M.putMessage(levels.DEBUG, messages)
     notify.debug(messages)
 end
 
 function M.info(messages)
-    M.putMessage(levels.INFO, M.format("INFO", messages))
+    messages = M.messageHandler(messages)
+    M.putMessage(levels.INFO, messages)
     notify.info(messages)
 end
 
 function M.warn(messages)
-    M.putMessage(levels.WARN, M.format("WARN", messages))
+    messages = M.messageHandler(messages)
+    M.putMessage(levels.WARN, messages)
     notify.warn(messages)
 end
 
 function M.error(messages)
-    M.putMessage(levels.ERROR, M.format("ERROR", messages))
+    messages = M.messageHandler(messages)
+    M.putMessage(levels.ERROR, messages)
     notify.error(messages)
 end
 
-function M.format(level, messages)
-    local time = vim.fn.strftime "%Y-%m-%d %H:%M:%S"
-    local logs = {}
-
-    if type(messages) == "table" then
-        for _, iterm in pairs(messages) do
-            table.insert(logs, level .. " " .. time .. " " .. iterm)
-        end
+function M.messageHandler(messages)
+    -- Due to the characteristics of neovim, messages may be an array of strings, and splicing them is helpful for subsequent processing.
+    if vim.tbl_islist(messages) then
+        return vim.fn.join(messages, "\n")
+    elseif type(messages) == "string" then
+        return messages
     else
-        table.insert(logs, messages)
+        error "parameter messages must be string."
     end
-
-    return logs
 end
 
 function M.showMessages()
     local logs = {}
-    for _, iterm in pairs(MESSAGES) do
-        for _, message in pairs(iterm.messages) do
-            table.insert(logs, message)
+    for _, iterm in pairs(LOG_QUEUE) do
+        local logLevel = LOG_LEVEL[iterm.level]
+        table.insert(logs, {
+            highlight = logLevel.highlight,
+            text = string.format("%s %-5s %s", vim.fn.strftime "%Y-%m-%d %H:%M:%S", logLevel.name, iterm.text),
+        })
+    end
+
+    for name, style in pairs(HIGHLIGHTS) do
+        if util.hlNotExists(name) then
+            util.setHighlight(name, style)
         end
     end
+
+    dialog.create(logs)
 end
 
-function M.putMessage(level, messages)
-    if #MESSAGES > 200 then
-        table.remove(MESSAGES, 1)
+function M.putMessage(level, message)
+    local msgType = type(messages)
+    local currentTime = os.time()
+
+    if #LOG_QUEUE > 200 then
+        table.remove(LOG_QUEUE, 1)
     end
-    table.insert(MESSAGES, { level = level, messages = messages })
+    table.insert(LOG_QUEUE, { time = currentTime, level = level, text = message })
 end
 
 return {
