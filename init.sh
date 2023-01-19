@@ -33,8 +33,10 @@ function install_plugin_manager() {
     else
         git clone https://github.com/wbthomason/packer.nvim "$PACKER_PATH"
     fi
-    # vim-plug，github：https://github.com/junegunn/vim-plug
-    curl --disable -fL -o "$VIM_PLUG_PATH" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    # All plugins are already managed using packer.vim. vim-plug is no longer needed.
+    [ -e "$VIM_PLUG_PATH" ] && rm "$VIM_PLUG_PATH"
+    [ -e "$NVIM_SHARE/plugged" ] && rm -rf "$NVIM_SHARE/plugged"
 }
 
 # Apply neovim's configuration to the root user.
@@ -73,7 +75,7 @@ function install_plugin() {
     cd "node_modules/coc-ccls"
     ln -svfT "node_modules/ws/lib" lib
 
-    nvim -c 'PlugInstall' -c 'PackerInstall'
+    nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 }
 
 log_info "minit neovim..."

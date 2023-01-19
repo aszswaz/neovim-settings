@@ -1,19 +1,6 @@
 local packer = require "packer"
 
--- Use vim-plug and packer.vim to manage plugins.
-
--- vim-plug
-vim.fn["plug#begin"]()
-
-local plug = vim.fn["plug#"]
--- Bookmark plugin.
-plug "MattesGroeger/vim-bookmarks"
--- Start screen plugin.
-plug "mhinz/vim-startify"
--- gdb debugging plugin.
-plug("sakhnik/nvim-gdb", { ["do"] = ":!./install.sh" })
-
-vim.fn["plug#end"]()
+-- Use packer.vim to manage plugins.
 
 -- packer，github：https://github.com/wbthomason/packer.nvim
 packer.startup(function()
@@ -51,15 +38,21 @@ packer.startup(function()
     -- Fuzzy lookup plugin.
     use {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+        tag = "*",
         requires = { "nvim-lua/plenary.nvim" },
     }
     -- Translation plugin
     use "voldikss/vim-translator"
     -- Programming language helper plugins.
-    use {"neoclide/coc.nvim",branch = "release", run = vim.cmd.CocUpdate}
+    use { "neoclide/coc.nvim", branch = "release", run = vim.cmd.CocUpdate }
     -- A gui function for nvim-qt.
     use "equalsraf/neovim-gui-shim"
     -- Indent level display plugin
     use "lukas-reineke/indent-blankline.nvim"
+    -- Bookmark plugin.
+    use "MattesGroeger/vim-bookmarks"
+    -- Start screen plugin.
+    use "mhinz/vim-startify"
+    -- gdb debugging plugin.
+    use "sakhnik/nvim-gdb"
 end)
