@@ -14,7 +14,7 @@ setHighlight("CursorLine", { fg = nil, bg = nil })
 setHighlight("CursorLineNr", { fg = nil, bg = nil })
 setHighlight("CursorColumn", { fg = nil, bg = nil })
 
-function M.create(messages)
+function M.createBuffer(messages)
     local buf = vim.api.nvim_create_buf(false, true)
 
     if type(messages) == "string" then
@@ -39,8 +39,12 @@ function M.create(messages)
             end
         end
     else
-        error("parameter messages must be a string or an array.")
+        error "parameter messages must be a string or an array."
     end
+end
+
+function M.create(messages)
+    local buf = M.createBuffer(messages)
 
     vim.api.nvim_buf_set_option(buf, "modifiable", false)
 
@@ -61,6 +65,13 @@ function M.create(messages)
 
     vim.api.nvim_win_set_hl_ns(win, namespace)
     vim.api.nvim_win_set_option(win, "number", true)
+
+    vim.api.nvim_create_autocmd("WinClosed", {
+        pattern = tostring(win),
+        callback = function()
+            vim.api.nvim_buf_delete(buf, {})
+        end,
+    })
 end
 
 return { create = M.create }
