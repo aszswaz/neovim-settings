@@ -17,10 +17,9 @@ setHighlight("CursorColumn", { fg = nil, bg = nil })
 function M.create(messages)
     local buf = vim.api.nvim_create_buf(false, true)
 
-    local msgType = type(messages)
-    if msgType == "string" then
+    if type(messages) == "string" then
         vim.fn.setbufline(buf, 1, string.toLines(messages))
-    elseif msgType == "table" then
+    elseif vim.tbl_islist(messages) then
         local currentLine = 1
         for _, iterm in pairs(messages) do
             msgType = type(iterm)
@@ -36,11 +35,11 @@ function M.create(messages)
                 end
                 currentLine = currentLine + #lines
             else
-                error("Illegal parameter type: " .. msgType)
+                error("illegal parameter type: " .. msgType)
             end
         end
     else
-        error("Parameter messages Unknown type: " .. msgType)
+        error("parameter messages must be a string or an array.")
     end
 
     vim.api.nvim_buf_set_option(buf, "modifiable", false)
