@@ -64,6 +64,18 @@ function M.error(messages)
     notify.error(messages)
 end
 
+function M.notify(msg, level)
+    if levels.DEBUG == level then
+        M.debug(msg)
+    elseif levels.INFO == level or levels.OFF == level then
+        M.info(msg)
+    elseif levels.WARN == level then
+        M.warn(msg)
+    elseif levels.ERROR == level or levels.TRACE == level then
+        M.error(msg)
+    end
+end
+
 function M.messageHandler(messages)
     -- Due to the characteristics of neovim, messages may be an array of strings, and splicing them is helpful for subsequent processing.
     if vim.tbl_islist(messages) then
@@ -81,7 +93,7 @@ function M.showMessages()
         local logLevel = LOG_LEVEL[iterm.level]
         table.insert(logs, {
             highlight = logLevel.highlight,
-            text = string.format("%s %-5s %s", vim.fn.strftime "%Y-%m-%d %H:%M:%S", logLevel.name, iterm.text),
+            text = string.format("%s %-5s %s", vim.fn.strftime("%Y-%m-%d %H:%M:%S", iterm.time), logLevel.name, iterm.text),
         })
     end
 
@@ -110,4 +122,5 @@ return {
     warn = M.warn,
     error = M.error,
     showMessages = M.showMessages,
+    notify = M.notify,
 }
