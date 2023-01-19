@@ -11,20 +11,20 @@ function M.closeBuffer()
     bufInfo = bufInfo[1]
     if bufInfo.changed == 1 then
         text.trim()
-        vim.cmd "w"
+        vim.cmd.write()
     end
 
     if vim.o.filetype == "NvimTree" then
-        vim.cmd "NvimTreeClose"
+        vim.cmd.NvimTreeClose()
     else
-        vim.cmd "BufferClose"
+        vim.cmd.BufferClose()
     end
 end
 
 -- All the text in the buffer is saved to the file after removing spaces at the end of the line.
 function M.save()
     text.trimAll()
-    vim.cmd "wall"
+    vim.cmd.wall()
 end
 
 -- After saving the text, exit neovim.
@@ -33,7 +33,7 @@ function M.quit()
         vim.api.nvim_buf_delete(toggleterm.bufnr, { force = true })
     end
     M.save()
-    vim.cmd "qall"
+    vim.cmd.qall()
 end
 
 function M.toggleterm_open(term)
