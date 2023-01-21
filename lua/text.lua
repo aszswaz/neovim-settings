@@ -155,10 +155,6 @@ function M.unpair()
     local afterChar = strcharpart(currentLine, cursor[2], 1)
     local strLen = vim.fn.strchars(currentLine)
 
-    print("current line: " .. currentLine)
-    print("cursor: " .. vim.inspect(cursor))
-    print("strLen: " .. strLen)
-
     local chars = {
         ["("] = ")",
         ["["] = "]",
