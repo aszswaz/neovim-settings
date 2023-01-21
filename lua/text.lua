@@ -4,7 +4,6 @@ local M = {}
 
 -- Format files via external tools.
 function M.format()
-
     local filetype = vim.o.filetype
     local textwidth = vim.o.textwidth
     local tabstop = vim.o.tabstop
@@ -12,7 +11,7 @@ function M.format()
     local currentBuf = vim.api.nvim_get_current_buf()
 
     if not vim.api.nvim_buf_get_option(currentBuf, "modifiable") then
-        log.error("The current buffer is read-only.")
+        log.error "The current buffer is read-only."
         return
     end
 
@@ -141,9 +140,56 @@ function M.trimAll()
     end
 end
 
+--[[
+    Remove pairs of symbols.
+    For example, if there are two consecutive characters "()" near the cursor, when deleting "(", also delete ")".
+--]]
+function M.unpair()
+    local strcharpart = vim.fn.strcharpart
+
+    local buffer = vim.api.nvim_get_current_buf()
+    local win = vim.api.nvim_get_current_win()
+    local cursor = vim.api.nvim_win_get_cursor(win)
+    local currentLine = vim.api.nvim_get_current_line()
+    local preChar = strcharpart(currentLine, cursor[2] - 1, 1)
+    local afterChar = strcharpart(currentLine, cursor[2], 1)
+    local strLen = vim.fn.strchars(currentLine)
+
+    print("current line: " .. currentLine)
+    print("cursor: " .. vim.inspect(cursor))
+    print("strLen: " .. strLen)
+
+    local chars = {
+        ["("] = ")",
+        ["["] = "]",
+        ["{"] = "}",
+        ["'"] = "'",
+        ['"'] = '"',
+        ["<"] = ">",
+    }
+
+    for c1, c2 in pairs(chars) do
+        if preChar == c1 and afterChar == c2 then
+            local str1 = strcharpart(currentLine, 0, cursor[2] - 1)
+            local str2 = strcharpart(currentLine, cursor[2] + 1, strLen - cursor[2])
+            vim.api.nvim_buf_set_lines(buffer, cursor[1] - 1, cursor[1], true, { str1 .. str2 })
+            cursor[2] = cursor[2] - 1
+            vim.api.nvim_win_set_cursor(win, cursor)
+            return
+        end
+    end
+
+    local str1 = strcharpart(currentLine, 0, cursor[2] - 1)
+    local str2 = strcharpart(currentLine, cursor[2], strLen)
+    vim.api.nvim_buf_set_lines(buffer, cursor[1] - 1, cursor[1], true, { str1 .. str2 })
+    cursor[2] = cursor[2] - 1
+    vim.api.nvim_win_set_cursor(win, cursor)
+end
+
 return {
     format = M.format,
     copyLine = M.copyLine,
     trim = M.trim,
     trimAll = M.trimAll,
+    unpair = M.unpair,
 }

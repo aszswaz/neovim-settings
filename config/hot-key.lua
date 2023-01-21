@@ -110,6 +110,13 @@ local autocomplete = {
         action = '""<Left>',
         desc = "Double quotes are automatically completed.",
     },
+    {
+        key = "<Backspace>",
+        action = function()
+            text.unpair()
+        end,
+        desc = "Remove pairs of symbols.",
+    },
 }
 util.regHotkeys(autocomplete, { "i" })
 
