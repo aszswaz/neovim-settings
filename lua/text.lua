@@ -145,6 +145,7 @@ end
     For example, if there are two consecutive characters "()" near the cursor, when deleting "(", also delete ")".
 --]]
 function M.unpair()
+    local char2nr = vim.fn.char2nr
     local strcharpart = vim.fn.strcharpart
 
     local buffer = vim.api.nvim_get_current_buf()

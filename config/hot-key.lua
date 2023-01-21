@@ -112,9 +112,7 @@ local autocomplete = {
     },
     {
         key = "<Backspace>",
-        action = function()
-            text.unpair()
-        end,
+        action = text.unpair,
         desc = "Remove pairs of symbols.",
     },
 }
