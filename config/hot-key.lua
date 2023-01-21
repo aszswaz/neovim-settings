@@ -82,8 +82,36 @@ local niHotkeys = {
         desc = "redo",
     },
 }
-
 util.regHotkeys(niHotkeys, { "n", "i" })
+
+local autocomplete = {
+    {
+        key = "(",
+        action = "()<Left>",
+        desc = "Brackets are automatically completed.",
+    },
+    {
+        key = "[",
+        action = "[]<Left>",
+        desc = "Brackets are automatically completed.",
+    },
+    {
+        key = "{",
+        action = "{}<Left>",
+        desc = "Braces are automatically completed.",
+    },
+    {
+        key = "'",
+        action = "''<Left>",
+        desc = "Single quotes are auto-completed.",
+    },
+    {
+        key = '"',
+        action = '""<Left>',
+        desc = "Double quotes are automatically completed.",
+    },
+}
+util.regHotkeys(autocomplete, { "i" })
 
 local reg = nil
 if vim.fn.has "clipboard" then
