@@ -1,4 +1,5 @@
 local lualine = require "lualine"
+local util = require "util"
 
 local createAutocmd = vim.api.nvim_create_autocmd
 
@@ -35,5 +36,12 @@ createAutocmd("ColorScheme", {
                 theme = vim.api.nvim_get_var "colors_name",
             },
         }
+    end,
+})
+
+createAutocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+        util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
     end,
 })
