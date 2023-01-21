@@ -1,4 +1,3 @@
-local lualine = require "lualine"
 local util = require "util"
 
 local createAutocmd = vim.api.nvim_create_autocmd
@@ -24,18 +23,6 @@ createAutocmd("FileType", {
     pattern = "*",
     callback = function()
         vim.o.formatoptions = "jcroql"
-    end,
-})
-
-createAutocmd("ColorScheme", {
-    pattern = { "vscode", "tokyonight*", "onedark" },
-    callback = function()
-        lualine.setup {
-            options = {
-                icons_enable = true,
-                theme = vim.api.nvim_get_var "colors_name",
-            },
-        }
     end,
 })
 

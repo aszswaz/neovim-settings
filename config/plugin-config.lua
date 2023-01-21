@@ -86,3 +86,6 @@ require("bufferline").setup {
 -- vim-bookmarks
 vim.api.nvim_set_var("bookmark_sign", "⚑")
 vim.api.nvim_set_var("bookmark_highlight_lines", 0)
+
+-- enable lualine.
+require("lualine").setup {}
