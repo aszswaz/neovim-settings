@@ -22,6 +22,8 @@ packer.startup(function()
     use "tpope/vim-fugitive"
     -- vscode theme
     use "Mofiqul/vscode.nvim"
+    -- OneDark theme
+    use "navarasu/onedark.nvim"
     -- Bottom status bar plugin
     use {
         "nvim-lualine/lualine.nvim",

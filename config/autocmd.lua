@@ -28,7 +28,7 @@ createAutocmd("FileType", {
 })
 
 createAutocmd("ColorScheme", {
-    pattern = { "vscode", "tokyonight*" },
+    pattern = { "vscode", "tokyonight*", "onedark" },
     callback = function()
         lualine.setup {
             options = {

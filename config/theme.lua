@@ -8,11 +8,13 @@
     tokyonight-moon
     tokyonight-storm
     Tomorrow-Night-Eighties
+    onedark
 --]]
 
 local colorscheme = vim.cmd.colorscheme
+
 if vim.o.loadplugins then
-    colorscheme "vscode"
+    colorscheme("onedark")
 else
     colorscheme "Tomorrow-Night-Eighties"
 end
