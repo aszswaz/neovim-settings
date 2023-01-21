@@ -23,6 +23,7 @@ function log_info() {
 function help() {
     local spaces=20
     printf "%-${spaces}s %s\n" "--no-config-root" "不将 neovim 的配置应用到 root 用户"
+    return 0
 }
 
 function install_plugin_manager() {
@@ -37,6 +38,8 @@ function install_plugin_manager() {
     # All plugins are already managed using packer.vim. vim-plug is no longer needed.
     [ -e "$VIM_PLUG_PATH" ] && rm "$VIM_PLUG_PATH"
     [ -e "$NVIM_SHARE/plugged" ] && rm -rf "$NVIM_SHARE/plugged"
+    # In some old versions of bash, is errexit is set, the return value of -e "$NVIM_SHARE/plugged" is false in most cases, and there is no next line of code, which will directly cause bash to exit, so you need to explicitly return 0
+    return 0
 }
 
 # Apply neovim's configuration to the root user.
@@ -47,16 +50,17 @@ function config_root() {
     [[ -e '/root/.local/share/nvim' ]] && rm -rf '/root/.local/share/nvim'
     ln -svfT "$PWD" '/root/.config/nvim'
     ln -svfT "$NVIM_SHARE" '/root/.local/share/nvim'
+    return 0
 }
 
 function install_depend() {
     local packages=('neovim' 'nodejs' 'npm' 'git')
     if [ -x "$(command -v pacman)" ]; then
         pacman -S --noconfirm --needed ${packages[*]} python-pynvim
-    else
-        [ -x "$(command -v dnf)" ]
+    elif [ -x "$(command -v dnf)" ]; then
         dnf install -y ${packages[*]} python-neovim
     fi
+    return 0
 }
 
 function install_plugin() {
@@ -76,6 +80,7 @@ function install_plugin() {
     ln -svfT "node_modules/ws/lib" lib
 
     nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+    return 0
 }
 
 log_info "minit neovim..."
@@ -95,13 +100,24 @@ if [[ $PWD != $CONFIG_PATH ]]; then
     ln -svfT "$PWD" "$CONFIG_PATH"
 fi
 
+OS="$(uname -o)"
+if [[ "$OS" == "GNU/Linux" ]]; then
+    install_plugin_manager
+    sudo -E /bin/bash -o errexit -o nounset -c "
+            $(declare -f config_root)
+            $(declare -f install_depend)
+            [ OPT_CONFIG_ROOT == 1 ] && config_root
+            install_depend
+        "
+    install_plugin
+elif [[ "$OS" == "Android" ]]; then
+    set -x
+    install_plugin_manager
+    install_plugin
+    set +x
+else
+    echo -e "\033[91mUnknown OS: $OS\033[0m"
+    exit 1
+fi
 
-install_plugin_manager
-sudo -E /bin/bash -o errexit -o nounset -c "
-        $(declare -f config_root)
-        $(declare -f install_depend)
-        [ OPT_CONFIG_ROOT == 1 ] && config_root
-        install_depend
-    "
-install_plugin
 log_info "init neovim success"
