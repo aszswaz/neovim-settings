@@ -140,6 +140,14 @@ function M.trimAll()
     end
 end
 
+local PAIRED_SYMBOLS = {
+    ["("] = ")",
+    ["["] = "]",
+    ["{"] = "}",
+    ["'"] = "'",
+    ['"'] = '"',
+    ["<"] = ">",
+}
 --[[
     Remove pairs of symbols.
     For example, if there are two consecutive characters "()" near the cursor, when deleting "(", also delete ")".
@@ -156,31 +164,19 @@ function M.unpair()
     local afterChar = strcharpart(currentLine, cursor[2], 1)
     local strLen = vim.fn.strchars(currentLine)
 
-    local chars = {
-        ["("] = ")",
-        ["["] = "]",
-        ["{"] = "}",
-        ["'"] = "'",
-        ['"'] = '"',
-        ["<"] = ">",
-    }
-
-    for c1, c2 in pairs(chars) do
-        if preChar == c1 and afterChar == c2 then
-            local str1 = strcharpart(currentLine, 0, cursor[2] - 1)
-            local str2 = strcharpart(currentLine, cursor[2] + 1, strLen - cursor[2])
-            vim.api.nvim_buf_set_lines(buffer, cursor[1] - 1, cursor[1], true, { str1 .. str2 })
-            cursor[2] = cursor[2] - 1
-            vim.api.nvim_win_set_cursor(win, cursor)
-            return
-        end
+    local str1, str2
+    str1 = strcharpart(currentLine, 0, cursor[2] - 1)
+    if afterChar == PAIRED_SYMBOLS[preChar] then
+        str2 = strcharpart(currentLine, cursor[2] + 1, strLen - cursor[2])
+    else
+        str2 = strcharpart(currentLine, cursor[2], strLen)
     end
+    vim.fn.setbufline(buffer, cursor[1], str1 .. str2)
 
-    local str1 = strcharpart(currentLine, 0, cursor[2] - 1)
-    local str2 = strcharpart(currentLine, cursor[2], strLen)
-    vim.api.nvim_buf_set_lines(buffer, cursor[1] - 1, cursor[1], true, { str1 .. str2 })
-    cursor[2] = cursor[2] - 1
-    vim.api.nvim_win_set_cursor(win, cursor)
+    if cursor[2] > 0 then
+        cursor[2] = cursor[2] - 1
+        vim.api.nvim_win_set_cursor(win, cursor)
+    end
 end
 
 return {
