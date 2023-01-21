@@ -19,6 +19,7 @@ local options = {
     cursorline = true,
     termguicolors = true,
     background = "light",
+    guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250,sm:block-blinkwait175-blinkoff150-blinkon175",
 }
 for opt, value in pairs(options) do
     vim.o[opt] = value
