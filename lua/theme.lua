@@ -40,13 +40,20 @@ function M.setTheme()
     end
 end
 
--- Swicth themes, and save the new theme configuration to shada.
-function M.switchTheme(theme)
+function M.save(theme)
     local setGlobalVar = vim.api.nvim_set_var
 
-    vim.cmd.colorscheme(theme)
-    setGlobalVar(COLOR_SCHEME, theme)
+    if theme then
+        setGlobalVar(COLOR_SCHEME, theme)
+    end
+
     setGlobalVar(BACKGROUND, vim.o.background)
 end
 
-return { setTheme = M.setTheme, switchTheme = M.switchTheme }
+-- Swicth themes, and save the new theme configuration to shada.
+function M.switchTheme(theme)
+    vim.cmd.colorscheme(theme)
+    M.save(theme)
+end
+
+return { setTheme = M.setTheme, save = M.save, switchTheme = M.switchTheme }

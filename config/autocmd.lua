@@ -29,6 +29,7 @@ createAutocmd("FileType", {
 createAutocmd("ColorScheme", {
     callback = function()
         util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
+        theme.save()
     end,
 })
 
