@@ -1,20 +1,104 @@
 local cmake = require "cmake"
 local ctags = require "ctags"
 local template = require "template"
-local util = require "util"
 local log = require "logger"
 local theme = require "theme"
 
-util.rc("CmakeInit", cmake.init, "Initialize cmake project.")
-util.rc("CmakeBuild", cmake.build, "Build the cmake project.")
-util.rc("CmakeClean", cmake.clean, "Clean the cmake project.")
+local createCommand = vim.api.nvim_create_user_command
 
-util.rc("CtagsUpdate", ctags.update, "Updated tag files for C and C++.")
-util.rc("LoggerMesssages", log.showMessages, "View all logs.")
-util.rcParameter("ColorScheme", theme.switchTheme, "Switch theme.")
+local COMMANDS = {
+    {
+        name = "CmakeInit",
+        action = cmake.init,
+        attributes = {
+            desc = "Initialize cmake project.",
+        },
+    },
+    {
+        name = "CmakeBuild",
+        action = cmake.build,
+        attributes = {
+            desc = "Build the cmake project.",
+        },
+    },
+    {
+        name = "CmakeClean",
+        action = cmake.clean,
+        attributes = {
+            desc = "Clean the cmake project.",
+        },
+    },
+    {
+        name = "CtagsUpdate",
+        action = ctags.update,
+        attributes = {
+            desc = "Updated tag files for c and c++.",
+        },
+    },
+    {
+        name = "LoggerMesssages",
+        action = log.showMessages,
+        attributes = {
+            desc = "View all logs.",
+        },
+    },
+    {
+        name = "ColorScheme",
+        action = function(argv)
+            theme.switchTheme(argv.fargs[1], argv.fargs[2])
+        end,
+        attributes = {
+            nargs = "+",
+            desc = "Switch theme.",
+            complete = "color",
+        },
+    },
+    {
+        name = "TemplateNew",
+        action = function(argv)
+            template.new(argv.args)
+        end,
+        attributes = {
+            nargs = 1,
+            desc = "Create template.",
+        },
+    },
+    {
+        name = "TemplateList",
+        action = template.list,
+        attributes = {
+            desc = "View all templates.",
+        },
+    },
+    {
+        name = "TemplateUse",
+        action = function(argv)
+            template.use(argv.args)
+        end,
+        attributes = {
+            nargs = 1,
+            desc = "Use the specified template.",
+        },
+    },
+    {
+        name = "TemplateDelete",
+        action = function(argv)
+            template.delete(argv.args)
+        end,
+        attributes = {
+            nargs = 1,
+            desc = "Delete the specified template.",
+        },
+    },
+    {
+        name = "TemplateCommit",
+        action = template.commit,
+        attributes = {
+            desc = "Submit the template.",
+        },
+    },
+}
 
-util.rcParameter("TemplateNew", template.new, "Create template.")
-util.rc("TemplateList", template.list, "View all templates.")
-util.rcParameter("TemplateUse", template.use, "Use the specified template.")
-util.rcParameter("TemplateDelete", template.delete, "Delete the specified template.")
-util.rc("TemplateCommit", template.commit, "Submit the template.")
+for _, command in pairs(COMMANDS) do
+    vim.api.nvim_create_user_command(command.name, command.action, command.attributes)
+end

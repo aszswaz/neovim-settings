@@ -6,6 +6,7 @@ local toggleterm = nil
 
 function M.closeBuffer()
     local bufId = vim.api.nvim_get_current_buf()
+    local mode = vim.fn.mode()
     -- If the current buffer has been modified by the user, save it to a file first.
     local bufInfo = vim.fn.getbufinfo(bufId)
     bufInfo = bufInfo[1]

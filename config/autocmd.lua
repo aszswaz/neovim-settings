@@ -1,5 +1,6 @@
 local util = require "util"
 local theme = require "theme"
+local storage = require "util.storage"
 
 local createAutocmd = vim.api.nvim_create_autocmd
 
@@ -29,10 +30,9 @@ createAutocmd("FileType", {
 createAutocmd("ColorScheme", {
     callback = function()
         util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
-        theme.save()
+        theme.switchTheme()
     end,
 })
 
-createAutocmd("VimEnter", {
-    callback = theme.setTheme,
-})
+createAutocmd("VimEnter", { callback = theme.init })
+createAutocmd("VimLeave", { callback = storage.save })

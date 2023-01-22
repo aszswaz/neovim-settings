@@ -36,11 +36,6 @@ local niHotkeys = {
         desc = "Move the cursor to the first non-space character.",
     },
     {
-        key = "<A-c>",
-        action = event.closeBuffer,
-        desc = "Save and close the buffer.",
-    },
-    {
         key = "<C-a>",
         action = {
             n = "gg0vG$",
@@ -159,10 +154,15 @@ if vim.o.loadplugins then
             desc = "Open or close the terminal.",
         },
         {
+            key = "<A-c>",
+            action = event.closeBuffer,
+            desc = "Save and close the buffer.",
+        },
+        {
             key = "<A-Left>",
             action = {
                 n = ":BufferPrevious<cr>",
-                i = "<esc>:BufferPrevious<cr>",
+                i = "<esc>:BufferPrevious<cr>a",
             },
             desc = "Swicth to the previous buffer.",
         },
@@ -170,7 +170,7 @@ if vim.o.loadplugins then
             key = "<A-Right>",
             action = {
                 n = ":BufferNext<cr>",
-                i = "<esc>:BufferNext<cr>",
+                i = "<esc>:BufferNext<cr>a",
             },
             desc = "Switch to the next buffer.",
         },

@@ -39,24 +39,6 @@ function M.regHotkeys(hotkeys, defaultMode)
     end
 end
 
--- Register a directive that takes no arguments.
-function M.rc(command, targetCallback, desc)
-    local opts = { desc = desc, nargs = 0 }
-    local callback = function(args)
-        targetCallback()
-    end
-    vim.api.nvim_create_user_command(command, callback, opts)
-end
-
--- Register a directive with only one parameter.
-function M.rcParameter(command, targetCallback, desc)
-    local opts = { desc = desc, nargs = 1 }
-    local callback = function(args)
-        targetCallback(args.args)
-    end
-    vim.api.nvim_create_user_command(command, callback, opts)
-end
-
 -- Wrap vim commands as callback functions.
 function M.wrapCmd(cmd)
     return function()
@@ -75,8 +57,6 @@ end
 
 return {
     regHotkeys = M.regHotkeys,
-    rc = M.rc,
-    rcParameter = M.rcParameter,
     wrapCmd = M.wrapCmd,
     hlNotExists = M.hlNotExists,
     setHighlight = M.setHighlight,

@@ -65,6 +65,7 @@ function M.error(messages)
 end
 
 function M.notify(msg, level)
+    level = level or levels.INFO
     if levels.DEBUG == level then
         M.debug(msg)
     elseif levels.INFO == level or levels.OFF == level then

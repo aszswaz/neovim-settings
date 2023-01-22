@@ -1,23 +1,15 @@
---[[
-    neovim will save variables with variable names in all uppercase to the shada file.
-    We use this function to save the theme currently used by the user,
-    and then automatically use the theme used by the user when the user starts neovim next time.
---]]
+local objects = require "util.objects"
+local storage = require "util.storage"
+
 local M = {}
 
--- The name of the variable stored in shada.
-local COLOR_SCHEME = "COLOR_SCHEME"
-local BACKGROUND = "BACKGROUND"
+local THEME = storage.get("theme", objects.new())
 
-function M.setTheme()
+function M.init()
     local colorscheme = vim.cmd.colorscheme
-    local exists = function(expr)
-        return vim.fn.exists(expr) == 1
-    end
 
-    if exists("g:" .. BACKGROUND) then
-        local background = vim.api.nvim_get_var(BACKGROUND)
-        vim.o.background = background
+    if THEME.background then
+        vim.o.background = THEME.background
     elseif os.getenv "TERMUX_APP_PID" then
         --[[
             If neovim is used in termux-app, neovim's cursor can only be white, and all settings for neovim cursor have no effect.
@@ -31,7 +23,7 @@ function M.setTheme()
 
     if vim.o.loadplugins then
         -- read theme settings from a shada file
-        local scheme = exists("g:" .. COLOR_SCHEME) and vim.api.nvim_get_var(COLOR_SCHEME) or "vscode"
+        local scheme = THEME.theme or "vscode"
         colorscheme(scheme)
         require("lualine").setup()
     else
@@ -39,20 +31,19 @@ function M.setTheme()
     end
 end
 
-function M.save(theme)
-    local setGlobalVar = vim.api.nvim_set_var
-
-    if theme then
-        setGlobalVar(COLOR_SCHEME, theme)
-    end
-
-    setGlobalVar(BACKGROUND, vim.o.background)
-end
-
 -- Swicth themes, and save the new theme configuration to shada.
-function M.switchTheme(theme)
-    vim.cmd.colorscheme(theme)
-    M.save(theme)
+function M.switchTheme(theme, background)
+    if theme then
+        vim.cmd.colorscheme(theme)
+        THEME.theme = theme
+    end
+    if background then
+        vim.o.background = background
+    end
 end
 
-return { setTheme = M.setTheme, save = M.save, switchTheme = M.switchTheme }
+return {
+    init = M.init,
+    save = M.save,
+    switchTheme = M.switchTheme,
+}
