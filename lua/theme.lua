@@ -15,25 +15,24 @@ function M.setTheme()
         return vim.fn.exists(expr) == 1
     end
 
+    if exists("g:" .. BACKGROUND) then
+        local background = vim.api.nvim_get_var(BACKGROUND)
+        vim.o.background = background
+    elseif os.getenv "TERMUX_APP_PID" then
+        --[[
+            If neovim is used in termux-app, neovim's cursor can only be white, and all settings for neovim cursor have no effect.
+            In order to prevent the color of the cursor from mixing with the background color of the theme and making it impossible to distinguish,
+            a theme with a darker color must be used.
+        --]]
+        vim.o.background = "dark"
+    else
+        vim.o.background = "light"
+    end
+
     if vim.o.loadplugins then
         -- read theme settings from a shada file
         local scheme = exists("g:" .. COLOR_SCHEME) and vim.api.nvim_get_var(COLOR_SCHEME) or "vscode"
         colorscheme(scheme)
-
-        if exists("g:" .. BACKGROUND) then
-            local background = vim.api.nvim_get_var(BACKGROUND)
-            vim.o.background = background
-        elseif os.getenv "TERMUX_APP_PID" then
-            --[[
-                If neovim is used in termux-app, neovim's cursor can only be white, and all settings for neovim cursor have no effect.
-                In order to prevent the color of the cursor from mixing with the background color of the theme and making it impossible to distinguish,
-                a theme with a darker color must be used.
-            --]]
-            vim.o.background = "dark"
-        else
-            vim.o.background = "light"
-        end
-
         require("lualine").setup()
     else
         colorscheme "Tomorrow-Night-Eighties"
