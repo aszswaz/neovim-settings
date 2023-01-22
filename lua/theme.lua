@@ -42,7 +42,7 @@ function M.switchTheme(theme, background)
         THEME.background = background
     else
         -- The user executed the ":set background" command.
-        THEME.background = background
+        THEME.background = vim.o.background
     end
 end
 
