@@ -145,5 +145,4 @@ return {
     copyLine = M.copyLine,
     trim = M.trim,
     trimAll = M.trimAll,
-    unpair = M.unpair,
 }
