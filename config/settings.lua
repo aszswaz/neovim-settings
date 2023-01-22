@@ -20,12 +20,6 @@ local options = {
     cursorcolumn = true,
     cursorline = true,
     termguicolors = true,
-    --[[
-        If neovim is used in termux-app, neovim's cursor can only be white, and all settings for neovim cursor have no effect.
-        In order to prevent the color of the cursor from mixing with the background color of the theme and making it impossible to distinguish,
-        a theme with a darker color must be used.
-    --]]
-    background = os.getenv "TERMUX_APP_PID" and "dark" or "dark",
     guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250,sm:block-blinkwait175-blinkoff150-blinkon175",
 }
 for opt, value in pairs(options) do

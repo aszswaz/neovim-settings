@@ -1,4 +1,5 @@
 local util = require "util"
+local theme = require "theme"
 
 local createAutocmd = vim.api.nvim_create_autocmd
 
@@ -20,15 +21,17 @@ createAutocmd("FileType", {
 
 createAutocmd("FileType", {
     desc = "Set formatting options for all file types.",
-    pattern = "*",
     callback = function()
         vim.o.formatoptions = "jcroql"
     end,
 })
 
 createAutocmd("ColorScheme", {
-    pattern = "*",
     callback = function()
         util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
     end,
+})
+
+createAutocmd("VimEnter", {
+    callback = theme.setTheme,
 })
