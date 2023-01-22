@@ -140,45 +140,6 @@ function M.trimAll()
     end
 end
 
-local PAIRED_SYMBOLS = {
-    ["("] = ")",
-    ["["] = "]",
-    ["{"] = "}",
-    ["'"] = "'",
-    ['"'] = '"',
-    ["<"] = ">",
-}
---[[
-    Remove pairs of symbols.
-    For example, if there are two consecutive characters "()" near the cursor, when deleting "(", also delete ")".
---]]
-function M.unpair()
-    local char2nr = vim.fn.char2nr
-    local strcharpart = vim.fn.strcharpart
-
-    local buffer = vim.api.nvim_get_current_buf()
-    local win = vim.api.nvim_get_current_win()
-    local cursor = vim.api.nvim_win_get_cursor(win)
-    local currentLine = vim.api.nvim_get_current_line()
-    local preChar = strcharpart(currentLine, cursor[2] - 1, 1)
-    local afterChar = strcharpart(currentLine, cursor[2], 1)
-    local strLen = vim.fn.strchars(currentLine)
-
-    local str1, str2
-    str1 = strcharpart(currentLine, 0, cursor[2] - 1)
-    if afterChar == PAIRED_SYMBOLS[preChar] then
-        str2 = strcharpart(currentLine, cursor[2] + 1, strLen - cursor[2])
-    else
-        str2 = strcharpart(currentLine, cursor[2], strLen)
-    end
-    vim.fn.setbufline(buffer, cursor[1], str1 .. str2)
-
-    if cursor[2] > 0 then
-        cursor[2] = cursor[2] - 1
-        vim.api.nvim_win_set_cursor(win, cursor)
-    end
-end
-
 return {
     format = M.format,
     copyLine = M.copyLine,

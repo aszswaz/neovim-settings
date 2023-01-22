@@ -89,3 +89,8 @@ vim.api.nvim_set_var("bookmark_highlight_lines", 0)
 
 -- enable lualine.
 require("lualine").setup {}
+
+-- enable nvim-autopairs
+require("nvim-autopairs").setup {
+    map_cr = false,
+}

@@ -84,40 +84,6 @@ local niHotkeys = {
 }
 util.regHotkeys(niHotkeys, { "n", "i" })
 
-local autocomplete = {
-    {
-        key = "(",
-        action = "()<Left>",
-        desc = "Brackets are automatically completed.",
-    },
-    {
-        key = "[",
-        action = "[]<Left>",
-        desc = "Brackets are automatically completed.",
-    },
-    {
-        key = "{",
-        action = "{}<Left>",
-        desc = "Braces are automatically completed.",
-    },
-    {
-        key = "'",
-        action = "''<Left>",
-        desc = "Single quotes are auto-completed.",
-    },
-    {
-        key = '"',
-        action = '""<Left>',
-        desc = "Double quotes are automatically completed.",
-    },
-    {
-        key = "<Backspace>",
-        action = text.unpair,
-        desc = "Remove pairs of symbols.",
-    },
-}
-util.regHotkeys(autocomplete, { "i" })
-
 local reg = nil
 if vim.fn.has "clipboard" then
     reg = "+"
@@ -161,7 +127,7 @@ if vim.o.loadplugins then
         },
         {
             mode = { "i" },
-            key = "<cr>",
+            key = "<CR>",
             expr = true,
             action = [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]],
             desc = "The text selected in the candidate box of coc.vim is written to the buffer.",
