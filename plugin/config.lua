@@ -47,7 +47,7 @@ require("toggleterm").setup {
     },
     highlights = {
         NormalFloat = {
-            guifg = "#CCCCCC",
+            guifg = "#DCDCDC",
             guibg = "#2C2C2C",
         },
         FloatBorder = {
