@@ -11,7 +11,6 @@ local options = {
     magic = true,
     wrap = false,
     textwidth = math.floor(vim.o.columns / 4 * 3),
-    tags = vim.o.tags .. "," .. stdpath "config" .. "/tags",
     mouse = "a",
     splitright = true,
     splitbelow = true,

@@ -91,3 +91,8 @@ vim.api.nvim_set_var("bookmark_highlight_lines", 0)
 require("nvim-autopairs").setup {
     map_cr = false,
 }
+
+require("project").setup {
+    enable_hook = "~/Documents/project/aszswaz",
+    shell = "/bin/bash",
+}

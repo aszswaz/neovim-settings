@@ -59,4 +59,6 @@ packer.startup(function()
     use "sakhnik/nvim-gdb"
     -- Automatic pairing plug-in, which can automatically add or delete paired symbols, such as "()", "[]", "{}".
     use "windwp/nvim-autopairs"
+    -- Project configuration management plugin.
+    use "aszswaz/project.nvim"
 end)

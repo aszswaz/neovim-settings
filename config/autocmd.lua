@@ -27,6 +27,14 @@ createAutocmd("FileType", {
     end,
 })
 
+createAutocmd("FileType", {
+    pattern = { "tags" },
+    desc = "Some documents cannot use spaces as tabs.",
+    callback = function()
+        vim.o.expantab = false
+    end,
+})
+
 createAutocmd("ColorScheme", {
     callback = function()
         util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
