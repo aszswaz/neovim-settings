@@ -1,5 +1,3 @@
-local cmake = require "cmake"
-local ctags = require "ctags"
 local template = require "template"
 local log = require "logger"
 local theme = require "theme"
@@ -7,34 +5,6 @@ local theme = require "theme"
 local createCommand = vim.api.nvim_create_user_command
 
 local COMMANDS = {
-    {
-        name = "CmakeInit",
-        action = cmake.init,
-        attributes = {
-            desc = "Initialize cmake project.",
-        },
-    },
-    {
-        name = "CmakeBuild",
-        action = cmake.build,
-        attributes = {
-            desc = "Build the cmake project.",
-        },
-    },
-    {
-        name = "CmakeClean",
-        action = cmake.clean,
-        attributes = {
-            desc = "Clean the cmake project.",
-        },
-    },
-    {
-        name = "CtagsUpdate",
-        action = ctags.update,
-        attributes = {
-            desc = "Updated tag files for c and c++.",
-        },
-    },
     {
         name = "LoggerMesssages",
         action = log.showMessages,
