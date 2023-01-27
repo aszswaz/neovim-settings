@@ -14,7 +14,7 @@ createAutocmd("FileType", {
 
 createAutocmd("FileType", {
     desc = "Some file types enable line breaks.",
-    pattern = { "text", "desktop" },
+    pattern = { "text", "desktop", "markdown" },
     callback = function()
         vim.o.wrap = true
     end,
@@ -31,7 +31,7 @@ createAutocmd("FileType", {
     pattern = { "tags" },
     desc = "Some documents cannot use spaces as tabs.",
     callback = function()
-        vim.o.expantab = false
+        vim.o.expandtab = false
     end,
 })
 
