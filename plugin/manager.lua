@@ -34,7 +34,7 @@ packer.startup(function()
     -- tokyonight theme
     use "folke/tokyonight.nvim"
     -- Terminal plugin.
-    use "akinsho/toggleterm.nvim"
+    use { "akinsho/toggleterm.nvim", tag = "*" }
     -- fish plugin
     use "nickeb96/fish.vim"
     -- Fuzzy lookup plugin.
