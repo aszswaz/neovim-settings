@@ -58,7 +58,7 @@ function M.create(text, style)
 
     local winBuf = vim.api.nvim_create_buf(false, true)
     vim.fn.setbufline(winBuf, 1, content)
-    vim.api.nvim_buf_set_option(winBuf, "modifiable", false)
+    vim.bo[winBuf].modifiable = false
 
     local winId = vim.api.nvim_open_win(winBuf, false, {
         relative = "editor",
@@ -75,9 +75,9 @@ function M.create(text, style)
     })
     table.insert(QUEUE, winId)
 
-    local winSetOption = vim.api.nvim_win_set_option
-    winSetOption(winId, "wrap", true)
-    winSetOption(winId, "winhl", "NormalFloat:" .. style .. ",FloatBorder:" .. style)
+    local winOption = vim.wo[winId]
+    winOption.wrap = true
+    winOption.winhighlight = "NormalFloat:" .. style .. ",FloatBorder:" .. style
 
     vim.fn.timer_start(DISPLAY_TIME, function()
         M.close(winId, winBuf)

@@ -65,7 +65,7 @@ function M.create(messages)
     })
 
     vim.api.nvim_win_set_hl_ns(win, namespace)
-    vim.api.nvim_win_set_option(win, "number", true)
+    vim.wo[win].number = true
 
     vim.api.nvim_create_autocmd("WinClosed", {
         pattern = tostring(win),
