@@ -24,8 +24,17 @@ end
 
 -- All the text in the buffer is saved to the file after removing spaces at the end of the line.
 function M.save()
-    text.trimAll()
-    vim.cmd.wall()
+    local buffers = vim.api.nvim_list_bufs()
+    local getBufOption = vim.api.nvim_buf_get_option
+    for _, iterm in pairs(buffers) do
+        local modified = getBufOption(iterm, "modified")
+        local loaded = vim.api.nvim_buf_is_loaded(iterm)
+        local readonly = getBufOption(iterm, "readonly")
+        if loaded and (not readonly) and modified then
+            text.trim(iterm)
+            vim.api.nvim_buf_call(iterm, vim.cmd.write)
+        end
+    end
 end
 
 -- After saving the text, exit neovim.

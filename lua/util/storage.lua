@@ -14,7 +14,7 @@ if not vimWarp.isdirectory(dir) then
     vim.fn.mkdir(dir)
 end
 if vimWarp.filereadable(STORAGE_PATH) then
-    local lines = vim.fn.readfile(STORAGE_PATH)
+    local lines = io.open(STORAGE_PATH):read("*a")
     DATA = objects.new(vim.fn.json_decode(lines))
 else
     DATA = objects.new()
@@ -39,8 +39,9 @@ end
 
 function M.save()
     local data = vim.fn.json_encode(DATA)
-    data = vim.fn.split(data, "\n")
-    vim.fn.writefile(data, STORAGE_PATH)
+    local file = io.open(STORAGE_PATH, "w")
+    file:write(data)
+    file:flush()
 end
 
 return { init = M.init, set = M.set, get = M.get, unset = M.unset, save = M.save }

@@ -36,11 +36,18 @@ createAutocmd("FileType", {
 })
 
 createAutocmd("ColorScheme", {
+    desc = "Customize some highlight groups and save the theme changes.",
     callback = function()
         util.setHighlight("MatchParen", { fg = "#66CCFF", underline = true })
         theme.switchTheme()
     end,
 })
 
-createAutocmd("VimEnter", { callback = theme.init })
-createAutocmd("VimLeave", { callback = storage.save })
+createAutocmd("VimEnter", { desc = "Restores the user's theme configuration.", callback = theme.init })
+createAutocmd("VimLeave", { desc = "Save user preferences configuration.", callback = storage.save })
+createAutocmd("BufRead", {
+    callback = function()
+        local buffer = vim.api.nvim_get_current_buf()
+        vim.bo[buffer].modifiable = not vim.bo[buffer].readonly
+    end,
+})

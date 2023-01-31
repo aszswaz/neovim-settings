@@ -130,16 +130,6 @@ function M.trim(buffer)
     end
 end
 
--- Remove trailing whitespace in all buffers.
-function M.trimAll()
-    local bufferInfos = vim.fn.getbufinfo { buflisted = true, bufloaded = true }
-    for index, iterm in pairs(bufferInfos) do
-        if iterm.changed then
-            M.trim(iterm.bufnr)
-        end
-    end
-end
-
 return {
     format = M.format,
     copyLine = M.copyLine,
