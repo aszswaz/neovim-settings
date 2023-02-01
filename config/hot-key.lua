@@ -159,6 +159,11 @@ if vim.o.loadplugins then
             desc = "Save and close the buffer.",
         },
         {
+            key = "<A-c-o>",
+            action = event.closeOtherBuffer,
+            desc = "Save and close other buffer."
+        },
+        {
             key = "<A-Left>",
             action = {
                 n = ":BufferPrevious<cr>",
@@ -181,6 +186,30 @@ if vim.o.loadplugins then
                 i = "<esc>:BufferLast<cr>",
             },
             desc = "Swich to the last buffer.",
+        },
+        {
+            key = "<C-A-Left>",
+            action = {
+                n = ":BufferMove<cr>",
+                i = "<esc>:BufferMove<cr>a",
+            },
+            desc = "Move the buffer to the left.",
+        },
+        {
+            key = "<C-A-Right>",
+            action = {
+                n = ":BufferMoveNext<cr>",
+                i = "<esc>:BufferMoveNext<cr>a",
+            },
+            desc = "Move the buffer to the right.",
+        },
+        {
+            key = "<A-p>",
+            action = {
+                n = ":BufferPin<cr>",
+                i = "<esc>:BufferPin<cr>",
+            },
+            desc = "buffer pin",
         },
     }
 

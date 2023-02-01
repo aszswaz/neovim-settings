@@ -6,20 +6,29 @@ local toggleterm = nil
 
 function M.closeBuffer()
     local bufId = vim.api.nvim_get_current_buf()
-    local mode = vim.fn.mode()
     -- If the current buffer has been modified by the user, save it to a file first.
-    local bufInfo = vim.fn.getbufinfo(bufId)
-    bufInfo = bufInfo[1]
-    if bufInfo.changed == 1 then
+    if vim.bo[bufId].modified then
         text.trim()
-        vim.cmd.write()
+        vim.cmd "write"
     end
 
     if vim.o.filetype == "NvimTree" then
-        vim.cmd.NvimTreeClose()
+        vim.cmd "NvimTreeClose"
     else
-        vim.cmd.BufferClose()
+        vim.cmd "BufferClose"
     end
+end
+
+function M.closeOtherBuffer()
+    local currentBuffer = vim.api.nvim_get_current_buf()
+    local buffers = vim.api.nvim_list_bufs()
+    for _, buffer in pairs(buffers) do
+        local loaded = vim.api.nvim_buf_is_loaded(buffer)
+        if loaded and vim.bo[buffer].modified and buffer ~= currentBuffer then
+            vim.api.nvim_buf_call(buffer, vim.cmd.write)
+        end
+    end
+    vim.cmd "BufferCloseAllButCurrentOrPinned"
 end
 
 -- All the text in the buffer is saved to the file after removing spaces at the end of the line.
@@ -30,7 +39,7 @@ function M.save()
         local modified = getBufOption(iterm, "modified")
         local loaded = vim.api.nvim_buf_is_loaded(iterm)
         local readonly = getBufOption(iterm, "readonly")
-        if loaded and (not readonly) and modified then
+        if loaded and not readonly and modified then
             text.trim(iterm)
             vim.api.nvim_buf_call(iterm, vim.cmd.write)
         end
@@ -52,6 +61,7 @@ end
 
 return {
     closeBuffer = M.closeBuffer,
+    closeOtherBuffer = M.closeOtherBuffer,
     save = M.save,
     quit = M.quit,
     toggleterm_open = M.toggleterm_open,
