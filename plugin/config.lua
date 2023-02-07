@@ -93,6 +93,6 @@ require("nvim-autopairs").setup {
 }
 
 require("project").setup {
-    enable_hook = "~/Documents/project/aszswaz",
+    autostart = "~/Documents/project/aszswaz",
     shell = "/bin/bash",
 }
