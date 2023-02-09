@@ -8,7 +8,7 @@ packer.startup(function()
     use "wbthomason/packer.nvim"
     -- File manager.
     use {
-        "aszswaz/nvim-tree.lua",
+        "nvim-tree/nvim-tree.lua",
         requires = {
             "kyazdani42/nvim-web-devicons",
         },
