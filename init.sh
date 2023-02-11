@@ -14,15 +14,20 @@ export COC_START="$NVIM_SHARE/site/pack/coc/start"
 export COC_EXTENSIONS="$HOME/.config/coc/extensions"
 export VIM_PLUG_PATH="$NVIM_SHARE/site/autoload/plug.vim"
 
+# 是否将 neovim 配置应用到 ROOT 用户
 export OPT_CONFIG_ROOT=1
+# 是否允许执行需要 ROOT 权限的操作
+ROOT_ACTION=1
 
 function log_info() {
     echo -e "\033[92m$@\033[0m"
 }
 
 function help() {
-    local spaces=20
-    printf "%-${spaces}s %s\n" "--no-config-root" "不将 neovim 的配置应用到 root 用户"
+    local fmt="%-20s %s\n"
+    echo "Usage: $(basename $0) [options]"
+    printf "$fmt" "--no-config-root"      "不将 neovim 的配置应用到 root 用户"
+    printf "$fmt" "--disable-root-action" "不执行需要 root 权限的操作"
     return 0
 }
 
@@ -83,17 +88,28 @@ function install_plugin() {
     return 0
 }
 
-log_info "minit neovim..."
 
-while [ $# -gt 1 ]; do
+while [ $# -gt 0 ]; do
     case "$1" in
+    --help)
+        help
+        exit 0
+        ;;
     --no-config-root)
         OPT_CONFIG_ROOT=0
+        ;;
+    --disable-root-action)
+        ROOT_ACTION=0
+        ;;
+    *)
+        help
+        exit 1
         ;;
     esac
     shift
 done
 
+log_info "minit neovim..."
 [ -d "$HOME/.config" ] || mkdir -p "$HOME/.config"
 
 if [[ $PWD != $CONFIG_PATH ]]; then
@@ -103,12 +119,14 @@ fi
 OS="$(uname -o)"
 if [[ "$OS" == "GNU/Linux" ]]; then
     install_plugin_manager
-    sudo -E /bin/bash -o errexit -o nounset -c "
-            $(declare -f config_root)
-            $(declare -f install_depend)
-            [ OPT_CONFIG_ROOT == 1 ] && config_root
-            install_depend
-        "
+    if [ $ROOT_ACTION == 1 ]; then
+        sudo -E /bin/bash -o errexit -o nounset -c "
+                $(declare -f config_root)
+                $(declare -f install_depend)
+                [ OPT_CONFIG_ROOT == 1 ] && config_root
+                install_depend
+            "
+    fi
     install_plugin
 elif [[ "$OS" == "Android" ]]; then
     set -x
