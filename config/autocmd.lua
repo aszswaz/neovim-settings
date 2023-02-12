@@ -24,6 +24,7 @@ createAutocmd("FileType", {
     desc = "Set formatting options for all file types.",
     callback = function()
         vim.o.formatoptions = "jcroql"
+        vim.o.conceallevel = 0
     end,
 })
 
