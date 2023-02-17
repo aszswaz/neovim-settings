@@ -45,19 +45,6 @@ local COMMANDS = {
         },
     },
     {
-        name = "TemplateUse",
-        action = function(argv)
-            local args = argv.fargs
-            print(vim.inspect(args))
-            template.use(args[1], args[2])
-        end,
-        attributes = {
-            nargs = "+",
-            desc = "Use the specified template.",
-            complete = template.list,
-        },
-    },
-    {
         name = "TemplateDelete",
         action = function(argv)
             template.delete(argv.args)
