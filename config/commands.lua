@@ -46,6 +46,18 @@ local COMMANDS = {
         },
     },
     {
+        name = "TemplateUse",
+        action = function(argv)
+            local args = argv.fargs
+            template.use(args[1], args[2])
+        end,
+        attributes = {
+            nargs = "+",
+            desc = "使用模板创建文件",
+            complete = template.list,
+        },
+    },
+    {
         name = "TemplateDelete",
         action = function(argv)
             template.delete(argv.args)
