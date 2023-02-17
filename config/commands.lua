@@ -31,6 +31,7 @@ local COMMANDS = {
         attributes = {
             nargs = 1,
             desc = "Create template.",
+            complete = template.list,
         },
     },
     {
