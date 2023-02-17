@@ -24,9 +24,9 @@ local COMMANDS = {
         },
     },
     {
-        name = "TemplateNew",
+        name = "TemplateOpen",
         action = function(argv)
-            template.new(argv.args)
+            template.open(argv.args)
         end,
         attributes = {
             nargs = 1,
@@ -47,10 +47,12 @@ local COMMANDS = {
     {
         name = "TemplateUse",
         action = function(argv)
-            template.use(argv.args)
+            local args = argv.fargs
+            print(vim.inspect(args))
+            template.use(args[1], args[2])
         end,
         attributes = {
-            nargs = 1,
+            nargs = "+",
             desc = "Use the specified template.",
             complete = template.list,
         },

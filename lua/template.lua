@@ -2,32 +2,21 @@ local log = require "logger"
 local job = require "util.job"
 
 local M = {}
-local templatePath = vim.fn.stdpath "config" .. "/templates"
+local TEMPLATE_PATH = vim.fn.stdpath "config" .. "/templates"
 
--- Create a template
-function M.new(templateName)
-    if vim.fn.isdirectory(templatePath) == 0 then
-        if vim.fn.mkdir(templatePath) == 0 then
-            log.error(templatePath .. ": Create failed!")
-        end
-    end
-
-    local bufId = vim.fn.bufadd(templatePath .. "/" .. templateName)
-    if vim.fn.buflisted(bufId) == 0 then
-        vim.fn.bufload(bufId)
-        vim.api.nvim_buf_set_option(bufId, "buflisted", true)
-        vim.cmd("bufdo " .. bufId)
-    end
+-- 创建或打开模板文件
+function M.open(templateName)
+    vim.cmd.edit(TEMPLATE_PATH .. "/" .. templateName)
 end
 
 -- Print all templates.
 function M.list()
-    if vim.fn.isdirectory(templatePath) == 0 then
+    if vim.fn.isdirectory(TEMPLATE_PATH) == 0 then
         log.warn "No template yet."
         return
     end
 
-    local templates = vim.fn.readdir(templatePath)
+    local templates = vim.fn.readdir(TEMPLATE_PATH)
     if #templates == 0 then
         log.warn "No template yet."
         return
@@ -36,31 +25,24 @@ function M.list()
 end
 
 -- Cretae files from templates.
-function M.use(templateName)
-    local templateFile = templatePath .. "/" .. templateName
-    if vim.fn.filereadable(templateFile) == 0 then
-        log.error("Template that does not exist: " .. templateName)
-        return
+function M.use(templateName, filename)
+    local uv = vim.loop
+    local setPath = vim.api.nvim_buf_set_name
+
+    vim.cmd.edit(TEMPLATE_PATH .. "/" .. templateName)
+    local buffer = vim.api.nvim_get_current_buf()
+
+    if filename then
+        setPath(buffer, filename)
+    else
+        setPath(buffer, templateName)
     end
-
-    local bufId = vim.fn.bufadd(templateName)
-    if bufId == vim.fn.bufnr() then
-        return
-    end
-
-    vim.fn.setbufline(bufId, 1, vim.fn.readfile(templateFile))
-
-    vim.fn.bufload(bufId)
-    vim.api.nvim_win_set_buf(bufId)
-    local options = vim.bo[bufId]
-    options.buflisted = true
-    options.modified = false
 end
 
 function M.delete(templateName)
-    local templateFile = templatePath .. "/" .. templateName
+    local templateFile = TEMPLATE_PATH .. "/" .. templateName
     if vim.fn.filereadable(templateFile) == 0 then
-        log.error("Template that does not exist: " .. templateName)
+        error("Template that does not exist: " .. templateName)
         return
     end
     vim.fn.delete(templateFile)
@@ -68,20 +50,20 @@ end
 
 -- Submit a template.
 function M.commit()
-    local command = "git -C " .. templatePath
+    local command = "git -C " .. TEMPLATE_PATH
     local result = vim.fn.systemlist(command .. " rev-parse --is-inside-work-tree")[1]
     if result ~= "true" then
-        log.error(templatePath .. ": " .. result)
+        error(TEMPLATE_PATH .. ": " .. result)
         return
     end
-    result = vim.fn.systemlist(command .. " add " .. templatePath)
+    result = vim.fn.systemlist(command .. " add " .. TEMPLATE_PATH)
     if vim.api.nvim_get_vvar "shell_error" ~= 0 then
-        log.error(result)
+        error(result)
         return
     end
     result = vim.fn.systemlist(command .. " commit -m 'Submit templates.'")
     if vim.api.nvim_get_vvar "shell_error" ~= 0 then
-        log.error(result)
+        error(result)
         return
     end
 
@@ -94,7 +76,7 @@ function M.commit()
 end
 
 return {
-    new = M.new,
+    open = M.open,
     list = M.list,
     use = M.use,
     delete = M.delete,
