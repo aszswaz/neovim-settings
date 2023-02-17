@@ -32,9 +32,7 @@ function M.list()
         log.warn "No template yet."
         return
     end
-    for i, template in ipairs(templates) do
-        print(template)
-    end
+    return templates
 end
 
 -- Cretae files from templates.
@@ -50,10 +48,13 @@ function M.use(templateName)
         return
     end
 
-    vim.fn.bufload(bufId)
-    vim.api.nvim_buf_set_option(bufId, "buflisted", true)
     vim.fn.setbufline(bufId, 1, vim.fn.readfile(templateFile))
-    vim.cmd("bufdo " .. bufId)
+
+    vim.fn.bufload(bufId)
+    vim.api.nvim_win_set_buf(bufId)
+    local options = vim.bo[bufId]
+    options.buflisted = true
+    options.modified = false
 end
 
 function M.delete(templateName)

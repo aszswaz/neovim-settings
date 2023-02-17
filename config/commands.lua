@@ -35,7 +35,11 @@ local COMMANDS = {
     },
     {
         name = "TemplateList",
-        action = template.list,
+        action = function()
+            for _, iterm in pairs(template.list()) do
+                print(iterm)
+            end
+        end,
         attributes = {
             desc = "View all templates.",
         },
@@ -48,6 +52,7 @@ local COMMANDS = {
         attributes = {
             nargs = 1,
             desc = "Use the specified template.",
+            complete = template.list,
         },
     },
     {
@@ -58,6 +63,7 @@ local COMMANDS = {
         attributes = {
             nargs = 1,
             desc = "Delete the specified template.",
+            complete = template.list,
         },
     },
     {
