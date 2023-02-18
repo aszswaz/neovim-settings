@@ -80,7 +80,7 @@ function install_plugin() {
         echo '{"dependencies":{}}' >package.json
     fi
     npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
-        coc-snippets coc-json coc-tsserver coc-pyright coc-ccls
+        coc-snippets coc-json coc-tsserver coc-pyright
     cd "node_modules/coc-ccls"
     ln -svfT "node_modules/ws/lib" lib
 
