@@ -1,4 +1,4 @@
-local storage = require "util.storage"
+local storage = require "aszswaz.util.storage"
 
 function test01()
     storage.set("demo", { demo01 = "Hello World", demo02 = "Hello World" })

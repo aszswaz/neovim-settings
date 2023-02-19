@@ -1,5 +1,5 @@
-local log = require "logger"
-local tableUtil = require "util.table"
+local log = require "aszswaz.logger"
+local tableUtil = require "aszswaz.util.table"
 
 local M = {}
 

@@ -1,4 +1,4 @@
-local string = require "util.string"
+local string = require "aszswaz.util.string"
 
 -- Dialog box. A read-only, centered floating window.
 local M = {}

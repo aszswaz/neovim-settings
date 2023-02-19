@@ -1,5 +1,5 @@
-local vimWarp = require "util.vim-warp"
-local objects = require "util.objects"
+local vimWarp = require "aszswaz.util.vim-warp"
+local objects = require "aszswaz.util.objects"
 
 -- Store data in json form.
 local M = {}

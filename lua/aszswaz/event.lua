@@ -1,4 +1,4 @@
-local text = require "text"
+local text = require "aszswaz.text"
 
 -- Manage events such as closing buffer, saving and exiting neovim.
 local M = {}

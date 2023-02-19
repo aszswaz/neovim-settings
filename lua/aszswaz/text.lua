@@ -1,4 +1,4 @@
-local log = require "logger"
+local log = require "aszswaz.logger"
 
 local M = {}
 

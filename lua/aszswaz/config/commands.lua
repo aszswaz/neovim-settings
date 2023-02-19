@@ -1,6 +1,8 @@
-local template = require "template"
-local log = require "logger"
-local theme = require "theme"
+local template = require "aszswaz.template"
+local log = require "aszswaz.logger"
+local theme = require "aszswaz.theme"
+
+local M = {}
 
 local createCommand = vim.api.nvim_create_user_command
 
@@ -77,6 +79,9 @@ local COMMANDS = {
     },
 }
 
-for _, command in pairs(COMMANDS) do
-    vim.api.nvim_create_user_command(command.name, command.action, command.attributes)
+function M.setup()
+    for _, command in pairs(COMMANDS) do
+        vim.api.nvim_create_user_command(command.name, command.action, command.attributes)
+    end
 end
+return M

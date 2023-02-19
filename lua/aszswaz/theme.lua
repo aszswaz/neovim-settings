@@ -1,5 +1,5 @@
-local objects = require "util.objects"
-local storage = require "util.storage"
+local objects = require "aszswaz.util.objects"
+local storage = require "aszswaz.util.storage"
 
 local M = {}
 

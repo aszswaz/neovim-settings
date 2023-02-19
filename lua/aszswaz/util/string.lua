@@ -1,4 +1,4 @@
-local tableUtil = require "util.table"
+local tableUtil = require "aszswaz.util.table"
 
 local M = {}
 

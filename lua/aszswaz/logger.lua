@@ -1,6 +1,6 @@
-local notify = require "float-window.notify"
-local dialog = require "float-window.dialog"
-local util = require "util"
+local notify = require "aszswaz.float-window.notify"
+local dialog = require "aszswaz.float-window.dialog"
+local util = require "aszswaz.util"
 
 local levels = vim.log.levels
 

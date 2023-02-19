@@ -1,5 +1,5 @@
-local log = require "logger"
-local job = require "util.job"
+local log = require "aszswaz.logger"
+local job = require "aszswaz.util.job"
 
 local M = {}
 local TEMPLATE_PATH = vim.fn.stdpath "config" .. "/templates"

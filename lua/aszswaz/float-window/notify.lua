@@ -1,5 +1,5 @@
-local stringUtil = require "util.string"
-local util = require "util"
+local stringUtil = require "aszswaz.util.string"
+local util = require "aszswaz.util"
 
 -- Norification dialog. A read-only dialog located in the lower right corner.
 local M = {}

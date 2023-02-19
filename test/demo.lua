@@ -1,5 +1,5 @@
-local job = require "util.job"
-local util = require "util"
+local job = require "aszswaz.util.job"
+local util = require "aszswaz.util"
 
 local has = vim.fn.has
 

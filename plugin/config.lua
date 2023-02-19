@@ -1,4 +1,4 @@
-local event = require "event"
+local event = require "aszswaz.event"
 
 -- File manager plugin
 require("nvim-tree").setup {
