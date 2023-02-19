@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.22.2)
 project()
 
-message(STATUS "cmake binary directory: ${CMAKE_BINARY_DIR}")
-
-# Compile commands are output to "compile_commands.json", so that tools such as "ccls" can provide assistance.
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/build")
+# 生成 compile_commands.json 文件，一些用具会用它来进行语法辅助，比如 ccls
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+execute_process(COMMAND "$ENV{SHELL}" "-c" "ln -sv ${CMAKE_BINARY_DIR}/compile_commands.json compile_commands.json 2>/dev/null")
 # 设置 GCC 编译选项
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -Wall -g3 -ggdb")
 set(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -Wall -g3 -ggdb")
