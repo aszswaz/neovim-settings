@@ -42,7 +42,7 @@ function M.setup()
     keyset("v", "<C-c>", '"' .. reg .. "y", options)
     keyset("v", "<C-x>", '"' .. reg .. "d", options)
     keyset("n", "<C-p>", '"' .. reg .. "p", options)
-    keyset("i", "<C-p>", '"' .. reg .. "pa", options)
+    keyset("i", "<C-p>", '<esc>"' .. reg .. "pa", options)
 
     -- 加载与插件有关的快捷键配置
     if vim.o.loadplugins then
