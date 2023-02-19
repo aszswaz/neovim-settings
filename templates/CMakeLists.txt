@@ -7,7 +7,7 @@ endif()
 set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/build")
 # 生成 compile_commands.json 文件，一些用具会用它来进行语法辅助，比如 ccls
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-execute_process(COMMAND "$ENV{SHELL}" "-c" "ln -sv ${CMAKE_BINARY_DIR}/compile_commands.json compile_commands.json 2>/dev/null")
+execute_process(COMMAND "ln" "-svf" "${CMAKE_BINARY_DIR}/compile_commands.json" "compile_commands.json")
 # 设置 GCC 编译选项
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -Wall -g3 -ggdb")
 set(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -Wall -g3 -ggdb")
