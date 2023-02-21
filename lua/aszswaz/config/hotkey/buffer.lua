@@ -4,7 +4,6 @@ local event = require "aszswaz.event"
 local M = {}
 
 function M.setup()
-    -- util.regHotkeys(hotkeys, { "n", "i" })
     local keyset = vim.keymap.set
 
     local options = { silent = true, unique = true, noremap = true }

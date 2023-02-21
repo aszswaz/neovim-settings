@@ -8,11 +8,10 @@ local autocmd = vim.cmd.autocmd
 local createAutocmd = vim.api.nvim_create_autocmd
 
 function M.setup()
-    autocmd [[FileType json,html,xml,yaml,svg,sql :set tabstop=2]]
-    autocmd [[FileType text,desktop,markdown      :set wrap]]
-    autocmd [[FileType tags                       :set noexpandtab]]
-    autocmd [[FileType help                       :set conceallevel=0]]
-    autocmd [[FileType *                          :set formatoptions="jcroql"]]
+    autocmd "FileType json,html,xml,yaml,svg,sql :set tabstop=2"
+    autocmd "FileType text,desktop,markdown      :set wrap"
+    autocmd "FileType tags                       :set noexpandtab"
+    autocmd "FileType help                       :set conceallevel=0"
 
     createAutocmd("ColorScheme", {
         desc = "Customize some highlight groups and save the theme changes.",

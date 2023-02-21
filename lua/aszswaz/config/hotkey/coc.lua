@@ -16,10 +16,9 @@ function M.setup()
         3. 如果光标在行首或光标下的字符为空格，打开 coc.nvim 的自动完成窗口
     --]]
     vim.cmd [[
-        inoremap <silent><unique><expr> <TAB>
+        inoremap <silent><unique><expr> <C-space>
         \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-        \ v:lua.require("aszswaz.config.hotkey.coc").checkBackspace() ? "\<TAB>" :
-        \ coc#refresh()
+        \ v:lua.require("aszswaz.config.hotkey.coc").checkBackspace() ? "\<TAB>" : coc#refresh()
     ]]
 end
 
