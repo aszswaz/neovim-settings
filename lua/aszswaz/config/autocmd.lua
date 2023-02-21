@@ -12,6 +12,7 @@ function M.setup()
     autocmd "FileType text,desktop,markdown      :set wrap"
     autocmd "FileType tags                       :set noexpandtab"
     autocmd "FileType help                       :set conceallevel=0"
+    autocmd "FileType *                          :set formatoptions=tcro/w1]jp"
 
     createAutocmd("ColorScheme", {
         desc = "Customize some highlight groups and save the theme changes.",

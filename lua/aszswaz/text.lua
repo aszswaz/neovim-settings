@@ -12,18 +12,18 @@ function M.format()
     end
 
     local lineCount = vim.api.nvim_buf_line_count(currentBuf)
-    local status, content = pcall(M._format, vim.api.nvim_buf_get_lines(currentBuf, 0, lineCount, true))
+    local status, result = pcall(M._format, vim.api.nvim_buf_get_lines(currentBuf, 0, lineCount, true))
     if status then
         -- 将格式化后的文本更新到缓冲区
-        for index, newLine in pairs(content) do
+        for index, newLine in pairs(result) do
             vim.fn.setbufline(currentBuf, index, newLine)
         end
         -- 删除多余的文本
-        if lineCount > #content then
-            vim.fn.deletebufline(currentBuf, #content + 1, lineCount)
+        if lineCount > #result then
+            vim.fn.deletebufline(currentBuf, #result + 1, lineCount)
         end
     else
-        log.error(content)
+        log.error(result)
     end
 end
 
