@@ -1,0 +1,4 @@
+return {
+    FORMAT_FILE_TYPE_ERROR = 1,
+    FORMAT_SHELL_ERROR = 2,
+}

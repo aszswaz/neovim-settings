@@ -1,13 +1,14 @@
 local log = require "aszswaz.logger"
+local errorCode = require "aszswaz.error-code"
 
 local M = {}
 
 -- 格式化当前缓冲区中的所有文本
-function M.format()
+function M.format(isFormatexpr)
     local currentBuf = vim.api.nvim_get_current_buf()
 
     if not vim.api.nvim_buf_get_option(currentBuf, "modifiable") then
-        log.error "The current buffer is read-only."
+        error "the current buffer is read-only"
         return
     end
 
@@ -22,8 +23,11 @@ function M.format()
         if lineCount > #result then
             vim.fn.deletebufline(currentBuf, #result + 1, lineCount)
         end
+    elseif isFormatexpr and result.code == errorCode.FORMAT_FILE_TYPE_ERROR then
+        -- 通过 gq 或 autoformat 调用本函数，当文件类型不支持格式化时，返回 true 让 neovim 使用内部格式机制
+        return true
     else
-        log.error(result)
+        log.error(result.msg)
     end
 end
 
@@ -128,16 +132,16 @@ function M._format(content)
     elseif filetype == "yaml" then
         command = "prettier --parser yaml --print-width " .. textwidth .. " --tab-width " .. tabstop
     else
-        error("unsupported file tyle: " .. filetype)
+        error { msg = "unsupported file tyle: " .. filetype, code = errorCode.FORMAT_FILE_TYPE_ERROR }
     end
 
     local output = vim.fn.systemlist(command, content)
     if vim.api.nvim_get_vvar "shell_error" == 0 then
         return output
     elseif #output > 0 then
-        error(vim.fn.join(output, "\n"))
+        error { msg = vim.fn.join(output, "\n"), code = errorCode.FORMAT_SHELL_ERROR }
     end
-    error(command .. ": formatting failed")
+    error { msg = command .. ": formatting failed", code = errorCode.FORMAT_SHELL_ERROR }
 end
 
 return {
