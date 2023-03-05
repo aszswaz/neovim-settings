@@ -13,10 +13,10 @@ function M.setup()
     local options = { silent = true, unique = true, noremap = true }
     keyset({ "n", "i" }, "<C-t><C-s>", vim.cmd.Translate, options)
     keyset("v", "<C-t><C-s>", ":'<,'>Translate<cr>", options)
-    keyset("i", "<C-e>", "<esc>:NvimTreeOpen", options)
+    keyset("i", "<C-e>", "<esc>:NvimTreeOpen<cr>", options)
     keyset("n", "<C-e>", nvimTree.tree.focus, options)
     keyset({ "n", "i" }, "<C-e><C-r>", nvimTree.tree.reload, options)
-    keyset({ "n", "i" }, "<C-t><C-e>", "<esc>:ToggleTerm", options)
+    keyset({ "n", "i" }, "<C-t><C-e>", "<esc>:ToggleTerm<cr>", options)
 
     for _, iterm in pairs(MODULES) do
         iterm.setup()
