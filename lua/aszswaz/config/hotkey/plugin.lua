@@ -17,7 +17,7 @@ function M.setup()
     keyset("n", "<C-e>", nvimTree.tree.focus, options)
     keyset({ "n", "i" }, "<C-e><C-r>", nvimTree.tree.reload, options)
     keyset({ "n", "i" }, "<C-t><C-e>", "<esc>:ToggleTerm<cr>", options)
-    keyset("t", "<C-\\><C-N>:ToggleTerm<cr>", options)
+    keyset("t", "<C-t><C-e>", "<C-\\><C-N>:ToggleTerm<cr>", options)
 
     for _, iterm in pairs(MODULES) do
         iterm.setup()
