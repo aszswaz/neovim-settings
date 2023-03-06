@@ -1,5 +1,4 @@
 local packer = require "packer"
-local event = require "aszswaz.event"
 
 -- Use packer.vim to manage plugins.
 -- packer，github：https://github.com/wbthomason/packer.nvim
@@ -96,7 +95,7 @@ local PLUGINS = {
                         guibg = "#2C2C2C",
                     },
                 },
-                on_create = event.toggleterm_open,
+                on_create = require("aszswaz.event").toggleterm_open,
             }
         end,
     },
