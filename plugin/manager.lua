@@ -24,7 +24,7 @@ local PLUGINS = {
     -- Start screen plugin.
     "mhinz/vim-startify",
     -- gdb debugging plugin.
-    "sakhnik/nvim-gdb",
+    { "sakhnik/nvim-gdb", run = "./install.sh" },
     -- Automatic pairing plug-in, which can automatically add or delete paired symbols, such as "()", "[]", "{}".
     "windwp/nvim-autopairs",
     -- Project configuration management plugin.
