@@ -52,7 +52,7 @@ local PLUGINS = {
         "aszswaz/project.nvim",
         config = function()
             require("project").setup {
-                autostart = "~/Documents/project/aszswaz",
+                autostart = { "~/Documents/project/aszswaz", "~/Documents/project/neovim" },
                 shell = "/bin/bash",
             }
         end,
