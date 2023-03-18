@@ -131,6 +131,8 @@ function M._format(content)
         command = "prettier --parser markdown --print-width " .. textwidth .. " --tab-width " .. tabstop
     elseif filetype == "yaml" then
         command = "prettier --parser yaml --print-width " .. textwidth .. " --tab-width " .. tabstop
+    elseif filetype == "go" then
+        command = "gofmt"
     else
         error { msg = "unsupported file tyle: " .. filetype, code = errorCode.FORMAT_FILE_TYPE_ERROR }
     end
