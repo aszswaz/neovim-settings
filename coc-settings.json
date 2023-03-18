@@ -1,4 +1,6 @@
+// vim:filetype=jsonc
 {
+  // 外部语言服务器或插件
   "languageserver": {
     "ccls": {
       "command": "ccls",
@@ -26,8 +28,17 @@
       "filetypes": [
         "java"
       ]
+    },
+    "digestif": {
+      "command": "digestif",
+      "filetypes": [
+        "tex",
+        "plaintex",
+        "context"
+      ]
     }
   },
+  // 设置 JVM 路径
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-1.8",
@@ -47,5 +58,11 @@
       "path": "/usr/lib/jvm/java-19-openjdk"
     }
   ],
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  // 设置 GO 的编译选项
+  "go.goplsOptions": {
+    "buildFlags": [
+      "-tags=debug"
+    ]
+  }
 }
