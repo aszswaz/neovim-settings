@@ -17,12 +17,12 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD 17)
 
 # 扫描源文件
-file(GLOB_RECURSE C_FILES ./src/*.c)
-file(GLOB_RECURSE CPP_FILES ./src/*.cpp)
-file(GLOB_RECURSE HPP_FILES ./src/*.hpp)
-file(GLOB_RECURSE C_TEST_FILES ./test/*.c)
-file(GLOB_RECURSE CPP_TEST_FILES ./test/*.cpp)
-file(GLOB_RECURSE HPP_TEST_FILES ./test/*.hpp)
+file(GLOB_RECURSE C_FILES ./src/main/*.c)
+file(GLOB_RECURSE CPP_FILES ./src/main/*.cpp)
+file(GLOB_RECURSE HPP_FILES ./src/main/*.hpp)
+file(GLOB_RECURSE C_TEST_FILES ./src/test/*.c)
+file(GLOB_RECURSE CPP_TEST_FILES ./src/test/*.cpp)
+file(GLOB_RECURSE HPP_TEST_FILES ./src/test/*.hpp)
 set(SRC_FILES ${C_FILES} ${CPP_FILES} ${HPP_FILES})
 set(UNIT_SRC ${C_TEST_FILES} ${CPP_TEST_FILES} ${HPP_TEST_FILES})
 
