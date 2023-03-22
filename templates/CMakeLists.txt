@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.22.2)
 project()
 
-if (NOT CMAKE_BUILD_TYPE)
+option(ENABLE_DEBUG OFF)
+
+if (${ENABLE_DEBUG})
+    set(CMAKE_BUILD_TYPE "Debug")
+else()
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/build")
@@ -20,14 +24,16 @@ set(CMAKE_CXX_STANDARD 17)
 file(GLOB_RECURSE C_FILES ./src/main/*.c)
 file(GLOB_RECURSE CPP_FILES ./src/main/*.cpp)
 file(GLOB_RECURSE HPP_FILES ./src/main/*.hpp)
-file(GLOB_RECURSE C_TEST_FILES ./src/test/*.c)
-file(GLOB_RECURSE CPP_TEST_FILES ./src/test/*.cpp)
-file(GLOB_RECURSE HPP_TEST_FILES ./src/test/*.hpp)
 set(SRC_FILES ${C_FILES} ${CPP_FILES} ${HPP_FILES})
-set(UNIT_SRC ${C_TEST_FILES} ${CPP_TEST_FILES} ${HPP_TEST_FILES})
-
-# 单元测试
-set(UNIT_TEST ${PROJECT_NAME}_test)
-
 add_executable(${PROJECT_NAME} ${SRC_FILES})
-add_executable(${UNIT_TEST} ${UNIT_SRC})
+install(${PROJECT_NAME})
+
+if (${ENABLE_DEBUG})
+    file(GLOB_RECURSE C_TEST_FILES ./src/test/*.c)
+    file(GLOB_RECURSE CPP_TEST_FILES ./src/test/*.cpp)
+    file(GLOB_RECURSE HPP_TEST_FILES ./src/test/*.hpp)
+    set(UNIT_SRC ${C_TEST_FILES} ${CPP_TEST_FILES} ${HPP_TEST_FILES})
+    # 单元测试
+    set(UNIT_TEST ${PROJECT_NAME}_test)
+    add_executable(${UNIT_TEST} ${UNIT_SRC})
+endif()
