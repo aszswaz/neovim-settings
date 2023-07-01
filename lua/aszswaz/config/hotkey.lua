@@ -1,7 +1,6 @@
 local util = require "aszswaz.util"
 local text = require "aszswaz.text"
 local event = require "aszswaz.event"
-local plugin = require "aszswaz.config.hotkey.plugin"
 
 local M = {}
 
@@ -43,10 +42,5 @@ function M.setup()
     keyset("v", "<C-x>", '"' .. reg .. "d", options)
     keyset("n", "<C-p>", '"' .. reg .. "p", options)
     keyset("i", "<C-p>", '<esc>"' .. reg .. "pa", options)
-
-    -- 加载与插件有关的快捷键配置
-    if vim.o.loadplugins then
-        plugin.setup()
-    end
 end
 return M

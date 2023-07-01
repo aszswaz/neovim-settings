@@ -3,6 +3,7 @@ local MODULES = {
     require "aszswaz.config.autocmd",
     require "aszswaz.config.commands",
     require "aszswaz.config.hotkey",
+    require "aszswaz.config.plugin",
 }
 
 local M = {}
