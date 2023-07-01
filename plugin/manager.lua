@@ -158,13 +158,27 @@ local THEMES = {
                 clickable = true,
                 exclude_ft = { "qf", "fugitive" },
                 exclude_name = {},
-                icons = true,
+                icons = {
+                    button = "",
+                    filetype = {
+                        enable = true,
+                    },
+                    modified = {
+                        button = "●",
+                    },
+                    separator = {
+                        left = "▎",
+                    },
+                    pinned = {
+                        button = "車",
+                    },
+                    inactive = {
+                        separator = {
+                            left = "▎",
+                        },
+                    },
+                },
                 icon_custom_colors = false,
-                icon_separator_active = "▎",
-                icon_separator_inactive = "▎",
-                icon_close_tab = "",
-                icon_close_tab_modified = "●",
-                icon_pinned = "車",
                 insert_at_end = true,
                 insert_at_start = false,
                 maximum_padding = 1,
