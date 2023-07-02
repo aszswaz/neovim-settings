@@ -1,3 +1,5 @@
+local logger = require "aszswaz.logger"
+
 local MODULES = {
     require "aszswaz.config.plugin.bufferline",
     require "aszswaz.config.plugin.coc",
@@ -15,7 +17,10 @@ local M = {}
 function M.setup()
     if vim.o.loadplugins then
         for _, iterm in pairs(MODULES) do
-            iterm.setup()
+            local status, msg = pcall(iterm.setup)
+            if not status then
+                logger.error(msg)
+            end
         end
     end
 end
