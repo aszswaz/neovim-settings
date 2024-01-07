@@ -1,3 +1,4 @@
+pcall(function()
 local packer = require "packer"
 local plugCfg = require "aszswaz.config.plugin"
 
@@ -80,4 +81,5 @@ packer.startup(function()
     for _, iterm in pairs(PLUGINS) do
         use(iterm)
     end
+end)
 end)
