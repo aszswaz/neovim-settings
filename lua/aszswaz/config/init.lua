@@ -10,7 +10,7 @@ local M = {}
 
 function M.setup()
     for _, iterm in pairs(MODULES) do
-        iterm.setup()
+        pcall(iterm.setup)
     end
 end
 

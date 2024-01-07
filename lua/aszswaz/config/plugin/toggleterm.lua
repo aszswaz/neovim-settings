@@ -26,8 +26,8 @@ function M.setup()
         -- Terminal's popup settings.
         float_opts = {
             border = "rounded",
-            width = math.floor(vim.o.columns / 5 * 4),
-            height = math.floor(vim.o.lines / 5 * 4),
+            width = math.max(150, math.floor(vim.o.columns / 5 * 4)),
+            height = math.max(35, math.floor(vim.o.lines / 5 * 4)),
             -- transparency
             winblend = 0,
         },

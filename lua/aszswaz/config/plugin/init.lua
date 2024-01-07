@@ -16,14 +16,11 @@ local M = {}
 
 function M.setup()
     if vim.o.loadplugins then
+        -- 加载插件，一个插件加载失败不能影响其它插件的加载
         for _, iterm in pairs(MODULES) do
-            local status, res = pcall(require, iterm)
-            if not status then
-                logger.error(res)
-		return
-	    end
-
-            local status, msg = pcall(res.setup)
+            local status, msg = pcall(function()
+                require(iterm).setup()
+            end)
             if not status then
                 logger.error(msg)
             end
