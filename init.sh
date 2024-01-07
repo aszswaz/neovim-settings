@@ -64,6 +64,8 @@ function install_depend() {
         pacman -S --noconfirm --needed ${packages[*]} python-pynvim
     elif [ -x "$(command -v dnf)" ]; then
         dnf install -y ${packages[*]} python-neovim
+    elif [ -x "$(command -v apt)" ]; then
+        apt install -y ${packages[*]} python-pynvim
     fi
     return 0
 }
@@ -80,7 +82,7 @@ function install_plugin() {
         echo '{"dependencies":{}}' >package.json
     fi
     npm install --global-style --ignore-scripts --no-bin-links --no-package-lock --only=production \
-        coc-snippets coc-json coc-tsserver coc-pyright
+        coc-ccls coc-snippets coc-json coc-tsserver coc-pyright
     cd "node_modules/coc-ccls"
     ln -svfT "node_modules/ws/lib" lib
 
