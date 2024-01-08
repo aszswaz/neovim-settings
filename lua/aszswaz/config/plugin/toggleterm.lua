@@ -3,6 +3,13 @@ local M = {}
 local keyset = vim.keymap.set
 
 function M.setup()
+    --[[
+    一些 vim 的设置需要在 UI 完全打开后才能被正确初始化，比如 columns，在通过 neovim-qt 时，只有窗口创建完毕之后，它的值才有效
+    --]]
+    vim.api.nvim_create_autocmd("UIEnter", { pattern = "*", callback = M.config })
+end
+
+function M.config()
     local options = { silent = true, unique = true, noremap = true }
 
     keyset({ "n", "i" }, "<C-t><C-e>", "<esc>:ToggleTerm<cr>", options)
@@ -26,8 +33,8 @@ function M.setup()
         -- Terminal's popup settings.
         float_opts = {
             border = "rounded",
-            width = math.max(150, math.floor(vim.o.columns / 5 * 4)),
-            height = math.max(35, math.floor(vim.o.lines / 5 * 4)),
+            width = math.floor(vim.o.columns / 5 * 4),
+            height = math.floor(vim.o.lines / 5 * 4),
             -- transparency
             winblend = 0,
         },

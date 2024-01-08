@@ -5,8 +5,11 @@ local config = require "aszswaz.config"
 local M = {}
 
 function M.setup()
-    vim.notify = log.notify
-    vim.notify_once = log.notify
+    vim.api.nvim_create_autocmd("UIEnter", { pattern = "*", callback = function()
+        vim.notify = log.notify
+        vim.notify_once = log.notify
+    end })
+
     config.setup()
 end
 
