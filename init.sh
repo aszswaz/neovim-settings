@@ -65,7 +65,7 @@ function install_depend() {
     elif [ -x "$(command -v dnf)" ]; then
         dnf install -y ${packages[*]} python-neovim
     elif [ -x "$(command -v apt)" ]; then
-        apt install -y ${packages[*]} python-pynvim
+        apt install -y ${packages[*]} python3-pynvim
     fi
     return 0
 }
