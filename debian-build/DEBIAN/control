@@ -1,0 +1,5 @@
+Package: aszswaz-neovim
+Version: 0.1
+Maintainer: aszswaz
+Architecture: all
+Description: 经过配置的 neovim
