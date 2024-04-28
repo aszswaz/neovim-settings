@@ -1,33 +1,111 @@
 local M = {}
 
-local keyset = vim.keymap.set
+local keyset = vim.api.nvim_set_keymap
+local get_current_line = vim.api.nvim_get_current_line
+local set_current_line = vim.api.nvim_set_current_line
+local get_current_win = vim.api.nvim_get_current_win
+local get_cursor = vim.api.nvim_win_get_cursor
+
+local visible = function()
+    return vim.fn["coc#pum#visible"]() == 1
+end
+local expandableOrJumpable = function()
+    return vim.fn["coc#expandableOrJumpable"]() == 1
+end
+local cancel = vim.fn["coc#pum#cancel"]
+local confirm = vim.fn["coc#pum#confirm"]
+local on_enter = vim.fn["coc#on_enter"]
+local rpc_request = vim.fn["coc#rpc#request"]
+local refresh = vim.fn["coc#refresh"]
+local coc_config = vim.fn["coc#config"]
 
 function M.setup()
-    vim.g["coc_snippet_next"] = "<tab>"
-
-    local options = { silent = true, unique = true, noremap = true, expr = true }
-    keyset("i", "<esc>", [[coc#pum#visible() ? coc#pum#cancel() : "<esc>"]], options)
-    keyset("i", "<CR>", [[coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"]], options)
-
-    --[[
-        在 insert 模式中注册 <TAB> 热键，执行如下操作
-        1. 如果 coc.nvim 的选项窗口已经打开，跳转到下一个选项
-        2. 如果使用 coc-snippets 插入了一段文本，且已经在 snippets 中设置了占位符，则跳转到下一个占位符
-        3. 如果光标在行首或光标下的字符为空格，打开 coc.nvim 的自动完成窗口
-    --]]
-    vim.cmd [[
-        inoremap <silent><unique><expr> <C-space>
-        \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-        \ v:lua.require("aszswaz.config.hotkey.coc").checkBackspace() ? "\<TAB>" : coc#refresh()
-    ]]
+    M.regHotKey()
+    M.config()
 end
 
--- 判断光标是否在行首，以及光标下的字符是否为空格
-function M.checkBackspace()
-    local window = vim.api.nvim_get_current_win()
-    local col = vim.api.nvim_win_get_cursor(window)[2]
-    col = col - 1
-    return col == 0 or vim.api.nvim_get_current_line():sub(col, col) == " "
+-- 注册快捷键
+function M.regHotKey()
+    local options = { silent = true, unique = true, noremap = true, expr = true }
+    keyset("i", "<esc>", "", {
+        silent = options.silent,
+        unique = options.unique,
+        noremap = options.noremap,
+        expr = options.expr,
+        call = M.escEvent,
+    })
+    keyset("i", "<CR>", "", {
+        silent = options.silent,
+        unique = options.unique,
+        noremap = options.noremap,
+        expr = options.expr,
+        call = M.enterEvent,
+    })
+
+    keyset("i", "<C-space>", "", {
+        desc = "打开自动完成窗口，或者移动到下一个选项",
+        silent = options.silent,
+        unique = options.unique,
+        noremap = options.noremap,
+        expr = options.expr,
+        call = M.autocomplete,
+    })
+end
+
+-- 配置 coc.nvim
+function M.config()
+    coc_config("languageserver", {
+        ccls = {
+            command = "ccls",
+            filetypes = {
+                "c",
+                "cpp",
+                "cuda",
+                "objc",
+                "objcpp",
+            },
+            rootPatterns = {
+                ".ccls-root",
+                "compile_commands.json",
+            },
+            initializationOptions = {
+                cache = {
+                    directory = "/tmp/ccls",
+                },
+                client = {
+                    snippetSupport = true,
+                },
+            },
+        },
+    })
+end
+
+-- 如果自动完成窗口已经打开，跳转到下一个选项，否则打开自动完成窗口
+function M.autocomplete()
+    if expandableOrJumpable() then
+        -- 跳转到下一个选项
+        rpc_request("doKeymap", { "snippets-expand-jump", "" })
+    else
+        refresh()
+    end
+end
+
+-- 处理 esc 按键
+function M.escEvent()
+    if visible() then
+        cancel()
+    else
+        vim.cmd.normal()
+    end
+end
+
+-- 处理 enter 键
+function M.enterEvent()
+    if visible() then
+        confirm()
+    else
+        on_enter()
+    end
 end
 
 return M
