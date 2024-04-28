@@ -32,14 +32,14 @@ function M.regHotKey()
         unique = options.unique,
         noremap = options.noremap,
         expr = options.expr,
-        call = M.escEvent,
+        callback = M.escEvent,
     })
     keyset("i", "<CR>", "", {
         silent = options.silent,
         unique = options.unique,
         noremap = options.noremap,
         expr = options.expr,
-        call = M.enterEvent,
+        callback = M.enterEvent,
     })
 
     keyset("i", "<C-space>", "", {
@@ -48,7 +48,7 @@ function M.regHotKey()
         unique = options.unique,
         noremap = options.noremap,
         expr = options.expr,
-        call = M.autocomplete,
+        callback = M.autocomplete,
     })
 end
 
