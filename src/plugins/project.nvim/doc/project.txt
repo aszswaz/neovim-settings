@@ -1,0 +1,107 @@
+*project.nvim* Project configuration manager.
+
+Author: aszswaz <aszswaz@163.com>
+
+=============================================================================
+CONTENT                                               project
+
+    1. Introduction                                   |project-introduction|
+    2. Quickstart                                     |project-quickstart|
+    3. Commands                                       |project-commands|
+    4. Configuraion                                   |project-configuration|
+
+=============================================================================
+ 1. INTRODUCTION                                      *project-introduction*
+
+"project.nvim" supports the following functions:
+    1. neovim options localization management.
+    2. External shell scripts are mapped to neovim commands.
+
+At some point, when we open neovim in a certain directory, we need to
+configure some neovim options for this directory. For example, use ctags to
+generate a .tags file, in order to allow neovim to use it, we must execute
+`set tags = ./.tags`, but at this time the value of the option |tags| is
+only applicable to the current directory, not suitable for other directory,
+we can execute |:ProjectEdit| to open the .nvim/autoset.vim file, and
+|project.nvim| will execute it automatically.
+
+When we use ctags to generate |tags| files, we usually need to pass some
+parameters to ctags so that it can generate the |tags| files we expect.
+We can use the command `:ProjectCmd --enable-autostart Ctags` to create a shell
+script to execute ctags, |:ProjectCmd| will save the script in the
+`.nvim/script` directory, and will register a |user-commands| "Ctags",
+"Ctags" will use |jobstart| to execute the script, and "--autostart" means
+that this script should be executed automatically when neovim is started in
+the current directory.
+
+=============================================================================
+ 2. QUICKSTART                                        *project-quickstart*
+
+The setup function needs to be called in the lua file, example: >
+
+    -- use the default configuration.
+    require("project").setup {}
+
+    -- or customise some of the options.
+    require("project").setup {
+        shell = vim.o.shell,
+        autostart = false,
+    }
+<
+
+For more information on the options see |project-configuration|.
+
+=============================================================================
+ 3. COMMANDS                                          *project-commands*
+
+*:ProjectEdit*
+    Edit the .nvim/autoset.vim file.
+
+*:ProjectCmd* [option] <command name>
+Create or edit a shell script and register a |user-commands| to execute it.
+Option: ~
+    --enable-autostart  After neovim starts, this command is automatically executed.
+    --disable-autostart Automatic execution of instructions is prohibited.
+    --enable-terminal   Whether to open a pty terminal window when executing this
+                        command in command mode.
+    --disable-terminal  Disable opening of PTY windows.
+Example: ~
+>
+    :ProjectCmd --enable-autostart --enable-terminal CmakeBuildDebug
+    :CmakeBuildDebug
+<
+
+*:ProjectCmdDel* <command name>
+Remove shell commands, and |user-commands|.
+
+=============================================================================
+ 4. CONFIGURAION                                      *project-configuration*
+
+The default configuration is as follows: >
+
+    require("project").setup {
+        autostart = false,
+        shell = vim.o.shell,
+    }
+<
+
+{autostart}
+Accepts boolean, string or list. When it is boolean, it indicates whether to
+execute the script for the current project.
+Note: Setting autostart to true directly may cause security problems and
+you must ensure that there is no malicious code in the script for the
+current project.
+When it is a string or a list, it means that only items in the specified
+directory can execute the script, example. >
+
+    -- The current project must be in the "~/Documents" directory
+    -- in order for the script to be executed.
+    autostart = "~/Documents"
+    -- You can set up multiple directories.
+    autostart = [ "~/Documents", "/dev/shm" ]
+<
+
+{shell}
+The shell used to execute the script, the default is "vim.o.shell".
+
+vim:tw=78:ft=help:
