@@ -26,7 +26,7 @@ local OPTIONS = {
     guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250,sm:block-blinkwait175-blinkoff150-blinkon175",
     guifont = "JetBrainsMono Nerd Font Mono:h12",
     formatexpr = 'v:lua.require("aszswaz.text").format(v:true)',
-    tags = "/usr/share/nvim/plugins/tags," .. stdpath("cache") .. "/tags"
+    tags = stdpath("cache") .. "/tags"
 }
 
 function M.setup()
