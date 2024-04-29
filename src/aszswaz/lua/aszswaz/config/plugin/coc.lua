@@ -95,7 +95,7 @@ function M.escEvent()
     if visible() then
         cancel()
     else
-        vim.cmd.normal()
+        vim.cmd.stopinsert()
     end
 end
 
