@@ -1,0 +1,17 @@
+[Unit]
+Description=neovim service
+# Start after network initialization.
+After=network.target network-only.target
+Wants=network-only.target
+
+[Service]
+User=aszswaz
+Type=simple
+WorkingDirectory=/home/aszswaz/Project
+ExecStart=/usr/bin/nvim --headless --listen '0.0.0.0:10309'
+Restart=always
+RestartSec=0
+
+[Install]
+# see man:systemd.special
+WantedBy=default.target
